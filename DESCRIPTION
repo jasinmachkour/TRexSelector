@@ -1,0 +1,37 @@
+Package: tknock
+Title: The T-Knock filter for fast high-dimensional variable selection with FDR control
+Version: 0.0.0.9000
+Authors@R: 
+    c(
+    person("Jasin", "Machkour", , "jasin.machkour@tu-darmstadt.de", role = c("aut", "cre")),
+    person("Simon", "Tien", , email = "simon.tien@stud.tu-darmstadt.de", role = "aut"),
+    person(c("Daniel", "P."), "Palomar", , "daniel.p.palomar@gmail.com", role = "aut"),
+    person("Michael", "Muma", , "michael.muma@tu-darmstadt.de", role = "aut")
+    )
+Maintainer: Jasin Machkour <jasin.machkour@tu-darmstadt.de>
+Description: Performs variable selection in high-dimensional settings where the number of variables is potentially higher than the number of observations (data points) while controlling the FDR at a user-defined target level.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    Matrix,
+    MASS,
+    stats,
+    mvnfast,
+    tlars,
+    parallel,
+    doParallel,
+    foreach,
+    doRNG,
+    snpStats,
+    methods
+Depends: 
+    R (>= 2.10)
+VignetteBuilder: knitr
