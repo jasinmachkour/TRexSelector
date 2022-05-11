@@ -80,6 +80,7 @@ lm_knockoff = function(X,
       y = y,
       num_dummies = L_val,
       verbose = FALSE,
+      info = FALSE,
       intercept = intercept,
       standardize = normalize,
       type = type
@@ -89,7 +90,8 @@ lm_knockoff = function(X,
   # Execute LARS step
   tlars::tlars(model = lars_state,
                T_stop = T_stop,
-               early_stop = earlyStop)
+               early_stop = earlyStop,
+               info = FALSE)
 
   return(lars_state)
 }
