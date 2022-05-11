@@ -115,7 +115,7 @@ random_experiments = function(X,
       empirical = empirical
     )
 
-    rep_osp_knockoff.selected = do.call(cbind, lars_state$get_beta())
+    rep_osp_knockoff.selected = do.call(cbind, lars_state$get_beta_path())
 
     # Extract content of object lars_state if performing parallel computations
     if (parallel_process) {
