@@ -91,7 +91,7 @@ random_experiments = function(X,
   ) %par_exe% {
 
     # Recreate tlarsCpp object
-    if (parallel_process && !is.null(lars_state_list[[h]]) && !methods::is(object = lars_state_list[[h]], class2 = tlars::tlarsCpp)) {
+    if (parallel_process && !is.null(lars_state_list[[h]]) && !methods::is(object = lars_state_list[[h]], class2 = tlars::tlars_cpp)) {
       lars_state = tlars::tlars_model(lars_state = lars_state_list[[h]])
     }else{
       lars_state = lars_state_list[[h]]
@@ -101,7 +101,7 @@ random_experiments = function(X,
       X = X,
       y = y,
       T_stop = T_stop,
-      num_knocks = L_val,
+      L_val = L_val,
       method = method,
       type = type,
       corr_max = corr_max,
