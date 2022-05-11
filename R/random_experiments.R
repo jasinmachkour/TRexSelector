@@ -92,7 +92,7 @@ random_experiments = function(X,
 
     # Recreate tlarsCpp object
     if (parallel_process && !is.null(lars_state_list[[h]]) && !methods::is(object = lars_state_list[[h]], class2 = tlars::tlarsCpp)) {
-      lars_state = tlars::newObj_tlars(lars_state = lars_state_list[[h]])
+      lars_state = tlars::tlars_model(lars_state = lars_state_list[[h]])
     }else{
       lars_state = lars_state_list[[h]]
     }
@@ -101,7 +101,7 @@ random_experiments = function(X,
       X = X,
       y = y,
       T_stop = T_stop,
-      L_val = L_val,
+      num_knocks = L_val,
       method = method,
       type = type,
       corr_max = corr_max,
@@ -115,11 +115,11 @@ random_experiments = function(X,
       empirical = empirical
     )
 
-    rep_osp_knockoff.selected = do.call(cbind, lars_state$getBeta())
+    rep_osp_knockoff.selected = do.call(cbind, lars_state$get_beta())
 
     # Extract content of object lars_state if performing parallel computations
     if (parallel_process) {
-      lars_state = lars_state$getAll()
+      lars_state = lars_state$get_all()
     }
 
     knock_num_path = colSums(matrix(
