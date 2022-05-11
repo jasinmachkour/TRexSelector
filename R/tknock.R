@@ -6,8 +6,8 @@
 #' @param y Response vector.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
 #' @param K Number of random experiments.
-#' @param max_LL Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., num_dummies = max_LL * p).
-#' @param max_T_stop If TRUE the maximum number of knockoffs that can be included before stopping is set to ceiling(n / 2).
+#' @param max_LL Integer factor determining the maximum number of dummies as a multiple of p (i.e., num_dummies = max_LL * p).
+#' @param max_T_stop If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2).
 #' @param method 'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
@@ -200,7 +200,7 @@ tknock = function(X,
   }
 
   # T-Knock: Select variables
-  res_T_Knock = select_var_fun(
+  res_T_dummy = select_var_fun(
     p = p,
     tFDR = tFDR,
     T_stop = T_stop,
@@ -208,9 +208,9 @@ tknock = function(X,
     Phi_mat = Phi_mat,
     V = V
   )
-  beta.selected = res_T_Knock$beta.selected
-  v_thresh = res_T_Knock$v_thresh
-  R_mat = res_T_Knock$R_mat
+  beta.selected = res_T_dummy$beta.selected
+  v_thresh = res_T_dummy$v_thresh
+  R_mat = res_T_dummy$R_mat
 
   res = list(
     beta.selected = beta.selected,

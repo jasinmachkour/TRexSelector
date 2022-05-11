@@ -11,7 +11,7 @@ select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 
 \item{tFDR}{Target FDR level (between 0 and 1, i.e., 0\% and 100\%).}
 
-\item{T_stop}{Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.}
+\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
 \item{FDP_hat_mat}{Matrix whose rows are the vectors of conservative FDP estimates for each value of the voting level grid.}
 

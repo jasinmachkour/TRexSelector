@@ -4,7 +4,7 @@
 #'
 #' @param p Number of candidate variables.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
-#' @param T_stop Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.
+#' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
 #' @param FDP_hat_mat Matrix whose rows are the vectors of conservative FDP estimates for each value of the voting level grid.
 #' @param Phi_mat Matrix of relative occurrences as determined by the T-Knock calibration algorithm.
 #' @param V Voting level grid.
@@ -39,13 +39,13 @@ select_var_fun = function(p,
   val_max = max(R_mat[!is.infinite(FDP_hat_mat)])
   ind_max = matrix(which(R_mat == val_max, arr.ind = TRUE), ncol = 2)
   ind_thresh = ind_max[nrow(ind_max),]
-  thres_T_Knock = V[ind_thresh[2]]
-  selected_var_T_Knock = which(Phi_mat[ind_thresh[1],] > thres_T_Knock)
+  thres_T_dummy = V[ind_thresh[2]]
+  selected_var_T_dummy = which(Phi_mat[ind_thresh[1],] > thres_T_dummy)
   beta.selected = rep(0, times = p)
-  beta.selected[selected_var_T_Knock] = 1
+  beta.selected[selected_var_T_dummy] = 1
 
   res_select_var = list(beta.selected = beta.selected,
-                        v_thresh = thres_T_Knock,
+                        v_thresh = thres_T_dummy,
                         R_mat = R_mat)
   return(res_select_var)
 }
