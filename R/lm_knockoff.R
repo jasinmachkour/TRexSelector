@@ -75,13 +75,13 @@ lm_knockoff = function(X,
       y = y - mean(y)
     }
     # Create new LARS object
-    lars_state = tlars::newObj_tlars(
+    lars_state = tlars::tlars_model(
       X = X_Knock,
       y = y,
-      L_val = L_val,
+      num_knocks = L_val,
       verbose = verbose,
       intercept = intercept,
-      normalize = normalize,
+      standardize = normalize,
       type = type
     )
   }
@@ -89,7 +89,7 @@ lm_knockoff = function(X,
   # Execute LARS step
   tlars::tlars(obj = lars_state,
                T_stop = T_stop,
-               earlyStop = earlyStop)
+               early_stop = earlyStop)
 
   return(lars_state)
 }
