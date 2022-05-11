@@ -8,12 +8,12 @@ lm_knockoff(
   X,
   y,
   T_stop = 1,
-  L_val = ncol(X),
+  num_dummies = ncol(X),
   method = "tknock",
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
-  earlyStop = TRUE,
+  early_stop = TRUE,
   lars_state,
   verbose = TRUE,
   intercept = FALSE,
@@ -27,9 +27,9 @@ lm_knockoff(
 
 \item{y}{Response vector.}
 
-\item{T_stop}{Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.}
+\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{L_val}{Number of knockoffs.}
+\item{num_dummies}{Number of dummies}
 
 \item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
 
@@ -39,7 +39,7 @@ lm_knockoff(
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
-\item{earlyStop}{If TRUE, then the forward selection process is stopped after T_stop knockoffs have been included. Otherwise the entire solution path is computed.}
+\item{early_stop}{If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise the entire solution path is computed.}
 
 \item{lars_state}{LARS object (i.e., object of the class tlarsCpp). Contains variables associated with previous stopping point (necessary to restart forward selection selection process exactly where it was previously terminated).}
 
@@ -54,10 +54,10 @@ lm_knockoff(
 \item{empirical}{TRUE/FALSE.}
 }
 \value{
-LARS object (i.e., object of the class tlarsCpp).
+LARS object (i.e., object of the class tlars_cpp).
 }
 \description{
-Run one random experiment of the T-Knock filter, i.e., generates knockoffs, appends them to the predictor matrix, and runs the forward selection algorithm until it is terminated after T_stop knockoffs have been selected.
+Run one random experiment of the T-Knock filter, i.e., generates dummies, appends them to the predictor matrix, and runs the forward selection algorithm until it is terminated after T_stop dummies have been selected.
 }
 \examples{
 set.seed(123)
