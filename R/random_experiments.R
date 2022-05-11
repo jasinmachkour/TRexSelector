@@ -3,13 +3,13 @@
 #' @param X Real valued Predictor matrix.
 #' @param y Response vector.
 #' @param K Number of random experiments.
-#' @param T_stop Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.
-#' @param L_val Number of knockoffs.
+#' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
+#' @param L_val Number of dummies
 #' @param method 'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #' @param lambda_2_lars lambda_2-value for LARS-based Elastic Net.
-#' @param earlyStop If TRUE, then the forward selection process is stopped after T_stop knockoffs have been included. Otherwise the entire solution path is computed.
+#' @param earlyStop If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise the entire solution path is computed.
 #' @param lars_state_list List of variables associated with previous stopping points of the K random experiments (necessary to restart forward selection selection process exactly where it was previously terminated).
 #' @param verbose If TRUE progress in computations is shown.
 #' @param intercept If TRUE an intercept is included.
@@ -101,12 +101,12 @@ random_experiments = function(X,
       X = X,
       y = y,
       T_stop = T_stop,
-      L_val = L_val,
+      num_dummies = L_val,
       method = method,
       type = type,
       corr_max = corr_max,
       lambda_2_lars = lambda_2_lars,
-      earlyStop = earlyStop,
+      early_stop = earlyStop,
       lars_state = lars_state,
       verbose = verbose,
       intercept = intercept,
@@ -115,45 +115,45 @@ random_experiments = function(X,
       empirical = empirical
     )
 
-    rep_osp_knockoff.selected = do.call(cbind, lars_state$get_beta_path())
+    rep_osp_dummy.selected = do.call(cbind, lars_state$get_beta_path())
 
     # Extract content of object lars_state if performing parallel computations
     if (parallel_process) {
       lars_state = lars_state$get_all()
     }
 
-    knock_num_path = colSums(matrix(
-      abs(rep_osp_knockoff.selected[(p + 1):(p + L_val), ]) > eps,
+    dummy_num_path = colSums(matrix(
+      abs(rep_osp_dummy.selected[(p + 1):(p + L_val), ]) > eps,
       nrow = L_val,
-      ncol = ncol(rep_osp_knockoff.selected)
+      ncol = ncol(rep_osp_dummy.selected)
     ))
     var_num_path = colSums(matrix(
-      abs(rep_osp_knockoff.selected[1:p, ]) > eps,
+      abs(rep_osp_dummy.selected[1:p, ]) > eps,
       nrow = p,
-      ncol = ncol(rep_osp_knockoff.selected)
+      ncol = ncol(rep_osp_dummy.selected)
     ))
 
     phi_T_mat = matrix(0, nrow = p, ncol = T_stop)
     for (c in seq(T_stop)) {
-      if (!any(knock_num_path == c)) {
-        ind_sol_path = length(knock_num_path)
+      if (!any(dummy_num_path == c)) {
+        ind_sol_path = length(dummy_num_path)
         warning(
           paste(
             'For T_stop = ',
             c,
             ' LARS is running until k = min(n, p) and stops there before selecting ',
             c,
-            ' knockoff(s).',
+            ' dummy/dummies.',
             sep = ''
           )
         )
       } else{
-        ind_sol_path = which(as.numeric(knock_num_path) == c)[1]
+        ind_sol_path = which(as.numeric(dummy_num_path) == c)[1]
       }
-      phi_T_mat[, c] = (1 / K) * (abs(rep_osp_knockoff.selected[1:p, ind_sol_path]) > eps)
+      phi_T_mat[, c] = (1 / K) * (abs(rep_osp_dummy.selected[1:p, ind_sol_path]) > eps)
     }
 
-    rep_osp.mat = rep_osp_knockoff.selected[1:p, ncol(rep_osp_knockoff.selected)]
+    rep_osp.mat = rep_osp_dummy.selected[1:p, ncol(rep_osp_dummy.selected)]
 
     list(phi_T_mat,
          rep_osp.mat,

@@ -34,9 +34,9 @@ random_experiments(
 
 \item{K}{Number of random experiments.}
 
-\item{T_stop}{Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.}
+\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{L_val}{Number of knockoffs.}
+\item{L_val}{Number of dummies}
 
 \item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
 
@@ -46,7 +46,7 @@ random_experiments(
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
-\item{earlyStop}{If TRUE, then the forward selection process is stopped after T_stop knockoffs have been included. Otherwise the entire solution path is computed.}
+\item{earlyStop}{If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise the entire solution path is computed.}
 
 \item{lars_state_list}{List of variables associated with previous stopping points of the K random experiments (necessary to restart forward selection selection process exactly where it was previously terminated).}
 
