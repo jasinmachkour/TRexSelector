@@ -67,8 +67,8 @@ knitr::include_graphics("./figures/T_Knock_framework.png")
 <br>
 <br>
 <br>
-```{r EnlargedPredictorMatrix, echo=FALSE, fig.cap="Figure 2: The enlarged predictor matrix (predictor matrix with knockoffs).", out.width = '100%'}
-knitr::include_graphics("./figures/predictor_matrix_with_knockoffs.png")
+```{r EnlargedPredictorMatrix, echo=FALSE, fig.cap="Figure 2: The enlarged predictor matrix (predictor matrix with dummies).", out.width = '100%'}
+knitr::include_graphics("./figures/predictor_matrix_with_dummies.png")
 ```
 
 # References {-}

@@ -31,9 +31,9 @@ tknock(
 
 \item{K}{Number of random experiments.}
 
-\item{max_LL}{Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., num_dummies = max_LL * p).}
+\item{max_LL}{Integer factor determining the maximum number of dummies as a multiple of p (i.e., num_dummies = max_LL * p).}
 
-\item{max_T_stop}{If TRUE the maximum number of knockoffs that can be included before stopping is set to ceiling(n / 2).}
+\item{max_T_stop}{If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2).}
 
 \item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
 
