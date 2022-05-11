@@ -16,7 +16,7 @@
 #' @examples
 #' n = 50
 #' p = 100
-#' add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), L_val = p)
+#' add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 add_dummies_GVS = function(X,
                            num_dummies,
                            corr_max = 0.5) {

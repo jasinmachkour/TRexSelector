@@ -32,5 +32,5 @@ Sample num_dummies dummy vectors from the univariate standard normal distributio
 \examples{
 n = 50
 p = 100
-add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), L_val = p)
+add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 }

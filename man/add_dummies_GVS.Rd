@@ -22,5 +22,5 @@ Sample num_dummies dummy vectors for the T-Knock+GVS filter from the univariate 
 \examples{
 n = 50
 p = 100
-add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), L_val = p)
+add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 }

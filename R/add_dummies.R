@@ -21,7 +21,7 @@
 #' @examples
 #' n = 50
 #' p = 100
-#' add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), L_val = p)
+#' add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 add_dummies = function(X,
                          num_dummies,
                          cor.structure = FALSE,
