@@ -32,10 +32,10 @@
 #' X = matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 #' beta = c(rep(3, times = 3), rep(0, times = 97))
 #' y = X %*% beta + rnorm(n)
-#' res = lm_knockoff(X, y, T_stop = 1, num_dummies = 5 * p)
+#' res = lm_dummy(X, y, T_stop = 1, num_dummies = 5 * p)
 #' support = abs(res$getLastBeta()[seq(p)]) > eps
 #' support
-lm_knockoff = function(X,
+lm_dummy = function(X,
                        y,
                        T_stop = 1,
                        num_dummies = ncol(X),

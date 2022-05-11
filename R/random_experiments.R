@@ -97,7 +97,7 @@ random_experiments = function(X,
       lars_state = lars_state_list[[h]]
     }
 
-    lars_state = lm_knockoff(
+    lars_state = lm_dummy(
       X = X,
       y = y,
       T_stop = T_stop,
