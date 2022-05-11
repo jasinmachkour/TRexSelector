@@ -87,7 +87,7 @@ lm_knockoff = function(X,
   }
 
   # Execute LARS step
-  tlars::tlars(obj = lars_state,
+  tlars::tlars(model = lars_state,
                T_stop = T_stop,
                early_stop = earlyStop)
 
