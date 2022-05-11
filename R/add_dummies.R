@@ -32,11 +32,11 @@ add_dummies = function(X,
   p = ncol(X)
   mu = rep(0, times = p)
   for (i in seq(g)) {
-    if (L_val != p) {
+    if (num_dummies != p) {
       X_surrogate = matrix(
-        stats::rnorm(n * L_val),
+        stats::rnorm(n * num_dummies),
         nrow = n,
-        ncol = L_val,
+        ncol = num_dummies,
         byrow = FALSE
       )
     } else{
