@@ -9,7 +9,7 @@ random_experiments(
   y,
   K = 20,
   T_stop = 1,
-  L_val = ncol(X),
+  num_dummies = ncol(X),
   method = "tknock",
   type = "lar",
   corr_max = 0.5,
@@ -36,7 +36,7 @@ random_experiments(
 
 \item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{L_val}{Number of dummies}
+\item{num_dummies}{Number of dummies}
 
 \item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
 

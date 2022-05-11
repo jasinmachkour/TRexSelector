@@ -3,8 +3,8 @@
 #' Computes the matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
 #'
 #' @param p Number of candidate variables.
-#' @param T_stop Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.
-#' @param L_val Number of knockoffs.
+#' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
+#' @param num_dummies Number of dummies
 #' @param phi_T_mat Matrix of relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
 #' @param Phi Vector of relative occurrences for all variables (i.e., j = 1,..., p) at T = T_stop.
 #' @param eps Numerical zero.
@@ -20,13 +20,13 @@
 #' rand_exp = random_experiments(X, y)
 #' Phi_prime_fun(p = ncol(X),
 #'               T_stop = rand_exp$T_stop,
-#'               L_val = rand_exp$L_val,
+#'               num_dummies = rand_exp$num_dummies,
 #'               phi_T_mat = rand_exp$phi_T_mat,
 #'               Phi = rand_exp$Phi,
 #'               eps = rand_exp$eps)
 Phi_prime_fun = function(p,
                          T_stop,
-                         L_val,
+                         num_dummies,
                          phi_T_mat,
                          Phi,
                          eps = .Machine$double.eps) {
@@ -42,7 +42,7 @@ Phi_prime_fun = function(p,
   phi_scale = rep(NA, times = length(delta_av_num_var_sel))
   for (t in seq_along(delta_av_num_var_sel)) {
     if (delta_av_num_var_sel[t] > eps) {
-      phi_scale[t] = 1 - (((p - av_num_var_sel[t]) / (L_val - t + 1)) / delta_av_num_var_sel[t])
+      phi_scale[t] = 1 - (((p - av_num_var_sel[t]) / (num_dummies - t + 1)) / delta_av_num_var_sel[t])
     } else{
       phi_scale[t] = 0
     }

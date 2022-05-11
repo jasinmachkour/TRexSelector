@@ -4,7 +4,7 @@
 #' @param y Response vector.
 #' @param K Number of random experiments.
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
-#' @param L_val Number of dummies
+#' @param num_dummies Number of dummies
 #' @param method 'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
@@ -42,7 +42,7 @@ random_experiments = function(X,
                               y,
                               K = 20,
                               T_stop = 1,
-                              L_val = ncol(X),
+                              num_dummies = ncol(X),
                               method = 'tknock',
                               type = 'lar',
                               corr_max = 0.5,
@@ -101,7 +101,7 @@ random_experiments = function(X,
       X = X,
       y = y,
       T_stop = T_stop,
-      num_dummies = L_val,
+      num_dummies = num_dummies,
       method = method,
       type = type,
       corr_max = corr_max,
@@ -123,8 +123,8 @@ random_experiments = function(X,
     }
 
     dummy_num_path = colSums(matrix(
-      abs(rep_osp_dummy.selected[(p + 1):(p + L_val), ]) > eps,
-      nrow = L_val,
+      abs(rep_osp_dummy.selected[(p + 1):(p + num_dummies), ]) > eps,
+      nrow = num_dummies,
       ncol = ncol(rep_osp_dummy.selected)
     ))
     var_num_path = colSums(matrix(
@@ -174,7 +174,7 @@ random_experiments = function(X,
     lars_state_list = lars_state_list,
     K = K,
     T_stop = T_stop,
-    L_val = L_val,
+    num_dummies = num_dummies,
     method = method,
     type = type,
     corr_max = corr_max,

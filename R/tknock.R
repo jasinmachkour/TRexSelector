@@ -6,7 +6,7 @@
 #' @param y Response vector.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
 #' @param K Number of random experiments.
-#' @param max_LL Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., L_val = max_LL * p).
+#' @param max_LL Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., num_dummies = max_LL * p).
 #' @param max_T_stop If TRUE the maximum number of knockoffs that can be included before stopping is set to ceiling(n / 2).
 #' @param method 'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
@@ -75,7 +75,7 @@ tknock = function(X,
   while ((LL <= max_LL &&
           FDP_hat[which(abs(V - 0.75) < eps)] > tFDR) ||
          sum(!is.na(FDP_hat)) == 0) {
-    L_val = LL * p
+    num_dummies = LL * p
     LL = LL + 1
 
     # K Random experiments
@@ -84,7 +84,7 @@ tknock = function(X,
       y = y,
       K = K,
       T_stop = T_stop,
-      L_val = L_val,
+      num_dummies = num_dummies,
       method = method,
       type = type,
       corr_max = corr_max,
@@ -108,7 +108,7 @@ tknock = function(X,
     Phi_prime = Phi_prime_fun(
       p = p,
       T_stop = T_stop,
-      L_val = L_val,
+      num_dummies = num_dummies,
       phi_T_mat = phi_T_mat,
       Phi = Phi,
       eps = eps
@@ -119,11 +119,11 @@ tknock = function(X,
       Phi = Phi,
       Phi_prime = Phi_prime,
       T_stop = T_stop,
-      L_val = L_val
+      num_dummies = num_dummies
     )
 
     if (verbose) {
-      cat(paste('\n L =', L_val, '\n'))
+      cat(paste('\n L =', num_dummies, '\n'))
     }
   }
 
@@ -134,7 +134,7 @@ tknock = function(X,
   if (max_T_stop) {
     max_T = ceiling(n / 2)
   } else{
-    max_T = L_val
+    max_T = num_dummies
   }
 
   # Reset seed
@@ -151,7 +151,7 @@ tknock = function(X,
       y = y,
       K = K,
       T_stop = T_stop,
-      L_val = L_val,
+      num_dummies = num_dummies,
       method = method,
       type = type,
       corr_max = corr_max,
@@ -179,7 +179,7 @@ tknock = function(X,
     Phi_prime = Phi_prime_fun(
       p = p,
       T_stop = T_stop,
-      L_val = L_val,
+      num_dummies = num_dummies,
       phi_T_mat = phi_T_mat,
       Phi = Phi,
       eps = eps
@@ -190,7 +190,7 @@ tknock = function(X,
       Phi = Phi,
       Phi_prime = Phi_prime,
       T_stop = T_stop,
-      L_val = L_val
+      num_dummies = num_dummies
     )
     FDP_hat_mat = rbind(FDP_hat_mat, FDP_hat)
 
@@ -216,7 +216,7 @@ tknock = function(X,
     beta.selected = beta.selected,
     tFDR = tFDR,
     T_stop = T_stop,
-    L_val = L_val,
+    num_dummies = num_dummies,
     V = V,
     v_thresh = v_thresh,
     FDP_hat_mat = FDP_hat_mat,

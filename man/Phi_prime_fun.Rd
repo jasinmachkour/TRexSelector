@@ -4,14 +4,21 @@
 \alias{Phi_prime_fun}
 \title{Computes the Deflated Relative Occurrences}
 \usage{
-Phi_prime_fun(p, T_stop, L_val, phi_T_mat, Phi, eps = .Machine$double.eps)
+Phi_prime_fun(
+  p,
+  T_stop,
+  num_dummies,
+  phi_T_mat,
+  Phi,
+  eps = .Machine$double.eps
+)
 }
 \arguments{
 \item{p}{Number of candidate variables.}
 
-\item{T_stop}{Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.}
+\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{L_val}{Number of knockoffs.}
+\item{num_dummies}{Number of dummies}
 
 \item{phi_T_mat}{Matrix of relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.}
 
@@ -32,7 +39,7 @@ y = c(Gauss_data$y)
 rand_exp = random_experiments(X, y)
 Phi_prime_fun(p = ncol(X),
               T_stop = rand_exp$T_stop,
-              L_val = rand_exp$L_val,
+              num_dummies = rand_exp$num_dummies,
               phi_T_mat = rand_exp$phi_T_mat,
               Phi = rand_exp$Phi,
               eps = rand_exp$eps)

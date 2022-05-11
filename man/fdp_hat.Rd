@@ -4,7 +4,7 @@
 \alias{fdp_hat}
 \title{Computes the conservative FDP estimate of the T-Knock filter}
 \usage{
-fdp_hat(V, Phi, Phi_prime, T_stop, L_val, eps = .Machine$double.eps)
+fdp_hat(V, Phi, Phi_prime, T_stop, num_dummies, eps = .Machine$double.eps)
 }
 \arguments{
 \item{V}{Voting level grid.}
@@ -13,9 +13,9 @@ fdp_hat(V, Phi, Phi_prime, T_stop, L_val, eps = .Machine$double.eps)
 
 \item{Phi_prime}{Vector of deflated relative occurrences.}
 
-\item{T_stop}{Number of included knockoffs after which the random experiments (i.e., forward selection processes) are stopped.}
+\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{L_val}{Number of knockoffs.}
+\item{num_dummies}{Number of dummies.}
 
 \item{eps}{Numerical zero.}
 }

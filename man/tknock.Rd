@@ -31,7 +31,7 @@ tknock(
 
 \item{K}{Number of random experiments.}
 
-\item{max_LL}{Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., L_val = max_LL * p).}
+\item{max_LL}{Integer factor determining the maximum number of knockoffs as a multiple of p (i.e., num_dummies = max_LL * p).}
 
 \item{max_T_stop}{If TRUE the maximum number of knockoffs that can be included before stopping is set to ceiling(n / 2).}
 
