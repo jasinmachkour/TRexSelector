@@ -12,40 +12,43 @@
 #' @return Support Vector.
 #'
 #' @export
-select_var_fun = function(p,
-                          tFDR,
-                          T_stop,
-                          FDP_hat_mat,
-                          Phi_mat,
-                          V) {
+select_var_fun <- function(p,
+                           tFDR,
+                           T_stop,
+                           FDP_hat_mat,
+                           Phi_mat,
+                           V) {
   # Remove last row in FDP_hat_mat and Phi_mat if T_stop > 1
   if (T_stop > 1) {
-    FDP_hat_mat = FDP_hat_mat[-T_stop, , drop = FALSE]
-    Phi_mat = Phi_mat[-T_stop, , drop = FALSE]
+    FDP_hat_mat <- FDP_hat_mat[-T_stop, , drop = FALSE]
+    Phi_mat <- Phi_mat[-T_stop, , drop = FALSE]
   }
 
   # Generate R_mat
-  R_mat = matrix(NA,
-                 nrow = nrow(FDP_hat_mat),
-                 ncol = ncol(FDP_hat_mat))
+  R_mat <- matrix(NA,
+    nrow = nrow(FDP_hat_mat),
+    ncol = ncol(FDP_hat_mat)
+  )
   for (TT in seq(nrow(FDP_hat_mat))) {
     for (VV in seq_along(V)) {
-      R_mat[TT, VV] = sum(Phi_mat[TT,] > V[VV])
+      R_mat[TT, VV] <- sum(Phi_mat[TT, ] > V[VV])
     }
   }
 
   # T-Knock: Select variables
-  FDP_hat_mat[FDP_hat_mat > tFDR] = Inf
-  val_max = max(R_mat[!is.infinite(FDP_hat_mat)])
-  ind_max = matrix(which(R_mat == val_max, arr.ind = TRUE), ncol = 2)
-  ind_thresh = ind_max[nrow(ind_max),]
-  thres_T_dummy = V[ind_thresh[2]]
-  selected_var_T_dummy = which(Phi_mat[ind_thresh[1],] > thres_T_dummy)
-  beta.selected = rep(0, times = p)
-  beta.selected[selected_var_T_dummy] = 1
+  FDP_hat_mat[FDP_hat_mat > tFDR] <- Inf
+  val_max <- max(R_mat[!is.infinite(FDP_hat_mat)])
+  ind_max <- matrix(which(R_mat == val_max, arr.ind = TRUE), ncol = 2)
+  ind_thresh <- ind_max[nrow(ind_max), ]
+  thres_T_dummy <- V[ind_thresh[2]]
+  selected_var_T_dummy <- which(Phi_mat[ind_thresh[1], ] > thres_T_dummy)
+  beta.selected <- rep(0, times = p)
+  beta.selected[selected_var_T_dummy] <- 1
 
-  res_select_var = list(beta.selected = beta.selected,
-                        v_thresh = thres_T_dummy,
-                        R_mat = R_mat)
+  res_select_var <- list(
+    beta.selected = beta.selected,
+    v_thresh = thres_T_dummy,
+    R_mat = R_mat
+  )
   return(res_select_var)
 }

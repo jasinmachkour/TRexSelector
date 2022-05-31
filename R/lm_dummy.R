@@ -26,56 +26,57 @@
 #'
 #' @examples
 #' set.seed(123)
-#' eps = .Machine$double.eps
-#' n = 75
-#' p = 100
-#' X = matrix(stats::rnorm(n * p), nrow = n, ncol = p)
-#' beta = c(rep(3, times = 3), rep(0, times = 97))
-#' y = X %*% beta + rnorm(n)
-#' res = lm_dummy(X, y, T_stop = 1, num_dummies = 5 * p)
-#' support = abs(res$getLastBeta()[seq(p)]) > eps
+#' eps <- .Machine$double.eps
+#' n <- 75
+#' p <- 100
+#' X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+#' beta <- c(rep(3, times = 3), rep(0, times = 97))
+#' y <- X %*% beta + rnorm(n)
+#' res <- lm_dummy(X, y, T_stop = 1, num_dummies = 5 * p)
+#' support <- abs(res$get_beta()[seq(p)]) > eps
 #' support
-lm_dummy = function(X,
-                       y,
-                       T_stop = 1,
-                       num_dummies = ncol(X),
-                       method = 'tknock',
-                       type = 'lar',
-                       corr_max = 0.5,
-                       lambda_2_lars = NULL,
-                       early_stop = TRUE,
-                       lars_state,
-                       verbose = TRUE,
-                       intercept = FALSE,
-                       normalize = TRUE,
-                       cor.structure = FALSE,
-                       empirical = FALSE) {
-  method = match.arg(method, c('tknock', 'tknock+GVS'))
+lm_dummy <- function(X,
+                     y,
+                     T_stop = 1,
+                     num_dummies = ncol(X),
+                     method = "tknock",
+                     type = "lar",
+                     corr_max = 0.5,
+                     lambda_2_lars = NULL,
+                     early_stop = TRUE,
+                     lars_state,
+                     verbose = TRUE,
+                     intercept = FALSE,
+                     normalize = TRUE,
+                     cor.structure = FALSE,
+                     empirical = FALSE) {
+  method <- match.arg(method, c("tknock", "tknock+GVS"))
 
   if (T_stop == 1 || missing(lars_state) || is.null(lars_state)) {
-    if (method == 'tknock') {
-      X_dummy = add_dummies(
+    if (method == "tknock") {
+      X_dummy <- add_dummies(
         X,
         num_dummies = num_dummies,
         cor.structure = cor.structure,
         empirical = empirical
       )
-    } else{
-      X_dummy = add_dummies_GVS(X,
-                                  num_dummies = num_dummies,
-                                  corr_max = corr_max)
+    } else {
+      X_dummy <- add_dummies_GVS(X,
+        num_dummies = num_dummies,
+        corr_max = corr_max
+      )
       # Data modification for Elastic Net
-      p_dummy = ncol(X_dummy)
-      X_dummy = (1 / sqrt(1 + lambda_2_lars)) * rbind(X_dummy, diag(rep(sqrt(
+      p_dummy <- ncol(X_dummy)
+      X_dummy <- (1 / sqrt(1 + lambda_2_lars)) * rbind(X_dummy, diag(rep(sqrt(
         lambda_2_lars
       ), times = p_dummy)))
-      y = append(y, rep(0, times = p_dummy))
+      y <- append(y, rep(0, times = p_dummy))
       # Scale data again
-      X_dummy = scale(X_dummy)
-      y = y - mean(y)
+      X_dummy <- scale(X_dummy)
+      y <- y - mean(y)
     }
     # Create new LARS object
-    lars_state = tlars::tlars_model(
+    lars_state <- tlars::tlars_model(
       X = X_dummy,
       y = y,
       num_dummies = num_dummies,
@@ -88,10 +89,12 @@ lm_dummy = function(X,
   }
 
   # Execute LARS step
-  tlars::tlars(model = lars_state,
-               T_stop = T_stop,
-               early_stop = early_stop,
-               info = FALSE)
+  tlars::tlars(
+    model = lars_state,
+    T_stop = T_stop,
+    early_stop = early_stop,
+    info = FALSE
+  )
 
   return(lars_state)
 }

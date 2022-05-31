@@ -76,9 +76,9 @@ Runs K random experiments and computes the matrix of relative occurrences
 }
 \examples{
 set.seed(123)
-data('Gauss_data')
-X = Gauss_data$X
-y = c(Gauss_data$y)
-res = random_experiments(X, y)
+data("Gauss_data")
+X <- Gauss_data$X
+y <- c(Gauss_data$y)
+res <- random_experiments(X, y)
 res$phi_T_mat
 }

@@ -19,39 +19,40 @@
 #' @export
 #'
 #' @examples
-#' n = 50
-#' p = 100
+#' n <- 50
+#' p <- 100
 #' add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
-add_dummies = function(X,
-                         num_dummies,
-                         cor.structure = FALSE,
-                         empirical = FALSE,
-                         eps = .Machine$double.eps) {
-  g = 1
-  n = nrow(X)
-  p = ncol(X)
-  mu = rep(0, times = p)
+add_dummies <- function(X,
+                        num_dummies,
+                        cor.structure = FALSE,
+                        empirical = FALSE,
+                        eps = .Machine$double.eps) {
+  g <- 1
+  n <- nrow(X)
+  p <- ncol(X)
+  mu <- rep(0, times = p)
   for (i in seq(g)) {
     if (num_dummies != p) {
-      X_surrogate = matrix(
+      X_surrogate <- matrix(
         stats::rnorm(n * num_dummies),
         nrow = n,
         ncol = num_dummies,
         byrow = FALSE
       )
-    } else{
+    } else {
       if (cor.structure) {
-        Sig = stats::cov(X)
+        Sig <- stats::cov(X)
         if (Matrix::qr(Sig)$rank != p) {
-          Sig = as.matrix(Matrix::nearPD(Sig)$mat)
+          Sig <- as.matrix(Matrix::nearPD(Sig)$mat)
         }
         if (empirical) {
-          X_surrogate = MASS::mvrnorm(n,
-                                      mu = mu,
-                                      Sigma = Sig,
-                                      empirical = empirical)
-        } else{
-          X_surrogate = mvnfast::rmvn(
+          X_surrogate <- MASS::mvrnorm(n,
+            mu = mu,
+            Sigma = Sig,
+            empirical = empirical
+          )
+        } else {
+          X_surrogate <- mvnfast::rmvn(
             n,
             mu = mu,
             sigma = Sig,
@@ -60,14 +61,15 @@ add_dummies = function(X,
             A = NULL
           )
         }
-      } else{
-        X_surrogate = matrix(rnorm(n * p),
-                             nrow = n,
-                             ncol = p,
-                             byrow = FALSE)
+      } else {
+        X_surrogate <- matrix(rnorm(n * p),
+          nrow = n,
+          ncol = p,
+          byrow = FALSE
+        )
       }
     }
-    X_Dummy = cbind(X, X_surrogate)
+    X_Dummy <- cbind(X, X_surrogate)
   }
   return(X_Dummy)
 }

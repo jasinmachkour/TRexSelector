@@ -20,7 +20,7 @@ Enlarged predictor matrix for the T-Knock+GVS filter, i.e., original predictor m
 Sample num_dummies dummy vectors for the T-Knock+GVS filter from the univariate standard normal distribution and append them to the predictor matrix X.
 }
 \examples{
-n = 50
-p = 100
+n <- 50
+p <- 100
 add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 }

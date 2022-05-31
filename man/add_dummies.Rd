@@ -30,7 +30,7 @@ Enlarged predictor matrix, i.e., original predictor matrix and dummies
 Sample num_dummies dummy vectors from the univariate standard normal distribution and append them to the predictor matrix X.
 }
 \examples{
-n = 50
-p = 100
+n <- 50
+p <- 100
 add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
 }

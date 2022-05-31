@@ -61,9 +61,9 @@ The T-Knock filter performs high-dimensional variable selection for a user-defin
 }
 \examples{
 data("Gauss_data")
-X = Gauss_data$X
-y = c(Gauss_data$y)
+X <- Gauss_data$X
+y <- c(Gauss_data$y)
 set.seed(1234)
-res = tknock(X, y)
+res <- tknock(X, y)
 res$beta.selected
 }

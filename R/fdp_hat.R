@@ -10,19 +10,19 @@
 #' @return Vector of conservative FDP estimates for each value of the voting level grid.
 #'
 #' @export
-fdp_hat = function(V,
-                   Phi,
-                   Phi_prime,
-                   T_stop,
-                   num_dummies,
-                   eps = .Machine$double.eps) {
-  fdp_h = rep(NA, times = length(V))
+fdp_hat <- function(V,
+                    Phi,
+                    Phi_prime,
+                    T_stop,
+                    num_dummies,
+                    eps = .Machine$double.eps) {
+  fdp_h <- rep(NA, times = length(V))
   for (i in seq_along(V)) {
-    num_sel_var = sum(Phi > V[i])
+    num_sel_var <- sum(Phi > V[i])
     if (num_sel_var < eps) {
-      fdp_h[i] = 0
-    } else{
-      fdp_h[i] = min(1, (sum((1 - Phi_prime)[Phi > V[i]]) / (num_sel_var)))
+      fdp_h[i] <- 0
+    } else {
+      fdp_h[i] <- min(1, (sum((1 - Phi_prime)[Phi > V[i]]) / (num_sel_var)))
     }
   }
   return(fdp_h)
