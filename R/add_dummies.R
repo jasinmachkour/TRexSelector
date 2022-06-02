@@ -2,8 +2,8 @@
 #'
 #' Sample num_dummies dummy vectors from the univariate standard normal distribution and append them to the predictor matrix X.
 #'
-#' @param X Real valued Predictor matrix.
-#' @param num_dummies Number of dummies
+#' @param X Real valued predictor matrix.
+#' @param num_dummies Number of dummies that are appended to the predictor matrix.
 #' @param cor.structure TRUE/FALSE.
 #' @param empirical TRUE/FALSE.
 #' @param eps Numerical zero.

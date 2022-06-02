@@ -7,15 +7,27 @@
 FDP(beta_hat, beta, eps = .Machine$double.eps)
 }
 \arguments{
-\item{beta_hat}{Estimated support vector.}
+\item{beta_hat}{Estimated regression coefficient vector.}
 
-\item{beta}{True support vector.}
+\item{beta}{True regression coefficient vector.}
 
 \item{eps}{Numerical zero.}
 }
 \value{
-FDP
+False discovery proportion (FDP).
 }
 \description{
-False discovery proportion (FDP)
+Computes the FDP based on the estimated and the true regression coefficient vectors.
+}
+\examples{
+data("Gauss_data")
+X <- Gauss_data$X
+y <- c(Gauss_data$y)
+beta <- Gauss_data$beta
+
+set.seed(1234)
+res <- tknock(X, y)
+beta_hat <- res$beta.selected
+
+FDP(beta_hat = beta_hat, beta = beta)
 }

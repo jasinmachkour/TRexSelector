@@ -13,9 +13,9 @@ add_dummies(
 )
 }
 \arguments{
-\item{X}{Real valued Predictor matrix.}
+\item{X}{Real valued predictor matrix.}
 
-\item{num_dummies}{Number of dummies}
+\item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
 \item{cor.structure}{TRUE/FALSE.}
 

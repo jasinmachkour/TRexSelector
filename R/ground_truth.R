@@ -1,4 +1,4 @@
-#' Ground truth for simulated GWAS.
+#' Ground truth for simulated GWAS
 #'
 #' A table containing the disease SNPs (disease allele, index, position, heterozygote risks,
 #' homozygote risks, and rs-ID-number).
