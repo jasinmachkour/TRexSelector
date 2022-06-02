@@ -1,21 +1,8 @@
-#' Toy data generated from a Gaussian linear model.
+#' Toy data generated from a Gaussian linear model
 #'
 #' A dataset containing a predictor matrix X with n = 50 observations
 #' and p = 100 variables (predictors), and a sparse parameter vector beta
 #' with associated support vector.
-#'
-#' Generated as follows:
-#' set.seed(789)
-#' n = 50
-#' p = 100
-#' X = matrix(rnorm(n * p), nrow = n, ncol = p)
-#' beta = c(rep(5, times = 3), rep(0, times = 97))
-#' supp = beta > 0
-#' y = X %*% beta + rnorm(n)
-#' Gauss_data = list(X = X,
-#'                   y = y,
-#'                   beta = beta,
-#'                   supp = supp);
 #'
 #' @format A list containing a matrix X and vectors y, beta, and supp:
 #' \describe{
@@ -24,4 +11,22 @@
 #'   \item{beta}{Parameter vector.}
 #'   \item{supp}{Support vector.}
 #' }
+#'
+#' @importFrom stats rnorm
+#'
+#' @examples
+#' # Generated as follows:
+#' set.seed(789)
+#' n <- 50
+#' p <- 100
+#' X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+#' beta <- c(rep(5, times = 3), rep(0, times = 97))
+#' supp <- beta > 0
+#' y <- X %*% beta + stats::rnorm(n)
+#' Gauss_data <- list(
+#'   X = X,
+#'   y = y,
+#'   beta = beta,
+#'   supp = supp
+#' )
 "Gauss_data"

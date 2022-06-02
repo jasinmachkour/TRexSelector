@@ -3,7 +3,7 @@
 \docType{data}
 \name{ground_truth}
 \alias{ground_truth}
-\title{Ground truth for simulated GWAS.}
+\title{Ground truth for simulated GWAS}
 \format{
 A dataframe containing six columns:
 \describe{
