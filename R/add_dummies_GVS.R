@@ -14,6 +14,7 @@
 #' @export
 #'
 #' @examples
+#' set.seed(123)
 #' n <- 50
 #' p <- 100
 #' add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
@@ -36,7 +37,7 @@ add_dummies_GVS <- function(X,
     "Var" = names(clusters),
     "Cluster_Nr." = unname(clusters)
   )
-  clusters <- stats::aggregate(clusters$"Var" ~ clusters$"Cluster_Nr.", FUN = "c")
+  clusters <- stats::aggregate(clusters$"Var" ~ clusters$"Cluster_Nr.", FUN = "c", simplify = FALSE)
   cluster_sizes <- vector("numeric", length = max_clusters)
   for (j in seq(max_clusters)) {
     cluster_sizes[j] <- length(clusters$`clusters$Var`[[j]])
