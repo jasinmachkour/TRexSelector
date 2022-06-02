@@ -21,6 +21,7 @@
 #' @return LARS object (i.e., object of the class tlars_cpp).
 #'
 #' @import tlars
+#' @importFrom glmnet cv.glmnet
 #'
 #' @export
 #'
@@ -55,26 +56,48 @@ lm_dummy <- function(X,
   if (T_stop == 1 || missing(lars_state) || is.null(lars_state)) {
     if (method == "tknock") {
       X_dummy <- add_dummies(
-        X,
+        X = X,
         num_dummies = num_dummies,
         cor.structure = cor.structure,
         empirical = empirical
       )
     } else {
-      X_dummy <- add_dummies_GVS(X,
-        num_dummies = num_dummies,
-        corr_max = corr_max
-      )
+      X_dummy <- add_dummies_GVS(X = X,
+                                 num_dummies = num_dummies,
+                                 corr_max = corr_max)
+
+      # Ridge regression to determine lambda_2 for elastic net
+      if (is.null(lambda_2_lars)) {
+        n <- ncol(X)
+        alpha <- 0
+        cvfit <-
+          glmnet::cv.glmnet(
+            x = X,
+            y = y,
+            intercept = intercept,
+            standardize = normalize,
+            alpha = alpha,
+            type.measure = "mse",
+            family = 'gaussian',
+            nfolds = 10
+          )
+        lambda_2_glmnet <- cvfit$lambda.1se
+        lambda_2_lars <- lambda_2_glmnet * n * (1 - alpha) / 2
+      }
+
       # Data modification for Elastic Net
       p_dummy <- ncol(X_dummy)
-      X_dummy <- (1 / sqrt(1 + lambda_2_lars)) * rbind(X_dummy, diag(rep(sqrt(
-        lambda_2_lars
-      ), times = p_dummy)))
+      X_dummy <-
+        (1 / sqrt(1 + lambda_2_lars)) * rbind(X_dummy, diag(rep(sqrt(
+          lambda_2_lars
+        ), times = p_dummy)))
       y <- append(y, rep(0, times = p_dummy))
+
       # Scale data again
       X_dummy <- scale(X_dummy)
       y <- y - mean(y)
     }
+
     # Create new LARS object
     lars_state <- tlars::tlars_model(
       X = X_dummy,
