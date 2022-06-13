@@ -2,7 +2,7 @@
 % Please edit documentation in R/random_experiments.R
 \name{random_experiments}
 \alias{random_experiments}
-\title{Runs K random experiments and computes the matrix of relative occurrences}
+\title{Run K random experiments}
 \usage{
 random_experiments(
   X,
@@ -14,13 +14,11 @@ random_experiments(
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
-  earlyStop = TRUE,
+  early_stop = TRUE,
   lars_state_list,
   verbose = TRUE,
   intercept = FALSE,
-  normalize = TRUE,
-  cor.structure = FALSE,
-  empirical = TRUE,
+  standardize = TRUE,
   parallel_process = FALSE,
   parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
   seed = NULL,
@@ -28,7 +26,7 @@ random_experiments(
 )
 }
 \arguments{
-\item{X}{Real valued Predictor matrix.}
+\item{X}{Real valued predictor matrix.}
 
 \item{y}{Response vector.}
 
@@ -36,9 +34,9 @@ random_experiments(
 
 \item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{num_dummies}{Number of dummies}
+\item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
+\item{method}{'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
@@ -46,39 +44,42 @@ random_experiments(
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
-\item{earlyStop}{If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise the entire solution path is computed.}
+\item{early_stop}{Logical. If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise
+the entire solution path is computed.}
 
-\item{lars_state_list}{List of variables associated with previous stopping points of the K random experiments (necessary to restart forward selection selection process exactly where it was previously terminated).}
+\item{lars_state_list}{If parallel_process = TRUE: List of state variables of the previous T-LARS steps of the K random experiments
+(necessary for warm-starts, i.e., restarting the forward selection process exactly where it was previously terminated).
+If parallel_process = FALSE: List of objects of the class tlars_cpp associated with the K random experiments
+(necessary for warm-starts, i.e., restarting the forward selection process exactly where it was previously terminated).}
 
-\item{verbose}{If TRUE progress in computations is shown.}
+\item{verbose}{Logical. If TRUE progress in computations is shown.}
 
-\item{intercept}{If TRUE an intercept is included.}
+\item{intercept}{Logical. If TRUE an intercept is included.}
 
-\item{normalize}{If TRUE the predictors are standardized and the response is centered.}
+\item{standardize}{Logical. If TRUE the predictors are standardized and the response is centered.}
 
-\item{cor.structure}{TRUE/FALSE.}
+\item{parallel_process}{Logical. If TRUE random experiments are executed in parallel.}
 
-\item{empirical}{TRUE/FALSE.}
+\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing
+(default: minimum{Number of random experiments K, number of physical cores}).}
 
-\item{parallel_process}{If TRUE random experiments are executed in parallel.}
-
-\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing (default: number of physical cores).}
-
-\item{seed}{Seed for random number generator (only if parallel_process = TRUE).}
+\item{seed}{Seed for random number generator (ignored if parallel_process = FALSE).}
 
 \item{eps}{Numerical zero.}
 }
 \value{
-Results of the K random experiments.
+List containing the results of the K random experiments.
 }
 \description{
-Runs K random experiments and computes the matrix of relative occurrences
+Run K random experiments and compute the matrix of relative occurrences for all variables
+and all numbers of included variables before stopping.
 }
 \examples{
 set.seed(123)
 data("Gauss_data")
 X <- Gauss_data$X
 y <- c(Gauss_data$y)
-res <- random_experiments(X, y)
-res$phi_T_mat
+res <- random_experiments(X = X, y = y)
+relative_occurrences_matrix <- res$phi_T_mat
+relative_occurrences_matrix
 }
