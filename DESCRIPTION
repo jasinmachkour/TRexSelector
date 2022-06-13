@@ -9,7 +9,7 @@ Authors@R:
     person("Michael", "Muma", , "michael.muma@tu-darmstadt.de", role = "aut")
     )
 Maintainer: Jasin Machkour <jasin.machkour@tu-darmstadt.de>
-Description: Performs variable selection in high-dimensional settings where the number of variables is potentially higher than the number of observations (data points) while controlling the FDR at a user-defined target level.
+Description: Performs fast variable selection in high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
