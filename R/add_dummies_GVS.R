@@ -1,15 +1,15 @@
-#' Add GVS-dummies to the original predictor matrix
+#' Add dummy predictors to the original predictor matrix, as required by the T-Knock+GVS filter
 #'
-#' Sample num_dummies dummy vectors for the T-Knock+GVS filter from the univariate standard normal distribution and append them to the predictor matrix X.
+#' Generate num_dummies dummy predictors as required for the T-Knock+GVS filter and append them to the predictor matrix X.
 #'
 #' @param X Real valued predictor matrix.
-#' @param num_dummies Number of dummies.
+#' @param num_dummies Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #'
-#' @return Enlarged predictor matrix for the T-Knock+GVS filter, i.e., original predictor matrix and dummies
+#' @return Enlarged predictor matrix for the T-Knock+GVS filter.
 #'
-#' @import stats
-#' @import MASS
+#' @importFrom stats cov as.dist hclust cutree aggregate
+#' @importFrom MASS mvrnorm
 #'
 #' @export
 #'
@@ -17,12 +17,44 @@
 #' set.seed(123)
 #' n <- 50
 #' p <- 100
-#' add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
+#' X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+#' add_dummies_GVS(X = X, num_dummies = p)
 add_dummies_GVS <- function(X,
                             num_dummies,
                             corr_max = 0.5) {
+  # Error control
+  if (!is.matrix(X)) {
+    stop("'X' must be a matrix.")
+  }
+
+  if (!is.numeric(X)) {
+    stop("'X' only allows numerical values.")
+  }
+
+  if (anyNA(X)) {
+    stop("'X' contains NAs. Please remove or impute them before proceeding.")
+  }
+
+  # Dimensions of the data
   n <- nrow(X)
   p <- ncol(X)
+
+  # Continue error control
+  if (length(num_dummies) != 1 ||
+      num_dummies %% p != 0 ||
+      num_dummies < 1) {
+    stop(
+      "'num_dummies' must be a positive integer multiple of the total number of original predictors in X."
+    )
+  }
+
+  if (length(corr_max) != 1 ||
+      corr_max < 0 ||
+      corr_max > 1) {
+    stop("'corr_max' must have a value between zero and one.")
+  }
+
+  # Add variable names
   if (is.null(names(X))) {
     colnames(X) <- paste0("V", seq(p))
   }
@@ -33,18 +65,20 @@ add_dummies_GVS <- function(X,
   fit <- stats::hclust(sigma_X_dist, method = "single")
   clusters <- stats::cutree(fit, h = 1 - corr_max)
   max_clusters <- max(clusters)
-  clusters <- data.frame(
-    "Var" = names(clusters),
-    "Cluster_Nr." = unname(clusters)
-  )
-  clusters <- stats::aggregate(clusters$"Var" ~ clusters$"Cluster_Nr.", FUN = "c", simplify = FALSE)
+  clusters <- data.frame("Var" = names(clusters),
+                         "Cluster_Nr." = unname(clusters))
+  clusters <-
+    stats::aggregate(clusters$"Var" ~ clusters$"Cluster_Nr.",
+                     FUN = "c",
+                     simplify = FALSE)
   cluster_sizes <- vector("numeric", length = max_clusters)
   for (j in seq(max_clusters)) {
     cluster_sizes[j] <- length(clusters$`clusters$Var`[[j]])
   }
-  w_max <- num_dummies / p
 
-  X_p_surrogate <- matrix(NA, nrow = n, ncol = p)
+  # Generate dummy predictors and append them to the original predictor matrix X
+  w_max <- num_dummies / p
+  X_p_sub_dummy <- matrix(NA, nrow = n, ncol = p)
   X_Dummy <- matrix(NA, nrow = n, ncol = p + num_dummies)
   X_Dummy[, seq(p)] <- X
 
@@ -55,20 +89,19 @@ add_dummies_GVS <- function(X,
       idx <- cumsum(cluster_sizes)
       mu <- rep(0, times = cluster_sizes[z])
       if (z == 1) {
-        X_p_surrogate[, seq(idx[z])] <- MASS::mvrnorm(n,
-          mu = mu,
-          Sigma = sigma_sub_X,
-          empirical = FALSE
-        )
+        X_p_sub_dummy[, seq(idx[z])] <- MASS::mvrnorm(n,
+                                                      mu = mu,
+                                                      Sigma = sigma_sub_X,
+                                                      empirical = FALSE)
       } else {
-        X_p_surrogate[, seq(idx[z - 1] + 1, idx[z])] <- MASS::mvrnorm(n,
-          mu = mu,
-          Sigma = sigma_sub_X,
-          empirical = FALSE
-        )
+        X_p_sub_dummy[, seq(idx[z - 1] + 1, idx[z])] <- MASS::mvrnorm(n,
+                                                                      mu = mu,
+                                                                      Sigma = sigma_sub_X,
+                                                                      empirical = FALSE)
       }
     }
-    X_Dummy[, seq(w * p + 1, (w + 1) * p)] <- X_p_surrogate
+    X_Dummy[, seq(w * p + 1, (w + 1) * p)] <- X_p_sub_dummy
   }
+
   return(X_Dummy)
 }

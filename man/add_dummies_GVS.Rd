@@ -2,26 +2,27 @@
 % Please edit documentation in R/add_dummies_GVS.R
 \name{add_dummies_GVS}
 \alias{add_dummies_GVS}
-\title{Add GVS-dummies to the original predictor matrix}
+\title{Add dummy predictors to the original predictor matrix, as required by the T-Knock+GVS filter}
 \usage{
 add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 }
 \arguments{
 \item{X}{Real valued predictor matrix.}
 
-\item{num_dummies}{Number of dummies.}
+\item{num_dummies}{Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.}
 
 \item{corr_max}{Maximum allowed correlation between any two predictors from different clusters.}
 }
 \value{
-Enlarged predictor matrix for the T-Knock+GVS filter, i.e., original predictor matrix and dummies
+Enlarged predictor matrix for the T-Knock+GVS filter.
 }
 \description{
-Sample num_dummies dummy vectors for the T-Knock+GVS filter from the univariate standard normal distribution and append them to the predictor matrix X.
+Generate num_dummies dummy predictors as required for the T-Knock+GVS filter and append them to the predictor matrix X.
 }
 \examples{
 set.seed(123)
 n <- 50
 p <- 100
-add_dummies_GVS(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
+X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+add_dummies_GVS(X = X, num_dummies = p)
 }
