@@ -1,75 +1,56 @@
-#' Add dummies to the original predictor matrix
+#' Add dummy predictors to the original predictor matrix
 #'
-#' Sample num_dummies dummy vectors from the univariate standard normal distribution and append them to the predictor matrix X.
+#' Sample num_dummies dummy predictors from the univariate standard normal distribution and append them to the predictor matrix X.
 #'
 #' @param X Real valued predictor matrix.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix.
-#' @param cor.structure TRUE/FALSE.
-#' @param empirical TRUE/FALSE.
-#' @param eps Numerical zero.
 #'
-#' @return Enlarged predictor matrix, i.e., original predictor matrix and dummies
+#' @return Enlarged predictor matrix.
 #'
-#' @import stats
-#' @importFrom  Matrix qr
-#' @importFrom  Matrix nearPD
-#' @import MASS
-#' @import mvnfast
+#' @importFrom stats rnorm
 #'
 #' @export
 #'
 #' @examples
+#' set.seed(123)
 #' n <- 50
 #' p <- 100
-#' add_dummies(X = matrix(rnorm(n * p), nrow = n, ncol = p), num_dummies = p)
+#' X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+#' add_dummies(X = X, num_dummies = p)
 add_dummies <- function(X,
-                        num_dummies,
-                        cor.structure = FALSE,
-                        empirical = FALSE,
-                        eps = .Machine$double.eps) {
-  g <- 1
-  n <- nrow(X)
-  p <- ncol(X)
-  mu <- rep(0, times = p)
-  for (i in seq(g)) {
-    if (num_dummies != p) {
-      X_surrogate <- matrix(
-        stats::rnorm(n * num_dummies),
-        nrow = n,
-        ncol = num_dummies,
-        byrow = FALSE
-      )
-    } else {
-      if (cor.structure) {
-        Sig <- stats::cov(X)
-        if (Matrix::qr(Sig)$rank != p) {
-          Sig <- as.matrix(Matrix::nearPD(Sig)$mat)
-        }
-        if (empirical) {
-          X_surrogate <- MASS::mvrnorm(n,
-            mu = mu,
-            Sigma = Sig,
-            empirical = empirical
-          )
-        } else {
-          X_surrogate <- mvnfast::rmvn(
-            n,
-            mu = mu,
-            sigma = Sig,
-            ncores = 1,
-            isChol = FALSE,
-            A = NULL
-          )
-        }
-      } else {
-        X_surrogate <- matrix(rnorm(n * p),
-          nrow = n,
-          ncol = p,
-          byrow = FALSE
-        )
-      }
-    }
-    X_Dummy <- cbind(X, X_surrogate)
+                        num_dummies) {
+  # Error control
+  if (!is.matrix(X)) {
+    stop("'X' must be a matrix.")
   }
+
+  if (!is.numeric(X)) {
+    stop("'X' only allows numerical values.")
+  }
+
+  if (anyNA(X)) {
+    stop("'X' contains NAs. Please remove or impute them before proceeding.")
+  }
+
+  if (length(num_dummies) != 1 ||
+      num_dummies %% 1 != 0 ||
+      num_dummies < 1) {
+    stop("'num_dummies' must be an integer larger or equal to 1.")
+  }
+
+  # Number of rows of X
+  n <- nrow(X)
+
+  # Create matrix of dummy predictors
+  dummies <- matrix(
+    stats::rnorm(n * num_dummies),
+    nrow = n,
+    ncol = num_dummies,
+    byrow = FALSE
+  )
+
+  # Append dummies to X
+  X_Dummy <- cbind(X, dummies)
+
   return(X_Dummy)
 }
