@@ -2,14 +2,14 @@
 % Please edit documentation in R/tknock.R
 \name{tknock}
 \alias{tknock}
-\title{Runs the T-Knock filter with the extended calibration algorithm}
+\title{Run the T-Knock filter}
 \usage{
 tknock(
   X,
   y,
   tFDR = 0.2,
   K = 20,
-  max_LL = 10,
+  max_num_dummies = 10,
   max_T_stop = TRUE,
   method = "tknock",
   type = "lar",
@@ -31,11 +31,13 @@ tknock(
 
 \item{K}{Number of random experiments.}
 
-\item{max_LL}{Integer factor determining the maximum number of dummies as a multiple of p (i.e., num_dummies = max_LL * p).}
+\item{max_num_dummies}{Integer factor determining the maximum number of dummies as a multiple of the number of original variables p
+(i.e., num_dummies = max_num_dummies * p).}
 
-\item{max_T_stop}{If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2).}
+\item{max_T_stop}{If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2),
+where n is the number of data points/observations.}
 
-\item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
+\item{method}{'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
@@ -43,27 +45,30 @@ tknock(
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
-\item{parallel_process}{If TRUE random experiments are executed in parallel.}
+\item{parallel_process}{Logical. If TRUE random experiments are executed in parallel.}
 
-\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing (default: number of physical cores).}
+\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing
+(default: minimum{Number of random experiments K, number of physical cores}).}
 
-\item{seed}{Seed for random number generator (only if parallel_process = TRUE).}
+\item{seed}{Seed for random number generator (ignored if parallel_process = FALSE).}
 
 \item{eps}{Numerical zero.}
 
-\item{verbose}{If TRUE progress in computations is shown.}
+\item{verbose}{Logical. If TRUE progress in computations is shown.}
 }
 \value{
 A list containing the support vector, and the values of T and L as determined by the extended calibration algorithm.
 }
 \description{
-The T-Knock filter performs high-dimensional variable selection for a user-defined target false discovery rate (target FDR).
+Run the T-Knock filter. The T-Knock filter performs fast variable selection in high-dimensional settings while
+controlling the false discovery rate (FDR) at a user-defined target level.
 }
 \examples{
 data("Gauss_data")
 X <- Gauss_data$X
 y <- c(Gauss_data$y)
 set.seed(1234)
-res <- tknock(X, y)
-res$beta.selected
+res <- tknock(X = X, y = y)
+selected_var <- res$selected_var
+selected_var
 }
