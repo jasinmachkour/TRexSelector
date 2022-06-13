@@ -8,8 +8,6 @@
 #' @param eps Numerical zero.
 #'
 #' @return Vector of conservative FDP estimates for each value of the voting level grid.
-#'
-#' @export
 fdp_hat <- function(V,
                     Phi,
                     Phi_prime,
