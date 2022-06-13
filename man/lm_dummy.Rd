@@ -7,6 +7,7 @@
 lm_dummy(
   X,
   y,
+  model_tlars,
   T_stop = 1,
   num_dummies = ncol(X),
   method = "tknock",
@@ -14,12 +15,9 @@ lm_dummy(
   corr_max = 0.5,
   lambda_2_lars = NULL,
   early_stop = TRUE,
-  lars_state,
   verbose = TRUE,
   intercept = FALSE,
-  normalize = TRUE,
-  cor.structure = FALSE,
-  empirical = FALSE
+  standardize = TRUE
 )
 }
 \arguments{
@@ -27,11 +25,14 @@ lm_dummy(
 
 \item{y}{Response vector.}
 
+\item{model_tlars}{Object of the class tlars_cpp. It contains all state variables of the previous T-LARS step (necessary for warm-starts, i.e., restarting
+the forward selection process exactly where it was previously terminated).}
+
 \item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
 
-\item{num_dummies}{Number of dummies}
+\item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'tknock' for T-Knock filter and 'tknock+GVS' for T-Knock+GVS filter.}
+\item{method}{'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
@@ -39,25 +40,21 @@ lm_dummy(
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
-\item{early_stop}{If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise the entire solution path is computed.}
+\item{early_stop}{Logical. If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise
+the entire solution path is computed.}
 
-\item{lars_state}{LARS object (i.e., object of the class tlarsCpp). Contains variables associated with previous stopping point (necessary to restart forward selection selection process exactly where it was previously terminated).}
+\item{verbose}{Logical. If TRUE progress in computations is shown when performing T-LARS steps on the created model.}
 
-\item{verbose}{If TRUE progress in computations is shown.}
+\item{intercept}{Logical. If TRUE an intercept is included.}
 
-\item{intercept}{If TRUE an intercept is included.}
-
-\item{normalize}{If TRUE the predictors are standardized and the response is centered.}
-
-\item{cor.structure}{TRUE/FALSE.}
-
-\item{empirical}{TRUE/FALSE.}
+\item{standardize}{Logical. If TRUE the predictors are standardized and the response is centered.}
 }
 \value{
-LARS object (i.e., object of the class tlars_cpp).
+Object of the class tlars_cpp.
 }
 \description{
-Run one random experiment of the T-Knock filter, i.e., generates dummies, appends them to the predictor matrix, and runs the forward selection algorithm until it is terminated after T_stop dummies have been selected.
+Run one random experiment of the T-Knock filter, i.e., generates dummies, appends them to the predictor matrix, and runs
+the forward selection algorithm until it is terminated after T_stop dummies have been selected.
 }
 \examples{
 set.seed(123)
@@ -67,7 +64,8 @@ p <- 100
 X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 beta <- c(rep(3, times = 3), rep(0, times = 97))
 y <- X \%*\% beta + rnorm(n)
-res <- lm_dummy(X, y, T_stop = 1, num_dummies = 5 * p)
-support <- abs(res$get_beta()[seq(p)]) > eps
+res <- lm_dummy(X = X, y = y, T_stop = 1, num_dummies = 5 * p)
+beta_hat <- res$get_beta()[seq(p)]
+support <- abs(beta_hat) > eps
 support
 }
