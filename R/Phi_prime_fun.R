@@ -10,22 +10,6 @@
 #' @param eps Numerical zero.
 #'
 #' @return Matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
-#'
-#' @export
-#'
-#' @examples
-#' data("Gauss_data")
-#' X <- Gauss_data$X
-#' y <- c(Gauss_data$y)
-#' rand_exp <- random_experiments(X, y)
-#' Phi_prime_fun(
-#'   p = ncol(X),
-#'   T_stop = rand_exp$T_stop,
-#'   num_dummies = rand_exp$num_dummies,
-#'   phi_T_mat = rand_exp$phi_T_mat,
-#'   Phi = rand_exp$Phi,
-#'   eps = rand_exp$eps
-#' )
 Phi_prime_fun <- function(p,
                           T_stop,
                           num_dummies,
