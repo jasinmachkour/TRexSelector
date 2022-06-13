@@ -10,8 +10,6 @@
 #' @param V Voting level grid.
 #'
 #' @return Support Vector.
-#'
-#' @export
 select_var_fun <- function(p,
                            tFDR,
                            T_stop,
@@ -37,16 +35,16 @@ select_var_fun <- function(p,
 
   # T-Knock: Select variables
   FDP_hat_mat[FDP_hat_mat > tFDR] <- Inf
-  val_max <- max(R_mat[!is.infinite(FDP_hat_mat)])
+  val_max <- suppressWarnings(max(R_mat[!is.infinite(FDP_hat_mat)]))
   ind_max <- matrix(which(R_mat == val_max, arr.ind = TRUE), ncol = 2)
   ind_thresh <- ind_max[nrow(ind_max), ]
   thres_T_dummy <- V[ind_thresh[2]]
   selected_var_T_dummy <- which(Phi_mat[ind_thresh[1], ] > thres_T_dummy)
-  beta.selected <- rep(0, times = p)
-  beta.selected[selected_var_T_dummy] <- 1
+  selected_var <- rep(0, times = p)
+  selected_var[selected_var_T_dummy] <- 1
 
   res_select_var <- list(
-    beta.selected = beta.selected,
+    selected_var = selected_var,
     v_thresh = thres_T_dummy,
     R_mat = R_mat
   )
