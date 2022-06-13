@@ -18,7 +18,7 @@
 #'
 #' set.seed(1234)
 #' res <- tknock(X, y)
-#' beta_hat <- res$beta.selected
+#' beta_hat <- res$selected_var
 #'
 #' FDP(beta_hat = beta_hat, beta = beta)
 FDP <- function(beta_hat,

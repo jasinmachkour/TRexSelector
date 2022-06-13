@@ -8,7 +8,7 @@ test_that("error control for input beta_hat works", {
 
   set.seed(1234)
   res <- tknock(X, y)
-  beta_hat <- res$beta.selected
+  beta_hat <- res$selected_var
 
   beta_hat_w_NA <- beta_hat
   beta_hat_w_NA[sample(length(beta_hat_w_NA), size = 10)] <- NA
@@ -60,7 +60,7 @@ test_that("error control for input beta works", {
 
   set.seed(1234)
   res <- tknock(X, y)
-  beta_hat <- res$beta.selected
+  beta_hat <- res$selected_var
 
   beta_w_NA <- beta
   beta_w_NA[sample(length(beta_w_NA), size = 10)] <- NA
@@ -121,7 +121,7 @@ test_that("the value of TPP is an element of the interval [0, 1]", {
 
   set.seed(1234)
   res <- tknock(X, y)
-  beta_hat <- res$beta.selected
+  beta_hat <- res$selected_var
 
   tpp <- TPP(
     beta_hat = beta_hat,

@@ -27,7 +27,7 @@ beta <- Gauss_data$beta
 
 set.seed(1234)
 res <- tknock(X, y)
-beta_hat <- res$beta.selected
+beta_hat <- res$selected_var
 
 TPP(beta_hat = beta_hat, beta = beta)
 }
