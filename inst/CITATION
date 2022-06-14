@@ -1,0 +1,30 @@
+citHeader("To cite 'tknock' in publications, please use:")
+
+citEntry(entry = "Manual",
+         title        = "{tknock: The T-Knock filter for fast high-dimensional variable selection with FDR control}",
+         author       = personList(as.person("Jasin Machkour"),
+                                   as.person("Simon Tien"),
+                                   as.person("Daniel P. Palomar"),
+                                   as.person("Michael Muma")),
+         note         = "R package version 0.0.0.9000",
+         year         = "2022",
+         url          = "https://github.com/jasinmachkour/tknock",
+         textVersion  =
+           paste("J. Machkour, S. Tien, D. P. Palomar, and M. Muma (2022).",
+                 "tknock: The T-Knock filter for fast high-dimensional variable selection with FDR control.", "R package version 0.0.0.9000.", "https://github.com/jasinmachkour/tknock")
+)
+
+citEntry(entry = "Article",
+         title        = "The {T}erminating-{K}nockoff Filter: Fast High-Dimensional Variable Selection with False Discovery
+                        Rate Control",
+         author       = personList(as.person("Jasin Machkour"),
+                                   as.person("Michael Muma"),
+                                   as.person("Daniel P. Palomar")),
+         journal      = "arXiv preprint arXiv:2110.06048",
+         year         = "2021",
+         url          = "https://arxiv.org/abs/2110.06048",
+         textVersion  =
+           paste("J. Machkour, M. Muma, and D. P. Palomar (2021).",
+                 "The Terminating-Knockoff filter: Fast high-dimensional variable selection with false discovery rate
+                 control.", "arXiv preprint arXiv:2110.06048.", "https://arxiv.org/abs/2110.06048")
+)
