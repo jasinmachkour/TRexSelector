@@ -6,13 +6,17 @@ test_that("error control for inputs method and type works", {
   y <- drop(Gauss_data$y)
 
   # Tests
-  expect_error(random_experiments(X = X,
-                                  y = y,
-                                  method = "test"))
+  expect_error(random_experiments(
+    X = X,
+    y = y,
+    method = "test"
+  ))
 
-  expect_error(random_experiments(X = X,
-                                  y = y,
-                                  type = "test"))
+  expect_error(random_experiments(
+    X = X,
+    y = y,
+    type = "test"
+  ))
 })
 
 # 2
@@ -25,24 +29,35 @@ test_that("error control for input X works", {
   X_w_NA[sample(prod(dim(X)), size = 100)] <- NA
 
   # Tests
-  expect_error(random_experiments(X = drop(X[, 1]),
-                                  y = y),
-               "'X' must be a matrix.",
-               fixed = TRUE)
+  expect_error(random_experiments(
+    X = drop(X[, 1]),
+    y = y
+  ),
+  "'X' must be a matrix.",
+  fixed = TRUE
+  )
 
-  expect_error(random_experiments(X = matrix(as.character(X), ncol = ncol(X)),
-                                  y = y),
-               "'X' only allows numerical values.",
-               fixed = TRUE)
+  expect_error(random_experiments(
+    X = matrix(as.character(X), ncol = ncol(X)),
+    y = y
+  ),
+  "'X' only allows numerical values.",
+  fixed = TRUE
+  )
 
-  expect_error(random_experiments(X = matrix(as.factor(X), ncol = ncol(X)),
-                                  y = y),
-               "'X' only allows numerical values.",
-               fixed = TRUE)
+  expect_error(random_experiments(
+    X = matrix(as.factor(X), ncol = ncol(X)),
+    y = y
+  ),
+  "'X' only allows numerical values.",
+  fixed = TRUE
+  )
 
   expect_error(
-    random_experiments(X = X_w_NA,
-                       y = y),
+    random_experiments(
+      X = X_w_NA,
+      y = y
+    ),
     "'X' contains NAs. Please remove or impute them before proceeding.",
     fixed = TRUE
   )
@@ -58,33 +73,45 @@ test_that("error control for input y works", {
   y_w_NA[sample(length(y), size = 10)] <- NA
 
   # Tests
-  expect_error(random_experiments(X = X,
-                                  y = cbind(y, y)),
-               "'y' must be a vector.",
-               fixed = TRUE)
+  expect_error(random_experiments(
+    X = X,
+    y = cbind(y, y)
+  ),
+  "'y' must be a vector.",
+  fixed = TRUE
+  )
 
   expect_error(
-    random_experiments(X = X,
-                       y = as.character(y)),
+    random_experiments(
+      X = X,
+      y = as.character(y)
+    ),
     "'y' only allows numerical values.",
     fixed = TRUE
   )
 
-  expect_error(random_experiments(X = X,
-                                  y = matrix(as.factor(y), ncol = 1)),
-               "'y' only allows numerical values.",
-               fixed = TRUE)
+  expect_error(random_experiments(
+    X = X,
+    y = matrix(as.factor(y), ncol = 1)
+  ),
+  "'y' only allows numerical values.",
+  fixed = TRUE
+  )
 
   expect_error(
-    random_experiments(X = X,
-                       y = y_w_NA),
+    random_experiments(
+      X = X,
+      y = y_w_NA
+    ),
     "'y' contains NAs. Please remove or impute them before proceeding.",
     fixed = TRUE
   )
 
   expect_error(
-    random_experiments(X = rbind(X, X),
-                       y = y),
+    random_experiments(
+      X = rbind(X, X),
+      y = y
+    ),
     "Number of rows in X does not match length of y.",
     fixed = TRUE
   )
@@ -99,100 +126,102 @@ test_that("error control for input K works", {
 
   # Tests
   expect_error(
-    random_experiments(X = X,
-                       y = y,
-                       K = 1),
+    random_experiments(
+      X = X,
+      y = y,
+      K = 1
+    ),
     "The number of random experiments 'K' must be an integer larger or equal to 2.",
     fixed = TRUE
   )
 
   expect_error(
-    random_experiments(X = X,
-                       y = y,
-                       K = 20.3),
+    random_experiments(
+      X = X,
+      y = y,
+      K = 20.3
+    ),
     "The number of random experiments 'K' must be an integer larger or equal to 2.",
     fixed = TRUE
   )
 })
 
 # 5
-test_that("error control for input num_dummies works when method = 'tknock'",
-          {
-            # Setup and data generation
-            data("Gauss_data")
-            X <- Gauss_data$X
-            y <- drop(Gauss_data$y)
-            p <- ncol(X)
-            num_dummies <- 2 * p
+test_that("error control for input num_dummies works when method = 'tknock'", {
+  # Setup and data generation
+  data("Gauss_data")
+  X <- Gauss_data$X
+  y <- drop(Gauss_data$y)
+  p <- ncol(X)
+  num_dummies <- 2 * p
 
-            # Tests
-            expect_error(
-              random_experiments(
-                X = X,
-                y = y,
-                num_dummies = num_dummies + 1e-4,
-                method = "tknock"
-              ),
-              "'num_dummies' must be an integer larger or equal to 1.",
-              fixed = TRUE
-            )
+  # Tests
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y,
+      num_dummies = num_dummies + 1e-4,
+      method = "tknock"
+    ),
+    "'num_dummies' must be an integer larger or equal to 1.",
+    fixed = TRUE
+  )
 
-            expect_error(
-              random_experiments(
-                X = X,
-                y = y,
-                num_dummies = 0,
-                method = "tknock"
-              ),
-              "'num_dummies' must be an integer larger or equal to 1.",
-              fixed = TRUE
-            )
-          })
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y,
+      num_dummies = 0,
+      method = "tknock"
+    ),
+    "'num_dummies' must be an integer larger or equal to 1.",
+    fixed = TRUE
+  )
+})
 
 # 6
-test_that("error control for input num_dummies works when method = 'tknock+GVS'",
-          {
-            # Setup and data generation
-            data("Gauss_data")
-            X <- Gauss_data$X
-            y <- drop(Gauss_data$y)
-            p <- ncol(X)
-            num_dummies <- 2 * p
+test_that("error control for input num_dummies works when method = 'tknock+GVS'", {
+  # Setup and data generation
+  data("Gauss_data")
+  X <- Gauss_data$X
+  y <- drop(Gauss_data$y)
+  p <- ncol(X)
+  num_dummies <- 2 * p
 
-            # Tests
-            expect_error(
-              random_experiments(
-                X = X,
-                y = y,
-                num_dummies = num_dummies + 1e-4,
-                method = "tknock+GVS"
-              ),
-              "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
-              fixed = TRUE
-            )
+  # Tests
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y,
+      num_dummies = num_dummies + 1e-4,
+      method = "tknock+GVS"
+    ),
+    "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
+    fixed = TRUE
+  )
 
-            expect_error(
-              random_experiments(
-                X = X,
-                y = y,
-                num_dummies = 1.5 * p,
-                method = "tknock+GVS"
-              ),
-              "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
-              fixed = TRUE
-            )
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y,
+      num_dummies = 1.5 * p,
+      method = "tknock+GVS"
+    ),
+    "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
+    fixed = TRUE
+  )
 
-            expect_error(
-              random_experiments(
-                X = X,
-                y = y,
-                num_dummies = 0,
-                method = "tknock+GVS"
-              ),
-              "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
-              fixed = TRUE
-            )
-          })
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y,
+      num_dummies = 0,
+      method = "tknock+GVS"
+    ),
+    "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
+    fixed = TRUE
+  )
+})
 
 # 7
 test_that("the input value of 'T_stop' is valid", {
@@ -319,38 +348,37 @@ test_that("error control for input parallel_max_cores works", {
 })
 
 # 11
-test_that("reasonable number of workers is registered for parallel processing",
-          {
-            # Setup and data generation
-            data("Gauss_data")
-            X <- Gauss_data$X
-            y <- drop(Gauss_data$y)
-            K <- 20
-            parallel_max_cores <- 21
+test_that("reasonable number of workers is registered for parallel processing", {
+  # Setup and data generation
+  data("Gauss_data")
+  X <- Gauss_data$X
+  y <- drop(Gauss_data$y)
+  K <- 20
+  parallel_max_cores <- 21
 
-            # Tests
-            expect_message(
-              random_experiments(
-                X = X,
-                y = y,
-                K = K,
-                parallel_process = TRUE,
-                parallel_max_cores = parallel_max_cores
-              ),
-              paste0(
-                "For computing ",
-                K,
-                " random experiments, it is not useful to register ",
-                parallel_max_cores,
-                " workers. Setting parallel_max_cores = ",
-                min(K, max(
-                  1, parallel::detectCores(logical = FALSE)
-                )),
-                " (# physical cores) ...\n"
-              ),
-              fixed = TRUE
-            )
-          })
+  # Tests
+  expect_message(
+    random_experiments(
+      X = X,
+      y = y,
+      K = K,
+      parallel_process = TRUE,
+      parallel_max_cores = parallel_max_cores
+    ),
+    paste0(
+      "For computing ",
+      K,
+      " random experiments, it is not useful to register ",
+      parallel_max_cores,
+      " workers. Setting parallel_max_cores = ",
+      min(K, max(
+        1, parallel::detectCores(logical = FALSE)
+      )),
+      " (# physical cores) ...\n"
+    ),
+    fixed = TRUE
+  )
+})
 
 # 12
 test_that("error control for input parallel_process works", {
@@ -384,10 +412,12 @@ test_that("error control for input lars_state_list works", {
   y <- drop(Gauss_data$y)
 
   # Run K = 21 random experiments with T_stop = 1
-  rand_ex_T_stop_1 <- random_experiments(X = X,
-                                         y = y,
-                                         K = 21,
-                                         T_stop = 1)
+  rand_ex_T_stop_1 <- random_experiments(
+    X = X,
+    y = y,
+    K = 21,
+    T_stop = 1
+  )
 
   # Extract lars_state_list
   lars_state_list <- rand_ex_T_stop_1$lars_state_list

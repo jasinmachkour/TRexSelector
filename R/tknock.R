@@ -87,42 +87,42 @@ tknock <- function(X,
   }
 
   if (length(tFDR) != 1 ||
-      tFDR < 0 ||
-      tFDR > 1) {
+    tFDR < 0 ||
+    tFDR > 1) {
     stop("'tFDR' must be a number between 0 and 1 (including 0 and 1).")
   }
 
   if (length(K) != 1 ||
-      K < 2 ||
-      K %% 1 != 0) {
+    K < 2 ||
+    K %% 1 != 0) {
     stop("The number of random experiments 'K' must be an integer larger or equal to 2.")
   }
 
   if (length(max_num_dummies) != 1 ||
-      max_num_dummies < 1 ||
-      max_num_dummies %% 1 != 0) {
+    max_num_dummies < 1 ||
+    max_num_dummies %% 1 != 0) {
     stop("'max_num_dummies' must be an integer larger or equal to 1.")
   }
 
   if (method == "tknock+GVS") {
     if (length(corr_max) != 1 ||
-        corr_max < 0 ||
-        corr_max > 1) {
+      corr_max < 0 ||
+      corr_max > 1) {
       stop("'corr_max' must have a value between zero and one.")
     }
 
     if (!is.null(lambda_2_lars)) {
       if (length(lambda_2_lars) != 1 ||
-          lambda_2_lars < eps) {
+        lambda_2_lars < eps) {
         stop("'lambda_2_lars' must be a number larger than zero.")
       }
     }
   }
 
   if (parallel_process &&
-      (length(parallel_max_cores) != 1 ||
-       parallel_max_cores %% 1 != 0 ||
-       parallel_max_cores < 2)) {
+    (length(parallel_max_cores) != 1 ||
+      parallel_max_cores %% 1 != 0 ||
+      parallel_max_cores < 2)) {
     stop(
       "For parallel processing at least two workers have to be registered:
          'parallel_max_cores' must be an integer larger or equal to 2."
@@ -130,9 +130,9 @@ tknock <- function(X,
   }
 
   if (parallel_process &&
-       parallel_max_cores > min(K, max(
-         1, parallel::detectCores(logical = FALSE)
-       ))) {
+    parallel_max_cores > min(K, max(
+      1, parallel::detectCores(logical = FALSE)
+    ))) {
     parallel_max_cores_modified <-
       min(K, max(1, parallel::detectCores(logical = FALSE)))
     message(
@@ -177,8 +177,8 @@ tknock <- function(X,
   }
 
   while ((LL <= max_num_dummies &&
-          FDP_hat[which(abs(V - 0.75) < eps)] > tFDR) ||
-         sum(!is.na(FDP_hat)) == 0) {
+    FDP_hat[which(abs(V - 0.75) < eps)] > tFDR) ||
+    sum(!is.na(FDP_hat)) == 0) {
     num_dummies <- LL * p
     LL <- LL + 1
 

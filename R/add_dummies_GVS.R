@@ -41,16 +41,16 @@ add_dummies_GVS <- function(X,
 
   # Continue error control
   if (length(num_dummies) != 1 ||
-      num_dummies %% p != 0 ||
-      num_dummies < 1) {
+    num_dummies %% p != 0 ||
+    num_dummies < 1) {
     stop(
       "'num_dummies' must be a positive integer multiple of the total number of original predictors in X."
     )
   }
 
   if (length(corr_max) != 1 ||
-      corr_max < 0 ||
-      corr_max > 1) {
+    corr_max < 0 ||
+    corr_max > 1) {
     stop("'corr_max' must have a value between zero and one.")
   }
 
@@ -65,12 +65,15 @@ add_dummies_GVS <- function(X,
   fit <- stats::hclust(sigma_X_dist, method = "single")
   clusters <- stats::cutree(fit, h = 1 - corr_max)
   max_clusters <- max(clusters)
-  clusters <- data.frame("Var" = names(clusters),
-                         "Cluster_Nr." = unname(clusters))
+  clusters <- data.frame(
+    "Var" = names(clusters),
+    "Cluster_Nr." = unname(clusters)
+  )
   clusters <-
     stats::aggregate(clusters$"Var" ~ clusters$"Cluster_Nr.",
-                     FUN = "c",
-                     simplify = FALSE)
+      FUN = "c",
+      simplify = FALSE
+    )
   cluster_sizes <- vector("numeric", length = max_clusters)
   for (j in seq(max_clusters)) {
     cluster_sizes[j] <- length(clusters$`clusters$Var`[[j]])
@@ -90,14 +93,16 @@ add_dummies_GVS <- function(X,
       mu <- rep(0, times = cluster_sizes[z])
       if (z == 1) {
         X_p_sub_dummy[, seq(idx[z])] <- MASS::mvrnorm(n,
-                                                      mu = mu,
-                                                      Sigma = sigma_sub_X,
-                                                      empirical = FALSE)
+          mu = mu,
+          Sigma = sigma_sub_X,
+          empirical = FALSE
+        )
       } else {
         X_p_sub_dummy[, seq(idx[z - 1] + 1, idx[z])] <- MASS::mvrnorm(n,
-                                                                      mu = mu,
-                                                                      Sigma = sigma_sub_X,
-                                                                      empirical = FALSE)
+          mu = mu,
+          Sigma = sigma_sub_X,
+          empirical = FALSE
+        )
       }
     }
     X_Dummy[, seq(w * p + 1, (w + 1) * p)] <- X_p_sub_dummy

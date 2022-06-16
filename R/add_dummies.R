@@ -33,8 +33,8 @@ add_dummies <- function(X,
   }
 
   if (length(num_dummies) != 1 ||
-      num_dummies %% 1 != 0 ||
-      num_dummies < 1) {
+    num_dummies %% 1 != 0 ||
+    num_dummies < 1) {
     stop("'num_dummies' must be an integer larger or equal to 1.")
   }
 

@@ -97,16 +97,16 @@ lm_dummy <- function(X,
 
   if (method == "tknock") {
     if (length(num_dummies) != 1 ||
-        num_dummies %% 1 != 0 ||
-        num_dummies < 1) {
+      num_dummies %% 1 != 0 ||
+      num_dummies < 1) {
       stop("'num_dummies' must be an integer larger or equal to 1.")
     }
   }
 
   if (method == "tknock+GVS") {
     if (length(num_dummies) != 1 ||
-        num_dummies %% ncol(X) != 0 ||
-        num_dummies < 1) {
+      num_dummies %% ncol(X) != 0 ||
+      num_dummies < 1) {
       stop(
         "'num_dummies' must be a positive integer multiple of the total number of original predictors in X."
       )
@@ -114,7 +114,7 @@ lm_dummy <- function(X,
   }
 
   if (length(T_stop) != 1 ||
-      !(T_stop %in% seq(1, num_dummies))) {
+    !(T_stop %in% seq(1, num_dummies))) {
     stop(
       paste0(
         "Value of 'T_stop' not valid. 'T_stop' must be an integer from 1 to ",
@@ -126,14 +126,14 @@ lm_dummy <- function(X,
 
   if (method == "tknock+GVS") {
     if (length(corr_max) != 1 ||
-        corr_max < 0 ||
-        corr_max > 1) {
+      corr_max < 0 ||
+      corr_max > 1) {
       stop("'corr_max' must have a value between zero and one.")
     }
 
     if (!is.null(lambda_2_lars)) {
       if (length(lambda_2_lars) != 1 ||
-          lambda_2_lars < eps) {
+        lambda_2_lars < eps) {
         stop("'lambda_2_lars' must be a number larger than zero.")
       }
     }
@@ -141,15 +141,19 @@ lm_dummy <- function(X,
 
   # Create T-LARS model if it is not supplied (from a previous T-LARS step)
   if (T_stop == 1 ||
-      missing(model_tlars) ||
-      is.null(model_tlars)) {
+    missing(model_tlars) ||
+    is.null(model_tlars)) {
     if (method == "tknock") {
-      X_Dummy <- add_dummies(X = X,
-                             num_dummies = num_dummies)
+      X_Dummy <- add_dummies(
+        X = X,
+        num_dummies = num_dummies
+      )
     } else {
-      X_Dummy <- add_dummies_GVS(X = X,
-                                 num_dummies = num_dummies,
-                                 corr_max = corr_max)
+      X_Dummy <- add_dummies_GVS(
+        X = X,
+        num_dummies = num_dummies,
+        corr_max = corr_max
+      )
 
       # Ridge regression to determine lambda_2 for elastic net
       if (is.null(lambda_2_lars)) {

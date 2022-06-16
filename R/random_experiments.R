@@ -97,15 +97,15 @@ random_experiments <- function(X,
   }
 
   if (length(K) != 1 ||
-      K < 2 ||
-      K %% 1 != 0) {
+    K < 2 ||
+    K %% 1 != 0) {
     stop("The number of random experiments 'K' must be an integer larger or equal to 2.")
   }
 
   if (method == "tknock") {
     if (length(num_dummies) != 1 ||
-        num_dummies %% 1 != 0 ||
-        num_dummies < 1) {
+      num_dummies %% 1 != 0 ||
+      num_dummies < 1) {
       stop("'num_dummies' must be an integer larger or equal to 1.")
     }
   }
@@ -116,8 +116,8 @@ random_experiments <- function(X,
   # Continue error control
   if (method == "tknock+GVS") {
     if (length(num_dummies) != 1 ||
-        num_dummies %% p != 0 ||
-        num_dummies < 1) {
+      num_dummies %% p != 0 ||
+      num_dummies < 1) {
       stop(
         "'num_dummies' must be a positive integer multiple of the total number of original predictors in X."
       )
@@ -125,7 +125,7 @@ random_experiments <- function(X,
   }
 
   if (length(T_stop) != 1 ||
-      !(T_stop %in% seq(1, num_dummies))) {
+    !(T_stop %in% seq(1, num_dummies))) {
     stop(
       paste0(
         "Value of 'T_stop' not valid. 'T_stop' must be an integer from 1 to ",
@@ -137,25 +137,25 @@ random_experiments <- function(X,
 
   if (method == "tknock+GVS") {
     if (length(corr_max) != 1 ||
-        corr_max < 0 ||
-        corr_max > 1) {
+      corr_max < 0 ||
+      corr_max > 1) {
       stop("'corr_max' must have a value between zero and one.")
     }
 
     if (!is.null(lambda_2_lars)) {
       if (length(lambda_2_lars) != 1 ||
-          lambda_2_lars < eps) {
+        lambda_2_lars < eps) {
         stop("'lambda_2_lars' must be a number larger than zero.")
       }
     }
   }
 
   if (parallel_process &&
-      (
-        length(parallel_max_cores) != 1 ||
+    (
+      length(parallel_max_cores) != 1 ||
         parallel_max_cores %% 1 != 0 ||
         parallel_max_cores < 2
-      )) {
+    )) {
     stop(
       "For parallel processing at least two workers have to be registered:
          'parallel_max_cores' must be an integer larger or equal to 2."
@@ -163,7 +163,7 @@ random_experiments <- function(X,
   }
 
   if (parallel_process &&
-      parallel_max_cores > min(K, max(1, parallel::detectCores(logical = FALSE)))) {
+    parallel_max_cores > min(K, max(1, parallel::detectCores(logical = FALSE)))) {
     parallel_max_cores_modified <-
       min(K, max(1, parallel::detectCores(logical = FALSE)))
     message(
@@ -207,12 +207,14 @@ random_experiments <- function(X,
 
   # Combines Output Lists of Parallel 'foreach' Loop
   comb_fun <- function(x, ...) {
-    lapply(seq_along(x),
-           function(i) {
-             c(x[[i]], lapply(list(...), function(y) {
-               y[[i]]
-             }))
-           })
+    lapply(
+      seq_along(x),
+      function(i) {
+        c(x[[i]], lapply(list(...), function(y) {
+          y[[i]]
+        }))
+      }
+    )
   }
 
   # Setup cluster
@@ -235,8 +237,8 @@ random_experiments <- function(X,
   ) %par_exe% {
     # Recreate tlarsCpp object if necessary
     if (parallel_process &&
-        !is.null(lars_state_list[[h]]) &&
-        !methods::is(object = lars_state_list[[h]], class2 = tlars::tlars_cpp)) {
+      !is.null(lars_state_list[[h]]) &&
+      !methods::is(object = lars_state_list[[h]], class2 = tlars::tlars_cpp)) {
       lars_state <- tlars::tlars_model(lars_state = lars_state_list[[h]])
     } else {
       lars_state <- lars_state_list[[h]]
@@ -305,9 +307,11 @@ random_experiments <- function(X,
 
     rand_exp_last_betas_mat <- lars_path[1:p, ncol(lars_path)]
 
-    list(phi_T_mat,
-         rand_exp_last_betas_mat,
-         lars_state)
+    list(
+      phi_T_mat,
+      rand_exp_last_betas_mat,
+      lars_state
+    )
   }
 
   # Merging results of all random experiments
