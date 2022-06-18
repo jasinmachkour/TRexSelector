@@ -178,7 +178,7 @@ beta <- rep(0, times = p) # coefficient vector (all zeros first)
 beta[sample(seq(p), size = num_act, replace = FALSE)] <- 1 # coefficient vector (active variables with non-zero coefficients)
 true_actives <- which(beta > 0) # indices of true active variables
 tFDR_vec <- c(0.1, 0.15, 0.2, 0.25) # target FDR levels
-MC <- 3 # number of Monte Carlo runs per stopping point
+MC <- 100 # number of Monte Carlo runs per stopping point
 
 # Initialize results vectors
 FDP <- matrix(NA, nrow = MC, ncol = length(tFDR_vec))
