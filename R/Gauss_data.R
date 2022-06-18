@@ -1,6 +1,6 @@
 #' Toy data generated from a Gaussian linear model
 #'
-#' A dataset containing a predictor matrix X with n = 50 observations
+#' A data set containing a predictor matrix X with n = 50 observations
 #' and p = 100 variables (predictors), and a sparse parameter vector beta
 #' with associated support vector.
 #'
