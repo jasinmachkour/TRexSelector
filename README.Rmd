@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 **Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Knock filter paper (available at https://arxiv.org/abs/2110.06048).
 
-**Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied used in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+**Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
 In the following, we show how to use the package and show you how genome-wide association studies (GWAS) can be performed using the T-Rex selector. 
 
@@ -62,7 +62,7 @@ To cite the package ‘tknock’ in publications use:
 citation("tknock")
 ```
 
-## Quick Start
+# Quick Start
 In the following, we illustrate the basic usage of the tknock package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
@@ -84,7 +84,7 @@ X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 y <- X %*% beta + stats::rnorm(n)
 ```
 
-2. **Second**, we perform FDR-controlled variable selection using the T-Rex selector with a target FDR of 10 %:
+2. **Second**, we perform FDR-controlled variable selection using the T-Rex selector with a target FDR of 5%:
 
 ```{r}
 # Seed
@@ -94,103 +94,15 @@ set.seed(1234)
 eps <- .Machine$double.eps
 
 # Variable selection via T-Rex
-res <- tknock(X = X, y = y, tFDR = 0.1)
+res <- tknock(X = X, y = y, tFDR = 0.05, verbose = FALSE)
 selected_var <- which(res$selected_var > eps)
-paste("True active variables: ", as.character(true_actives), collapse = ", ")
-paste("Selected variables: ", as.character(selected_var), collapse = ", ")
+paste0("True active variables: ", paste(as.character(true_actives), collapse = ", "))
+paste0("Selected variables: ", paste(as.character(selected_var), collapse = ", "))
 ```
 
-So, with a target FDR of 10%, the T-Rex selector has selected all true active variables and there is no false positive in this example.
+So, with a target FDR of 5%, the T-Rex selector has selected all true active variables and there is no false positive in this example.
 
 Note that users have to specify the target FDR according to the requirements of their specific applications.
-
-3. **Third**, we look at the behavior of the T-Rex selector for different choices of the target FDR. We conduct Monte Carlo simulations and plot the resulting averaged FDP and TPP over the target FDR. Note that the averaged FDP and TPP are estimates of the FDR and TPR, respectively:
-
-```{r}
-# Computations might take up to 10 minutes... Please wait... 
-
-# Numerical zero
-eps <- .Machine$double.eps
-
-# Seed
-set.seed(1234)
-
-# Setup
-n <- 100 # number of observations
-p <- 150 # number of variables
-
-# Parameters
-num_act <- 10 # number of true active variables
-beta <- rep(0, times = p) # coefficient vector (all zeros first)
-beta[sample(seq(p), size = num_act, replace = FALSE)] <- 1 # coefficient vector (active variables with non-zero coefficients)
-true_actives <- which(beta > 0) # indices of true active variables
-tFDR_vec <- c(0.1, 0.15, 0.2, 0.25) # target FDR levels
-MC <- 100 # number of Monte Carlo runs per stopping point
-
-# Initialize results vectors
-FDP <- matrix(NA, nrow = MC, ncol = length(tFDR_vec))
-TPP <- matrix(NA, nrow = MC, ncol = length(tFDR_vec))
-
-# Run simulations
-for (t in seq_along(tFDR_vec)) {
-  for (mc in seq(MC)) {
-    # Generate Gaussian data
-    X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
-    y <- X %*% beta + stats::rnorm(n)
-    
-    # Run T-Rex selector
-    res <- tknock(X = X, y = y, tFDR = tFDR_vec[t], verbose = FALSE)
-    selected_var <- which(res$selected_var > eps)
-    
-    # Results
-    FDP[mc, t] <- length(setdiff(selected_var, true_actives)) / max(1, length(selected_var))
-    TPP[mc, t] <- length(intersect(selected_var, true_actives)) / max(1, length(true_actives))
-  }
-}
-# Compute estimates of FDR and TPR by averaging FDP and TPP over MC Monte Carlo runs
-FDR <- colMeans(FDP)
-TPR <- colMeans(TPP)
-```
-
-```{r FDR_and_TPR, echo=FALSE, fig.align='center', message=FALSE, fig.width=8, fig.height=3, out.width = "80%"}
-# Plot results
-library(ggplot2)
-library(patchwork)
-tFDR_vec_percent <- 100 * tFDR_vec
-plot_data <- data.frame(tFDR_vec = tFDR_vec_percent,
-                        FDR = 100 * FDR,
-                        TPR = 100 * TPR) # data frame containing data to be plotted (FDR and TPR in %)
-
-# FDR vs. tFDR
-FDR_vs_tFDR <-
-  ggplot(plot_data, aes(x = tFDR_vec_percent, y = FDR)) +
-    labs(x = "Target FDR",
-         y = "FDR") +
-    scale_x_continuous(breaks = tFDR_vec_percent, minor_breaks = c(), limits = c(tFDR_vec_percent[1], tFDR_vec_percent[length(tFDR_vec_percent)])) +
-    scale_y_continuous(breaks = seq(0, 100, by = 10), minor_breaks = c(), limits = c(0, 100)) +
-    geom_line(size = 1.5, colour = "#336C68") +
-    geom_abline(slope = 1) +
-    geom_point(size = 2.5, colour = "#336C68") +
-    theme_bw(base_size = 16) +
-    theme(panel.background = element_rect(fill = "white", color = "black", size = 1)) +
-    coord_fixed(ratio =  0.75 * (tFDR_vec_percent[length(tFDR_vec_percent)] - tFDR_vec_percent[1]) / (100 - 0))
-
-# TPR vs. tFDR
-TPR_vs_tFDR <- 
-  ggplot(plot_data, aes(x = tFDR_vec_percent, y = TPR)) +
-    labs(x = "Target FDR",
-         y = "TPR") +
-    scale_x_continuous(breaks = tFDR_vec_percent, minor_breaks = c(), limits = c(tFDR_vec_percent[1], tFDR_vec_percent[length(tFDR_vec_percent)])) +
-    scale_y_continuous(breaks = seq(0, 100, by = 10), minor_breaks = c(), limits = c(0, 100)) +
-    geom_line(size = 1.5, colour = "#336C68") +
-    geom_point(size = 2.5, colour = "#336C68") +
-    theme_bw(base_size = 16) +
-    theme(panel.background = element_rect(fill = "white", color = "black", size = 1)) +
-    coord_fixed(ratio =  0.85 * (tFDR_vec_percent[length(tFDR_vec_percent)] - tFDR_vec_percent[1]) / (100 - 0))
-FDR_vs_tFDR + TPR_vs_tFDR
-```
-
-We observe that with growing target FDR the FDR and TPR increase. Moreover, we see that the T-Rex selector always controls the FDR (green line is always below the black reference line, i.e., maximum allowed value for the FDR). For more details and discussions on these observations, we refer the interested reader to [@machkour2021terminating].
 
 ## Documentation
 For more information and some examples, please check the ...
