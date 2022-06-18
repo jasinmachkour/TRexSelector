@@ -17,7 +17,7 @@ A list containing a matrix X and vectors y, beta, and support:
 Gauss_data
 }
 \description{
-A dataset containing a predictor matrix X with n = 50 observations
+A data set containing a predictor matrix X with n = 50 observations
 and p = 100 variables (predictors), and a sparse parameter vector beta
 with associated support vector.
 }
