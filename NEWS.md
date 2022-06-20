@@ -1,8 +1,8 @@
-## Changes in tknock version 0.0.0.9000 2022-06-13)
+## Changes in trex version 0.0.0.9000 2022-06-13)
 
 * Initial pre-release version contains five major functions for executing the T-Rex selector (and/or executing its major building blocks separately):
 
-	- tknock();
+	- trex();
 	- random_experiments();
 	- lm_dummy();
 	- add_dummies(); and
@@ -19,4 +19,4 @@
   - Phi_prime_fun(); and
   - select_var_fun().
 	
-* Vignette illustrates how the tknock package is used.
+* Vignette illustrates how the trex package is used.

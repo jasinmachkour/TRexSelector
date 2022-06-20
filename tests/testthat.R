@@ -1,4 +1,4 @@
 library(testthat)
-library(tknock)
+library(trex)
 
-test_check("tknock")
+test_check("trex")

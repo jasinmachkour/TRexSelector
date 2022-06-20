@@ -10,7 +10,7 @@ lm_dummy(
   model_tlars,
   T_stop = 1,
   num_dummies = ncol(X),
-  method = "tknock",
+  method = "trex",
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
@@ -32,7 +32,7 @@ the forward selection process exactly where it was previously terminated).}
 
 \item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.}
+\item{method}{'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
@@ -53,7 +53,7 @@ the entire solution path is computed.}
 Object of the class tlars_cpp.
 }
 \description{
-Run one random experiment of the T-Knock filter, i.e., generates dummies, appends them to the predictor matrix, and runs
+Run one random experiment of the T-Rex selector, i.e., generates dummies, appends them to the predictor matrix, and runs
 the forward selection algorithm until it is terminated after T_stop dummies have been selected.
 }
 \examples{

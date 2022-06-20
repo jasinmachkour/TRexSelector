@@ -50,8 +50,6 @@ options(width = 80)
 # Motivation
 The T-Rex selector performs fast variable selection in large-scale high-dimensional settings. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
-In the following, we show how to use the package and show you how genome-wide association studies (GWAS) can be performed using the T-Rex selector.
-
 <!-- Include Latex macros -->
 $$
 \DeclareMathOperator{\FDP}{FDP}
@@ -66,24 +64,24 @@ $$
 $$
 
 # Installation
-Before installing the tknock package, you need to install the required tlars package. You can install the tlars package from [GitHub](https://github.com/jasinmachkour/tlars) with 
+Before installing the trex package, you need to install the required tlars package. You can install the tlars package from [GitHub](https://github.com/jasinmachkour/tlars) with 
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the tknock package with:
+Then, you can install the trex package with:
 
 ``` r
-devtools::install_github("jasinmachkour/tknock")
+devtools::install_github("jasinmachkour/trex")
 ```
 
 You can open the help pages with
 ```{r, eval=FALSE}
-library(tknock)
-help(package = "tknock")
-?tknock
+library(trex)
+help(package = "trex")
+?trex
 ?random_experiments
 ?lm_dummy
 ?add_dummies
@@ -93,18 +91,18 @@ help(package = "tknock")
 # etc.
 ```
 
-To cite the package ‘tknock’ in publications use:
+To cite the package ‘trex’ in publications use:
 ```{r, eval=FALSE}
-citation("tknock")
+citation("trex")
 ```
 
 # Quick Start
-In the following, we illustrate the basic usage of the tknock package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
+In the following, we illustrate the basic usage of the trex package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
 ```{r}
-library(tknock)
+library(trex)
 
 # Setup
 n <- 75 # Number of observations
@@ -130,7 +128,7 @@ set.seed(1234)
 eps <- .Machine$double.eps
 
 # Variable selection via T-Rex
-res <- tknock(X = X, y = y, tFDR = 0.05, verbose = FALSE)
+res <- trex(X = X, y = y, tFDR = 0.05, verbose = FALSE)
 selected_var <- which(res$selected_var > eps)
 paste0("True active variables: ", paste(as.character(true_actives), collapse = ", "))
 paste0("Selected variables: ", paste(as.character(selected_var), collapse = ", "))
@@ -193,7 +191,7 @@ for (t in seq_along(tFDR_vec)) {
     y <- X %*% beta + stats::rnorm(n)
     
     # Run T-Rex selector
-    res <- tknock(X = X, y = y, tFDR = tFDR_vec[t], verbose = FALSE)
+    res <- trex(X = X, y = y, tFDR = tFDR_vec[t], verbose = FALSE)
     selected_var <- which(res$selected_var > eps)
     
     # Results
@@ -247,16 +245,14 @@ FDR_vs_tFDR + TPR_vs_tFDR
 
 We observe that with growing target FDR the FDR and TPR increase. Moreover, we see that the T-Rex selector always controls the FDR (green line is always below the black reference line, i.e., maximum allowed value for the FDR). For more details and discussions on these observations, we refer the interested reader to the original T-Rex paper [@machkour2021terminating].
 
-# Simulated GWAS
+# The T-Rex Framework
+The general steps that define the \textit{T-Rex} framework are illustrated in Figure 1. The key idea is to design randomized controlled experiments where fake variables, so-called dummies, act as a negative control group in the variable selection process.
 
-# The T-Knock Framework
-The general steps that define the \textit{T-Knock} framework are illustrated in Figure 1. The key idea is to design randomized controlled experiments where fake variables, so-called dummies, act as a negative control group in the variable selection process.
-
-```{r TKnockFramework, echo=FALSE, fig.cap="Figure 1: Simplified overview of the T-Knock framework.", out.width = '85%'}
-knitr::include_graphics("./figures/T_Knock_framework.png")
+```{r T-Rex_framework, echo=FALSE, fig.cap="Figure 1: Simplified overview of the T-Rex framework.", out.width = '85%'}
+knitr::include_graphics("./figures/T-Rex_framework.png")
 ```
 
-Within the \textit{T-Knock} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green) and non-active variables (red) are represented to be clearly separated within the predictor matrix. Note that, we illustrate the enlarged predictor in this structured fashion for reasons of simplicity. In practice, this is rarely the case. The dummy variables (yellow) compete with the given input variables in $\X$ to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least] or the Lasso [@tibshirani1996regression]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ knockoffs is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing leads to including more null-variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. The calibration process, that is not described in detail here, ensures that the number of included knockoffs $T^{*}$ after which the forward selection process is terminated and the voting level $v^{*}$ are determined such that the FDR is controlled at the user-defined target FDR level $\alpha$.
+Within the \textit{T-Rex} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green) and non-active variables (red) are represented to be clearly separated within the predictor matrix. Note that, we illustrate the enlarged predictor in this structured fashion for reasons of simplicity. In practice, this is rarely the case. The dummy variables (yellow) compete with the given input variables in $\X$ to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least] or the Lasso [@tibshirani1996regression]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ dummies is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing leads to including more null-variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. The calibration process, that is not described in detail here, ensures that the number of included dummies $T^{*}$ after which the forward selection process is terminated and the voting level $v^{*}$ are determined such that the FDR is controlled at the user-defined target FDR level $\alpha$.
 
 ```{r EnlargedPredictorMatrix, echo=FALSE, fig.cap="Figure 2: The enlarged predictor matrix (predictor matrix with dummies).", out.width = '65%'}
 knitr::include_graphics("./figures/predictor_matrix_with_dummies.png")

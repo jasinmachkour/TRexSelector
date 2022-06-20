@@ -2,7 +2,7 @@
 % Please edit documentation in R/fdp_hat.R
 \name{fdp_hat}
 \alias{fdp_hat}
-\title{Computes the conservative FDP estimate of the T-Knock filter}
+\title{Computes the conservative FDP estimate of the T-Rex selector}
 \usage{
 fdp_hat(V, Phi, Phi_prime, T_stop, num_dummies, eps = .Machine$double.eps)
 }
@@ -23,5 +23,5 @@ fdp_hat(V, Phi, Phi_prime, T_stop, num_dummies, eps = .Machine$double.eps)
 Vector of conservative FDP estimates for each value of the voting level grid.
 }
 \description{
-Computes the conservative FDP estimate of the T-Knock filter
+Computes the conservative FDP estimate of the T-Rex selector
 }

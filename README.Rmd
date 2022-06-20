@@ -19,10 +19,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tknock
-**Title**: The T-Knock filter for fast high-dimensional variable selection with FDR control
+# trex
+**Title**: The T-Rex selector for fast high-dimensional variable selection with FDR control
 
-**Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Knock filter paper (available at https://arxiv.org/abs/2110.06048).
+**Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at https://arxiv.org/abs/2110.06048).
 
 **Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
@@ -30,24 +30,24 @@ In the following, we show how to use the package and show you how genome-wide as
 
 ## Installation
 
-Before installing the tknock package, you need to install the required tlars package. You can install the tlars package from [GitHub](https://github.com/jasinmachkour/tlars) with 
+Before installing the trex package, you need to install the required tlars package. You can install the tlars package from [GitHub](https://github.com/jasinmachkour/tlars) with 
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the tknock package with:
+Then, you can install the trex package with:
 
 ``` r
-devtools::install_github("jasinmachkour/tknock")
+devtools::install_github("jasinmachkour/trex")
 ```
 
 You can open the help pages with
 ```{r, eval=FALSE}
-library(tknock)
-help(package = "tknock")
-?tknock
+library(trex)
+help(package = "trex")
+?trex
 ?random_experiments
 ?lm_dummy
 ?add_dummies
@@ -57,18 +57,18 @@ help(package = "tknock")
 # etc.
 ```
 
-To cite the package ‘tknock’ in publications use:
+To cite the package ‘trex’ in publications use:
 ```{r, eval=FALSE}
-citation("tknock")
+citation("trex")
 ```
 
 # Quick Start
-In the following, we illustrate the basic usage of the tknock package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
+In the following, we illustrate the basic usage of the trex package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
 ```{r}
-library(tknock)
+library(trex)
 
 # Setup
 n <- 75 # Number of observations
@@ -94,7 +94,7 @@ set.seed(1234)
 eps <- .Machine$double.eps
 
 # Variable selection via T-Rex
-res <- tknock(X = X, y = y, tFDR = 0.05, verbose = FALSE)
+res <- trex(X = X, y = y, tFDR = 0.05, verbose = FALSE)
 selected_var <- which(res$selected_var > eps)
 paste0("True active variables: ", paste(as.character(true_actives), collapse = ", "))
 paste0("Selected variables: ", paste(as.character(selected_var), collapse = ", "))
@@ -105,15 +105,15 @@ So, with a target FDR of 5%, the T-Rex selector has selected all true active var
 Note that users have to specify the target FDR according to the requirements of their specific applications.
 
 ## Documentation
-For more information and some examples, please check the ...
+For more information and some examples, please check the [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html).
 
 ## Links
 T-Rex paper: https://arxiv.org/abs/2110.06048
 
-trex package: [GitHub-trex](https://github.com/jasinmachkour/tknock).
+trex package: [GitHub-trex](https://github.com/jasinmachkour/trex).
 
-README file: 
+README file: [GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/README.html).
 
-Vignette:
+Vignette: [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html).
 
 tlars package: [GitHub-tlars](https://github.com/jasinmachkour/tlars).

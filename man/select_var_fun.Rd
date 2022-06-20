@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_var_fun.R
 \name{select_var_fun}
 \alias{select_var_fun}
-\title{T-Knock: Selected Variables}
+\title{Compute set of selected variables}
 \usage{
 select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 }
@@ -15,7 +15,7 @@ select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 
 \item{FDP_hat_mat}{Matrix whose rows are the vectors of conservative FDP estimates for each value of the voting level grid.}
 
-\item{Phi_mat}{Matrix of relative occurrences as determined by the T-Knock calibration algorithm.}
+\item{Phi_mat}{Matrix of relative occurrences as determined by the T-Rex calibration algorithm.}
 
 \item{V}{Voting level grid.}
 }
@@ -23,5 +23,5 @@ select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 Support Vector.
 }
 \description{
-Computes the set of selected variables and returns the support vector.
+Computes the set of selected variables and returns the support vector for the T-Rex selector.
 }

@@ -1,17 +1,17 @@
-citHeader("To cite 'tknock' in publications, please use:")
+citHeader("To cite 'trex' in publications, please use:")
 
 citEntry(entry = "Manual",
-         title        = "{tknock: The T-Knock filter for fast high-dimensional variable selection with FDR control}",
+         title        = "{trex: The T-Rex selector for fast high-dimensional variable selection with FDR control}",
          author       = personList(as.person("Jasin Machkour"),
                                    as.person("Simon Tien"),
                                    as.person("Daniel P. Palomar"),
                                    as.person("Michael Muma")),
          note         = "R package version 0.0.0.9000",
          year         = "2022",
-         url          = "https://github.com/jasinmachkour/tknock",
+         url          = "https://github.com/jasinmachkour/trex",
          textVersion  =
            paste("J. Machkour, S. Tien, D. P. Palomar, and M. Muma (2022).",
-                 "tknock: The T-Knock filter for fast high-dimensional variable selection with FDR control.", "R package version 0.0.0.9000.", "https://github.com/jasinmachkour/tknock")
+                 "trex: The T-Rex selector for fast high-dimensional variable selection with FDR control.", "R package version 0.0.0.9000.", "https://github.com/jasinmachkour/trex")
 )
 
 citEntry(entry = "Article",

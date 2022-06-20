@@ -147,7 +147,7 @@ test_that("error control for input K works", {
 })
 
 # 5
-test_that("error control for input num_dummies works when method = 'tknock'", {
+test_that("error control for input num_dummies works when method = 'trex'", {
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -161,7 +161,7 @@ test_that("error control for input num_dummies works when method = 'tknock'", {
       X = X,
       y = y,
       num_dummies = num_dummies + 1e-4,
-      method = "tknock"
+      method = "trex"
     ),
     "'num_dummies' must be an integer larger or equal to 1.",
     fixed = TRUE
@@ -172,7 +172,7 @@ test_that("error control for input num_dummies works when method = 'tknock'", {
       X = X,
       y = y,
       num_dummies = 0,
-      method = "tknock"
+      method = "trex"
     ),
     "'num_dummies' must be an integer larger or equal to 1.",
     fixed = TRUE
@@ -180,7 +180,7 @@ test_that("error control for input num_dummies works when method = 'tknock'", {
 })
 
 # 6
-test_that("error control for input num_dummies works when method = 'tknock+GVS'", {
+test_that("error control for input num_dummies works when method = 'trex+GVS'", {
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -194,7 +194,7 @@ test_that("error control for input num_dummies works when method = 'tknock+GVS'"
       X = X,
       y = y,
       num_dummies = num_dummies + 1e-4,
-      method = "tknock+GVS"
+      method = "trex+GVS"
     ),
     "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
     fixed = TRUE
@@ -205,7 +205,7 @@ test_that("error control for input num_dummies works when method = 'tknock+GVS'"
       X = X,
       y = y,
       num_dummies = 1.5 * p,
-      method = "tknock+GVS"
+      method = "trex+GVS"
     ),
     "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
     fixed = TRUE
@@ -216,7 +216,7 @@ test_that("error control for input num_dummies works when method = 'tknock+GVS'"
       X = X,
       y = y,
       num_dummies = 0,
-      method = "tknock+GVS"
+      method = "trex+GVS"
     ),
     "'num_dummies' must be a positive integer multiple of the total number of original predictors in X.",
     fixed = TRUE
@@ -276,7 +276,7 @@ test_that("error control for input corr_max works", {
     random_experiments(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       corr_max = -0.1
     ),
     "'corr_max' must have a value between zero and one.",
@@ -287,7 +287,7 @@ test_that("error control for input corr_max works", {
     random_experiments(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       corr_max = 1.1
     ),
     "'corr_max' must have a value between zero and one.",
@@ -307,7 +307,7 @@ test_that("error control for input lambda_2_lars works", {
     random_experiments(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       lambda_2_lars = c(1, 5, 100)
     ),
     "'lambda_2_lars' must be a number larger than zero.",
@@ -318,7 +318,7 @@ test_that("error control for input lambda_2_lars works", {
     random_experiments(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       lambda_2_lars = -3
     ),
     "'lambda_2_lars' must be a number larger than zero.",

@@ -81,7 +81,7 @@ test_that("dimension of output (i.e., predictor matrix containing dummies) is p 
   p <- ncol(X)
   num_dummies <- 1.5 * p
 
-  # Create dummies for T-Knock filter
+  # Create dummies for the T-Rex selector
   X_Dummy <- add_dummies(
     X = X,
     num_dummies = num_dummies

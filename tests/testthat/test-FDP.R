@@ -7,7 +7,7 @@ test_that("error control for input beta_hat works", {
   beta <- Gauss_data$beta
 
   set.seed(1234)
-  res <- tknock(X, y)
+  res <- trex(X, y)
   beta_hat <- res$selected_var
 
   beta_hat_w_NA <- beta_hat
@@ -59,7 +59,7 @@ test_that("error control for input beta works", {
   beta <- Gauss_data$beta
 
   set.seed(1234)
-  res <- tknock(X, y)
+  res <- trex(X, y)
   beta_hat <- res$selected_var
 
   beta_w_NA <- beta
@@ -120,7 +120,7 @@ test_that("the value of FDP is an element of the interval [0, 1]", {
   beta <- Gauss_data$beta
 
   set.seed(1234)
-  res <- tknock(X, y)
+  res <- trex(X, y)
   beta_hat <- res$selected_var
 
   fdp <- FDP(

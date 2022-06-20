@@ -1,12 +1,12 @@
-#' Add dummy predictors to the original predictor matrix, as required by the T-Knock+GVS filter
+#' Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector
 #'
-#' Generate num_dummies dummy predictors as required for the T-Knock+GVS filter and append them to the predictor matrix X.
+#' Generate num_dummies dummy predictors as required for the T-Rex+GVS selector and append them to the predictor matrix X.
 #'
 #' @param X Real valued predictor matrix.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #'
-#' @return Enlarged predictor matrix for the T-Knock+GVS filter.
+#' @return Enlarged predictor matrix for the T-Rex+GVS selector
 #'
 #' @importFrom stats cov as.dist hclust cutree aggregate
 #' @importFrom MASS mvrnorm

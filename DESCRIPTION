@@ -1,5 +1,5 @@
-Package: tknock
-Title: The T-Knock filter for fast high-dimensional variable selection with FDR control
+Package: trex
+Title: The T-Rex selector for fast high-dimensional variable selection with FDR control
 Version: 0.0.0.9000
 Date: 2022-06-14
 Description: Performs fast variable selection in high-dimensional settings while controlling the 
@@ -13,9 +13,9 @@ Authors@R:
     person("Michael", "Muma", , "michael.muma@tu-darmstadt.de", role = "aut")
     )
 Maintainer: Jasin Machkour <jasin.machkour@tu-darmstadt.de>
-URL: https://github.com/jasinmachkour/tknock,
+URL: https://github.com/jasinmachkour/trex,
      https://arxiv.org/abs/2110.06048
-BugReports: https://github.com/jasinmachkour/tknock/issues
+BugReports: https://github.com/jasinmachkour/trex/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

@@ -8,7 +8,7 @@
 #' @param K Number of random experiments.
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix.
-#' @param method 'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.
+#' @param method 'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #' @param lambda_2_lars lambda_2-value for LARS-based Elastic Net.
@@ -50,7 +50,7 @@ random_experiments <- function(X,
                                K = 20,
                                T_stop = 1,
                                num_dummies = ncol(X),
-                               method = "tknock",
+                               method = "trex",
                                type = "lar",
                                corr_max = 0.5,
                                lambda_2_lars = NULL,
@@ -64,7 +64,7 @@ random_experiments <- function(X,
                                seed = NULL,
                                eps = .Machine$double.eps) {
   # Error control
-  method <- match.arg(method, c("tknock", "tknock+GVS"))
+  method <- match.arg(method, c("trex", "trex+GVS"))
 
   type <- match.arg(type, c("lar", "lasso"))
 
@@ -102,7 +102,7 @@ random_experiments <- function(X,
     stop("The number of random experiments 'K' must be an integer larger or equal to 2.")
   }
 
-  if (method == "tknock") {
+  if (method == "trex") {
     if (length(num_dummies) != 1 ||
       num_dummies %% 1 != 0 ||
       num_dummies < 1) {
@@ -114,7 +114,7 @@ random_experiments <- function(X,
   p <- ncol(X)
 
   # Continue error control
-  if (method == "tknock+GVS") {
+  if (method == "trex+GVS") {
     if (length(num_dummies) != 1 ||
       num_dummies %% p != 0 ||
       num_dummies < 1) {
@@ -135,7 +135,7 @@ random_experiments <- function(X,
     )
   }
 
-  if (method == "tknock+GVS") {
+  if (method == "trex+GVS") {
     if (length(corr_max) != 1 ||
       corr_max < 0 ||
       corr_max > 1) {

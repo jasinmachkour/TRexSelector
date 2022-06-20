@@ -6,13 +6,13 @@ test_that("error control for inputs method and type works", {
   y <- drop(Gauss_data$y)
 
   # Tests
-  expect_error(tknock(
+  expect_error(trex(
     X = X,
     y = y,
     method = "test"
   ))
 
-  expect_error(tknock(
+  expect_error(trex(
     X = X,
     y = y,
     type = "test"
@@ -29,7 +29,7 @@ test_that("error control for input X works", {
   X_w_NA[sample(prod(dim(X)), size = 100)] <- NA
 
   # Tests
-  expect_error(tknock(
+  expect_error(trex(
     X = drop(X[, 1]),
     y = y
   ),
@@ -37,7 +37,7 @@ test_that("error control for input X works", {
   fixed = TRUE
   )
 
-  expect_error(tknock(
+  expect_error(trex(
     X = matrix(as.character(X), ncol = ncol(X)),
     y = y
   ),
@@ -45,7 +45,7 @@ test_that("error control for input X works", {
   fixed = TRUE
   )
 
-  expect_error(tknock(
+  expect_error(trex(
     X = matrix(as.factor(X), ncol = ncol(X)),
     y = y
   ),
@@ -54,7 +54,7 @@ test_that("error control for input X works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X_w_NA,
       y = y
     ),
@@ -73,7 +73,7 @@ test_that("error control for input y works", {
   y_w_NA[sample(length(y), size = 10)] <- NA
 
   # Tests
-  expect_error(tknock(
+  expect_error(trex(
     X = X,
     y = cbind(y, y)
   ),
@@ -81,7 +81,7 @@ test_that("error control for input y works", {
   fixed = TRUE
   )
 
-  expect_error(tknock(
+  expect_error(trex(
     X = X,
     y = as.character(y)
   ),
@@ -89,7 +89,7 @@ test_that("error control for input y works", {
   fixed = TRUE
   )
 
-  expect_error(tknock(
+  expect_error(trex(
     X = X,
     y = matrix(as.factor(y), ncol = 1)
   ),
@@ -98,7 +98,7 @@ test_that("error control for input y works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y_w_NA
     ),
@@ -106,7 +106,7 @@ test_that("error control for input y works", {
     fixed = TRUE
   )
 
-  expect_error(tknock(
+  expect_error(trex(
     X = rbind(X, X),
     y = y
   ),
@@ -124,7 +124,7 @@ test_that("error control for input tFDR works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       tFDR = -0.1
@@ -134,7 +134,7 @@ test_that("error control for input tFDR works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       tFDR = -0.1
@@ -153,7 +153,7 @@ test_that("error control for input K works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       K = 1
@@ -163,7 +163,7 @@ test_that("error control for input K works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       K = 20.3
@@ -182,7 +182,7 @@ test_that("error control for input max_num_dummies works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       max_num_dummies = 0
@@ -192,7 +192,7 @@ test_that("error control for input max_num_dummies works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       max_num_dummies = 2.3
@@ -211,10 +211,10 @@ test_that("error control for input corr_max works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       corr_max = -0.1
     ),
     "'corr_max' must have a value between zero and one.",
@@ -222,10 +222,10 @@ test_that("error control for input corr_max works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       corr_max = 1.1
     ),
     "'corr_max' must have a value between zero and one.",
@@ -242,10 +242,10 @@ test_that("error control for input lambda_2_lars works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       lambda_2_lars = c(1, 5, 100)
     ),
     "'lambda_2_lars' must be a number larger than zero.",
@@ -253,10 +253,10 @@ test_that("error control for input lambda_2_lars works", {
   )
 
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
-      method = "tknock+GVS",
+      method = "trex+GVS",
       lambda_2_lars = -3
     ),
     "'lambda_2_lars' must be a number larger than zero.",
@@ -273,7 +273,7 @@ test_that("error control for input parallel_max_cores works", {
 
   # Tests
   expect_error(
-    tknock(
+    trex(
       X = X,
       y = y,
       parallel_process = TRUE,
@@ -296,7 +296,7 @@ test_that("reasonable number of workers is registered for parallel processing", 
 
   # Tests
   expect_message(
-    tknock(
+    trex(
       X = X,
       y = y,
       K = K,

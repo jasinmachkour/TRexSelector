@@ -10,7 +10,7 @@ random_experiments(
   K = 20,
   T_stop = 1,
   num_dummies = ncol(X),
-  method = "tknock",
+  method = "trex",
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
@@ -36,7 +36,7 @@ random_experiments(
 
 \item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.}
+\item{method}{'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 

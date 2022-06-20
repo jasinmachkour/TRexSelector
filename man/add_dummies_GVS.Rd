@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_dummies_GVS.R
 \name{add_dummies_GVS}
 \alias{add_dummies_GVS}
-\title{Add dummy predictors to the original predictor matrix, as required by the T-Knock+GVS filter}
+\title{Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector}
 \usage{
 add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 }
@@ -14,10 +14,10 @@ add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 \item{corr_max}{Maximum allowed correlation between any two predictors from different clusters.}
 }
 \value{
-Enlarged predictor matrix for the T-Knock+GVS filter.
+Enlarged predictor matrix for the T-Rex+GVS selector
 }
 \description{
-Generate num_dummies dummy predictors as required for the T-Knock+GVS filter and append them to the predictor matrix X.
+Generate num_dummies dummy predictors as required for the T-Rex+GVS selector and append them to the predictor matrix X.
 }
 \examples{
 set.seed(123)

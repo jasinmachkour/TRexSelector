@@ -1,4 +1,4 @@
-#' Computes the conservative FDP estimate of the T-Knock filter
+#' Computes the conservative FDP estimate of the T-Rex selector
 #'
 #' @param V Voting level grid.
 #' @param Phi Vector of relative occurrences.

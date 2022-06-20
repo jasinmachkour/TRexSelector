@@ -1,12 +1,12 @@
-#' T-Knock: Selected Variables
+#' Compute set of selected variables
 #'
-#' Computes the set of selected variables and returns the support vector.
+#' Computes the set of selected variables and returns the support vector for the T-Rex selector.
 #'
 #' @param p Number of candidate variables.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
 #' @param FDP_hat_mat Matrix whose rows are the vectors of conservative FDP estimates for each value of the voting level grid.
-#' @param Phi_mat Matrix of relative occurrences as determined by the T-Knock calibration algorithm.
+#' @param Phi_mat Matrix of relative occurrences as determined by the T-Rex calibration algorithm.
 #' @param V Voting level grid.
 #'
 #' @return Support Vector.
@@ -33,7 +33,7 @@ select_var_fun <- function(p,
     }
   }
 
-  # T-Knock: Select variables
+  # T-Rex: Select variables
   FDP_hat_mat[FDP_hat_mat > tFDR] <- Inf
   val_max <- suppressWarnings(max(R_mat[!is.infinite(FDP_hat_mat)]))
   ind_max <- matrix(which(R_mat == val_max, arr.ind = TRUE), ncol = 2)

@@ -168,23 +168,23 @@ pre code {
 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="tknock" class="section level1">
-<h1>tknock</h1>
-<p><strong>Title</strong>: The T-Knock filter for fast high-dimensional variable selection with FDR control</p>
-<p><strong>Description</strong>: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Knock filter paper (available at <a href="https://arxiv.org/abs/2110.06048" class="uri">https://arxiv.org/abs/2110.06048</a>).</p>
+<div id="trex" class="section level1">
+<h1>trex</h1>
+<p><strong>Title</strong>: The T-Rex selector for fast high-dimensional variable selection with FDR control</p>
+<p><strong>Description</strong>: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at <a href="https://arxiv.org/abs/2110.06048" class="uri">https://arxiv.org/abs/2110.06048</a>).</p>
 <p><strong>Note</strong>: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm (<a href="https://github.com/jasinmachkour/tlars">R package</a>) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.</p>
 <p>In the following, we show how to use the package and show you how genome-wide association studies (GWAS) can be performed using the T-Rex selector.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>Before installing the tknock package, you need to install the required tlars package. You can install the tlars package from <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with</p>
+<p>Before installing the trex package, you need to install the required tlars package. You can install the tlars package from <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with</p>
 <pre class="r"><code>install.packages(&quot;devtools&quot;)
 devtools::install_github(&quot;jasinmachkour/tlars&quot;)</code></pre>
-<p>Then, you can install the tknock package with:</p>
-<pre class="r"><code>devtools::install_github(&quot;jasinmachkour/tknock&quot;)</code></pre>
+<p>Then, you can install the trex package with:</p>
+<pre class="r"><code>devtools::install_github(&quot;jasinmachkour/trex&quot;)</code></pre>
 <p>You can open the help pages with</p>
-<pre class="r"><code>library(tknock)
-help(package = &quot;tknock&quot;)
-?tknock
+<pre class="r"><code>library(trex)
+help(package = &quot;trex&quot;)
+?trex
 ?random_experiments
 ?lm_dummy
 ?add_dummies
@@ -192,17 +192,17 @@ help(package = &quot;tknock&quot;)
 ?FDP
 ?TPP
 # etc.</code></pre>
-<p>To cite the package ‘tknock’ in publications use:</p>
-<pre class="r"><code>citation(&quot;tknock&quot;)</code></pre>
+<p>To cite the package ‘trex’ in publications use:</p>
+<pre class="r"><code>citation(&quot;trex&quot;)</code></pre>
 </div>
 </div>
 <div id="quick-start" class="section level1">
 <h1>Quick Start</h1>
-<p>In the following, we illustrate the basic usage of the tknock package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:</p>
+<p>In the following, we illustrate the basic usage of the trex package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:</p>
 <ol style="list-style-type: decimal">
 <li><strong>First</strong>, we generate a high-dimensional Gaussian data set with sparse support:</li>
 </ol>
-<pre class="r"><code>library(tknock)
+<pre class="r"><code>library(trex)
 
 # Setup
 n &lt;- 75 # Number of observations
@@ -226,7 +226,7 @@ set.seed(1234)
 eps &lt;- .Machine$double.eps
 
 # Variable selection via T-Rex
-res &lt;- tknock(X = X, y = y, tFDR = 0.05, verbose = FALSE)
+res &lt;- trex(X = X, y = y, tFDR = 0.05, verbose = FALSE)
 selected_var &lt;- which(res$selected_var &gt; eps)
 paste0(&quot;True active variables: &quot;, paste(as.character(true_actives), collapse = &quot;, &quot;))
 #&gt; [1] &quot;True active variables: 1, 2, 3&quot;
@@ -236,14 +236,14 @@ paste0(&quot;Selected variables: &quot;, paste(as.character(selected_var), colla
 <p>Note that users have to specify the target FDR according to the requirements of their specific applications.</p>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
-<p>For more information and some examples, please check the …</p>
+<p>For more information and some examples, please check the <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html">GitHub-vignette</a>.</p>
 </div>
 <div id="links" class="section level2">
 <h2>Links</h2>
 <p>T-Rex paper: <a href="https://arxiv.org/abs/2110.06048" class="uri">https://arxiv.org/abs/2110.06048</a></p>
-<p>trex package: <a href="https://github.com/jasinmachkour/tknock">GitHub-trex</a>.</p>
-<p>README file:</p>
-<p>Vignette:</p>
+<p>trex package: <a href="https://github.com/jasinmachkour/trex">GitHub-trex</a>.</p>
+<p>README file: <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/README.html">GitHub-readme</a>.</p>
+<p>Vignette: <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html">GitHub-vignette</a>.</p>
 <p>tlars package: <a href="https://github.com/jasinmachkour/tlars">GitHub-tlars</a>.</p>
 </div>
 </div>

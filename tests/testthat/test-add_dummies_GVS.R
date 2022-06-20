@@ -120,7 +120,7 @@ test_that("dimension of output (i.e., predictor matrix containing dummies) is p 
   p <- ncol(X)
   num_dummies <- 2 * p
 
-  # Create dummies for T-Knock+GVS filter
+  # Create dummies for the T-Rex+GVS selector
   X_Dummy <- add_dummies_GVS(
     X = X,
     num_dummies = num_dummies

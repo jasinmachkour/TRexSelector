@@ -1,6 +1,6 @@
-#' Run the T-Knock filter
+#' Run the T-Rex selector
 #'
-#' Run the T-Knock filter. The T-Knock filter performs fast variable selection in high-dimensional settings while
+#' Run the T-Rex selector The T-Rex selector performs fast variable selection in high-dimensional settings while
 #' controlling the false discovery rate (FDR) at a user-defined target level.
 #'
 #' @param X Real valued predictor matrix.
@@ -11,7 +11,7 @@
 #' (i.e., num_dummies = max_num_dummies * p).
 #' @param max_T_stop If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2),
 #' where n is the number of data points/observations.
-#' @param method 'tknock' for the T-Knock filter and 'tknock+GVS' for the T-Knock+GVS filter.
+#' @param method 'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector.
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #' @param lambda_2_lars lambda_2-value for LARS-based Elastic Net.
@@ -35,26 +35,26 @@
 #' X <- Gauss_data$X
 #' y <- c(Gauss_data$y)
 #' set.seed(1234)
-#' res <- tknock(X = X, y = y)
+#' res <- trex(X = X, y = y)
 #' selected_var <- res$selected_var
 #' selected_var
-tknock <- function(X,
-                   y,
-                   tFDR = 0.2,
-                   K = 20,
-                   max_num_dummies = 10,
-                   max_T_stop = TRUE,
-                   method = "tknock",
-                   type = "lar",
-                   corr_max = 0.5,
-                   lambda_2_lars = NULL,
-                   parallel_process = FALSE,
-                   parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
-                   seed = NULL,
-                   eps = .Machine$double.eps,
-                   verbose = TRUE) {
+trex <- function(X,
+                 y,
+                 tFDR = 0.2,
+                 K = 20,
+                 max_num_dummies = 10,
+                 max_T_stop = TRUE,
+                 method = "trex",
+                 type = "lar",
+                 corr_max = 0.5,
+                 lambda_2_lars = NULL,
+                 parallel_process = FALSE,
+                 parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
+                 seed = NULL,
+                 eps = .Machine$double.eps,
+                 verbose = TRUE) {
   # Error control
-  method <- match.arg(method, c("tknock", "tknock+GVS"))
+  method <- match.arg(method, c("trex", "trex+GVS"))
 
   type <- match.arg(type, c("lar", "lasso"))
 
@@ -104,7 +104,7 @@ tknock <- function(X,
     stop("'max_num_dummies' must be an integer larger or equal to 1.")
   }
 
-  if (method == "tknock+GVS") {
+  if (method == "trex+GVS") {
     if (length(corr_max) != 1 ||
       corr_max < 0 ||
       corr_max > 1) {
@@ -225,7 +225,7 @@ tknock <- function(X,
       num_dummies = num_dummies
     )
 
-    # Print number of appended dummies by the extended calibration algorithm of the T-Knock filter
+    # Print number of appended dummies by the extended calibration algorithm of the T-Rex selector
     if (verbose) {
       cat(paste("\n Appended dummies:", num_dummies, "\n"))
     }
@@ -297,13 +297,13 @@ tknock <- function(X,
     )
     FDP_hat_mat <- rbind(FDP_hat_mat, FDP_hat)
 
-    # Print the number of by the extended calibration algorithm of the T-Knock filter included dummies along the selection process before stopping
+    # Print the number of by the extended calibration algorithm of the T-Rex selector included dummies along the selection process before stopping
     if (verbose) {
       cat(paste("\n Included dummies before stopping:", T_stop, "\n"))
     }
   }
 
-  # T-Knock: Select variables
+  # T-Rex: Select variables
   res_T_dummy <- select_var_fun(
     p = p,
     tFDR = tFDR,
