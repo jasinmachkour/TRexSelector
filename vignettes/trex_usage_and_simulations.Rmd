@@ -23,7 +23,7 @@ toc-title: "Table of Contents"
 csl: the-annals-of-statistics.csl # https://www.zotero.org/styles
 bibliography: refs.bib
 nocite: |
-  @machkour2021terminating, @efron2004least, @tibshirani1996regression
+  @machkour2021terminating, @efron2004least, @tibshirani1996regression, @zou2005regularization
 vignette: |
   %\VignetteKeyword{T-Rex selector, false discovery rate (FDR) control, T-LARS, high-dimensional variable selection, martingale theory, genome-wide association studies (GWAS)}
   %\VignetteEncoding{UTF-8}
@@ -48,7 +48,7 @@ options(width = 80)
 
 -----------
 # Motivation
-The T-Rex selector performs fast variable selection in large-scale high-dimensional settings. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+The T-Rex selector performs fast variable/feature selection in large-scale high-dimensional settings. It provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level. In addition to controlling the FDR, it also achieves a high true positive rate (TPR) (i.e., power) by maximizing the number of selected variables. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
 <!-- Include Latex macros -->
 $$
@@ -64,20 +64,20 @@ $$
 $$
 
 # Installation
-Before installing the trex package, you need to install the required tlars package. You can install the tlars package from [GitHub](https://github.com/jasinmachkour/tlars) with 
+Before installing the ‘trex’ package, you need to install the required ‘trex’ package. You can install the ‘tlars’ package from [GitHub](https://github.com/jasinmachkour/tlars) with 
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the trex package with:
+Then, you can install the ‘trex’ package with:
 
 ``` r
 devtools::install_github("jasinmachkour/trex")
 ```
 
-You can open the help pages with
+You can open the help pages with:
 ```{r, eval=FALSE}
 library(trex)
 help(package = "trex")
@@ -97,7 +97,7 @@ citation("trex")
 ```
 
 # Quick Start
-In the following, we illustrate the basic usage of the trex package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:
+This section illustrates the basic usage of the ‘trex’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
@@ -105,12 +105,12 @@ In the following, we illustrate the basic usage of the trex package to perform F
 library(trex)
 
 # Setup
-n <- 75 # Number of observations
-p <- 150 # Number of variables
-num_act <- 3 # Number of true active variables
-beta <- c(rep(1, times = num_act), rep(0, times = p - num_act)) # Coefficient vector
-true_actives <- which(beta > 0) # Indices of true active variables
-num_dummies <- p # Number of dummy predictors (or dummies)
+n <- 75 # number of observations
+p <- 150 # number of variables
+num_act <- 3 # number of true active variables
+beta <- c(rep(1, times = num_act), rep(0, times = p - num_act)) # coefficient vector
+true_actives <- which(beta > 0) # indices of true active variables
+num_dummies <- p # number of dummy predictors (also referred to as dummies)
 
 # Generate Gaussian data
 set.seed(123)
@@ -118,7 +118,7 @@ X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 y <- X %*% beta + stats::rnorm(n)
 ```
 
-2. **Second**, we perform FDR-controlled variable selection using the T-Rex selector with a target FDR of 5%:
+2. **Second**, we perform FDR-controlled variable selection using the T-Rex selector for a target FDR of 5%:
 
 ```{r}
 # Seed
@@ -134,13 +134,13 @@ paste0("True active variables: ", paste(as.character(true_actives), collapse = "
 paste0("Selected variables: ", paste(as.character(selected_var), collapse = ", "))
 ```
 
-So, with a target FDR of 5%, the T-Rex selector has selected all true active variables and there is no false positive in this example.
+So, for a preset target FDR of 5%, the T-Rex selector has selected all true active variables and there are no false positives in this example.
 
-Note that users have to specify the target FDR according to the requirements of their specific applications.
+Note that users have to choose the target FDR according to the requirements of their specific applications.
 
 # FDR and TPR
 ## False discovery rate (FDR) and true positive rate (TPR)
-In the following, we give a mathematical definition of two important metrics in variable selection: the false discovery rate (FDR) and the true positive rate (TPR):
+We give a mathematical definition of two important metrics in variable selection, i.e., the false discovery rate (FDR) and the true positive rate (TPR):
 
 **Definitions** (FDR and TPR)
 Let $\widehat{\A} \subseteq \lbrace 1, \ldots, p \rbrace$ be the set of selected variables, $\A \subseteq \lbrace 1, \ldots, p \rbrace$ the set of true active variables, $| \widehat{\A} |$ the cardinality of $\widehat{\A}$, and define $1 \lor a \coloneqq \max\lbrace 1, a \rbrace$, $a \in \mathbb{R}$. Then, the false discovery rate (FDR) and the true positive rate (TPR) are defined by
@@ -152,10 +152,10 @@ and
 $$
 \TPR \coloneqq \mathbb{E} \big[ \TPP \big] \coloneqq \mathbb{E} \left[ \dfrac{| \A  \cap \widehat{\A} |}{1 \lor | \A |} \right],
 $$
-respectively.
+respectively. Ideally, the $\FDR = 0$ and the $\TPR = 1$. In practice, this is not always possible. Therefore, the FDR is controlled on a sufficiently low level, while the TPR is maximized. 
 
 # Simulations
-Let us have a look at the behavior of the T-Rex selector for different choices of the target FDR. We conduct Monte Carlo simulations and plot the resulting averaged FDP and TPP over the target FDR. Note that the averaged FDP and TPP are estimates of the FDR and TPR, respectively:
+Let us have a look at the behavior of the T-Rex selector for different choices of the target FDR. We conduct Monte Carlo simulations and plot the resulting averaged false discovery proportions (FDP) and true positive proportions (TPP) over the target FDR. Note that the averaged FDP and TPP are estimates of the FDR and TPR, respectively:
 
 ```{r}
 # Computations might take up to 10 minutes... Please wait... 
@@ -222,7 +222,7 @@ FDR_vs_tFDR <-
     scale_x_continuous(breaks = tFDR_vec_percent, minor_breaks = c(), limits = c(tFDR_vec_percent[1], tFDR_vec_percent[length(tFDR_vec_percent)])) +
     scale_y_continuous(breaks = seq(0, 100, by = 10), minor_breaks = c(), limits = c(0, 100)) +
     geom_line(size = 1.5, colour = "#336C68") +
-    geom_abline(slope = 1) +
+    geom_abline(slope = 1, colour = "red", linetype = 2, size = 1) +
     geom_point(size = 2.5, colour = "#336C68") +
     theme_bw(base_size = 16) +
     theme(panel.background = element_rect(fill = "white", color = "black", size = 1)) +
@@ -243,7 +243,7 @@ TPR_vs_tFDR <-
 FDR_vs_tFDR + TPR_vs_tFDR
 ```
 
-We observe that with growing target FDR the FDR and TPR increase. Moreover, we see that the T-Rex selector always controls the FDR (green line is always below the black reference line, i.e., maximum allowed value for the FDR). For more details and discussions on these observations, we refer the interested reader to the original T-Rex paper [@machkour2021terminating].
+We observe that the T-Rex selector always controls the FDR (green line is always below the red and dashed reference line, i.e., maximum allowed value for the FDR). For more details and discussions, we refer the interested reader to the T-Rex paper [@machkour2021terminating].
 
 # The T-Rex Framework
 The general steps that define the \textit{T-Rex} framework are illustrated in Figure 1. The key idea is to design randomized controlled experiments where fake variables, so-called dummies, act as a negative control group in the variable selection process.
@@ -252,7 +252,7 @@ The general steps that define the \textit{T-Rex} framework are illustrated in Fi
 knitr::include_graphics("./figures/T-Rex_framework.png")
 ```
 
-Within the \textit{T-Rex} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green) and non-active variables (red) are represented to be clearly separated within the predictor matrix. Note that, we illustrate the enlarged predictor in this structured fashion for reasons of simplicity. In practice, this is rarely the case. The dummy variables (yellow) compete with the given input variables in $\X$ to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least] or the Lasso [@tibshirani1996regression]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ dummies is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing leads to including more null-variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. The calibration process, that is not described in detail here, ensures that the number of included dummies $T^{*}$ after which the forward selection process is terminated and the voting level $v^{*}$ are determined such that the FDR is controlled at the user-defined target FDR level $\alpha$.
+Within the \textit{T-Rex} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green), non-active (null) variables (red), and dummies (yellow) are illustrated as blocks within the predictor matrix. Note that this is only for visualization purposes and in practice the active and null variables are interspersed. In the random experiments, the dummy variables (yellow) compete with the given input variables in $\X$ (green and red) to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least], the Lasso [@tibshirani1996regression], or the elastic net [@zou2005regularization]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ dummies is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing the forward selection algorithm, beyond some point, only leads to including more null variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. As detailed in [@machkour2021terminating], the calibration process ensures that the FDR is controlled at the user-defined level $\alpha$ while maximizing the TPR by determining the optimal voting level $v^{*}$ and number of included dummies $T^{*}$ after which the forward selection process is terminated.
 
 ```{r EnlargedPredictorMatrix, echo=FALSE, fig.cap="Figure 2: The enlarged predictor matrix (predictor matrix with dummies).", out.width = '65%'}
 knitr::include_graphics("./figures/predictor_matrix_with_dummies.png")

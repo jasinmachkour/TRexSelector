@@ -173,15 +173,15 @@ pre code {
 <p><strong>Title</strong>: The T-Rex selector for fast high-dimensional variable selection with FDR control</p>
 <p><strong>Description</strong>: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at <a href="https://arxiv.org/abs/2110.06048" class="uri">https://arxiv.org/abs/2110.06048</a>).</p>
 <p><strong>Note</strong>: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm (<a href="https://github.com/jasinmachkour/tlars">R package</a>) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.</p>
-<p>In the following, we show how to use the package and show you how genome-wide association studies (GWAS) can be performed using the T-Rex selector.</p>
+<p>In the following sections, we show you how to install and use the package.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>Before installing the trex package, you need to install the required tlars package. You can install the tlars package from <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with</p>
+<p>Before installing the ‘trex’ package, you need to install the required ‘trex’ package. You can install the ‘tlars’ package from <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with</p>
 <pre class="r"><code>install.packages(&quot;devtools&quot;)
 devtools::install_github(&quot;jasinmachkour/tlars&quot;)</code></pre>
-<p>Then, you can install the trex package with:</p>
+<p>Then, you can install the ‘trex’ package with:</p>
 <pre class="r"><code>devtools::install_github(&quot;jasinmachkour/trex&quot;)</code></pre>
-<p>You can open the help pages with</p>
+<p>You can open the help pages with:</p>
 <pre class="r"><code>library(trex)
 help(package = &quot;trex&quot;)
 ?trex
@@ -198,26 +198,26 @@ help(package = &quot;trex&quot;)
 </div>
 <div id="quick-start" class="section level1">
 <h1>Quick Start</h1>
-<p>In the following, we illustrate the basic usage of the trex package to perform FDR-controlled variable selection in large-scale high-dimensional settings using the T-Rex selector:</p>
+<p>This section illustrates the basic usage of the ‘trex’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.</p>
 <ol style="list-style-type: decimal">
 <li><strong>First</strong>, we generate a high-dimensional Gaussian data set with sparse support:</li>
 </ol>
 <pre class="r"><code>library(trex)
 
 # Setup
-n &lt;- 75 # Number of observations
-p &lt;- 150 # Number of variables
-num_act &lt;- 3 # Number of true active variables
-beta &lt;- c(rep(1, times = num_act), rep(0, times = p - num_act)) # Coefficient vector
-true_actives &lt;- which(beta &gt; 0) # Indices of true active variables
-num_dummies &lt;- p # Number of dummy predictors (or dummies)
+n &lt;- 75 # number of observations
+p &lt;- 150 # number of variables
+num_act &lt;- 3 # number of true active variables
+beta &lt;- c(rep(1, times = num_act), rep(0, times = p - num_act)) # coefficient vector
+true_actives &lt;- which(beta &gt; 0) # indices of true active variables
+num_dummies &lt;- p # number of dummy predictors (also referred to as dummies)
 
 # Generate Gaussian data
 set.seed(123)
 X &lt;- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 y &lt;- X %*% beta + stats::rnorm(n)</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><strong>Second</strong>, we perform FDR-controlled variable selection using the T-Rex selector with a target FDR of 5%:</li>
+<li><strong>Second</strong>, we perform FDR-controlled variable selection using the T-Rex selector for a target FDR of 5%:</li>
 </ol>
 <pre class="r"><code># Seed
 set.seed(1234)
@@ -232,8 +232,8 @@ paste0(&quot;True active variables: &quot;, paste(as.character(true_actives), co
 #&gt; [1] &quot;True active variables: 1, 2, 3&quot;
 paste0(&quot;Selected variables: &quot;, paste(as.character(selected_var), collapse = &quot;, &quot;))
 #&gt; [1] &quot;Selected variables: 1, 2, 3&quot;</code></pre>
-<p>So, with a target FDR of 5%, the T-Rex selector has selected all true active variables and there is no false positive in this example.</p>
-<p>Note that users have to specify the target FDR according to the requirements of their specific applications.</p>
+<p>So, for a preset target FDR of 5%, the T-Rex selector has selected all true active variables and there are no false positives in this example.</p>
+<p>Note that users have to choose the target FDR according to the requirements of their specific applications.</p>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
 <p>For more information and some examples, please check the <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html">GitHub-vignette</a>.</p>
@@ -241,10 +241,10 @@ paste0(&quot;Selected variables: &quot;, paste(as.character(selected_var), colla
 <div id="links" class="section level2">
 <h2>Links</h2>
 <p>T-Rex paper: <a href="https://arxiv.org/abs/2110.06048" class="uri">https://arxiv.org/abs/2110.06048</a></p>
-<p>trex package: <a href="https://github.com/jasinmachkour/trex">GitHub-trex</a>.</p>
+<p>‘trex’ package: <a href="https://github.com/jasinmachkour/trex">GitHub-trex</a>.</p>
 <p>README file: <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/README.html">GitHub-readme</a>.</p>
 <p>Vignette: <a href="https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html">GitHub-vignette</a>.</p>
-<p>tlars package: <a href="https://github.com/jasinmachkour/tlars">GitHub-tlars</a>.</p>
+<p>‘tlars’ package: <a href="https://github.com/jasinmachkour/tlars">GitHub-tlars</a>.</p>
 </div>
 </div>
 
