@@ -1,6 +1,6 @@
 #' Compute set of selected variables
 #'
-#' Computes the set of selected variables and returns the support vector for the T-Rex selector.
+#' Computes the set of selected variables and returns the estimated support vector for the T-Rex selector.
 #'
 #' @param p Number of candidate variables.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
@@ -9,7 +9,7 @@
 #' @param Phi_mat Matrix of relative occurrences as determined by the T-Rex calibration algorithm.
 #' @param V Voting level grid.
 #'
-#' @return Support Vector.
+#' @return Estimated support vector.
 select_var_fun <- function(p,
                            tFDR,
                            T_stop,

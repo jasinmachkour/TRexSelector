@@ -1,3 +1,9 @@
+## Changes in trex version 0.0.1 2022-07-22)
+
+* First release:
+
+  - Polish pre-release version.
+
 ## Changes in trex version 0.0.0.9000 2022-06-13)
 
 * Initial pre-release version contains five major functions for executing the T-Rex selector (and/or executing its major building blocks separately):

@@ -17,21 +17,27 @@ output:
 
 **Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at https://arxiv.org/abs/2110.06048).
 
-**Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+**Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://CRAN.R-project.org/package=tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
 In the following sections, we show you how to install and use the package.
 
 ## Installation
-Before installing the ‘trex’ package, you need to install the required ‘trex’ package. You can install the ‘tlars’ package from [GitHub](https://github.com/jasinmachkour/tlars) with 
+Before installing the 'trex' package, you need to install the required 'trex' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
 
-``` r
+
+```r
+# Install stable version from CRAN
+install.packages("tlars")
+
+# Install development version from GitHub
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the ‘trex’ package with:
+Then, you can install the 'trex' package with:
 
-``` r
+
+```r
 devtools::install_github("jasinmachkour/trex")
 ```
 
@@ -50,14 +56,14 @@ help(package = "trex")
 # etc.
 ```
 
-To cite the package ‘trex’ in publications use:
+To cite the package 'trex' in publications use:
 
 ```r
 citation("trex")
 ```
 
 # Quick Start
-This section illustrates the basic usage of the ‘trex’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
+This section illustrates the basic usage of the 'trex' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
@@ -108,10 +114,12 @@ For more information and some examples, please check the [GitHub-vignette](https
 ## Links
 T-Rex paper: https://arxiv.org/abs/2110.06048
 
-‘trex’ package: [GitHub-trex](https://github.com/jasinmachkour/trex).
+'trex' package: [GitHub-trex](https://github.com/jasinmachkour/trex).
 
 README file: [GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/README.html).
 
 Vignette: [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html).
 
-‘tlars’ package: [GitHub-tlars](https://github.com/jasinmachkour/tlars).
+'tlars' package: [CRAN-tlars](https://CRAN.R-project.org/package=tlars) and [GitHub-tlars](https://github.com/jasinmachkour/tlars).
+
+

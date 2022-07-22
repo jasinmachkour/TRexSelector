@@ -1,4 +1,6 @@
-^tknock\.Rproj$
+^trex\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
+^README\.html$
+^cran-comments\.md$

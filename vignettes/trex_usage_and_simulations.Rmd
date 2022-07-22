@@ -32,6 +32,9 @@ vignette: |
 ---
 
 ```{r, include = FALSE}
+# Store user's options()
+old_options <- options()
+
 library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -48,7 +51,7 @@ options(width = 80)
 
 -----------
 # Motivation
-The T-Rex selector performs fast variable/feature selection in large-scale high-dimensional settings. It provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level. In addition to controlling the FDR, it also achieves a high true positive rate (TPR) (i.e., power) by maximizing the number of selected variables. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://github.com/jasinmachkour/tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+The T-Rex selector performs fast variable/feature selection in large-scale high-dimensional settings. It provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level. In addition to controlling the FDR, it also achieves a high true positive rate (TPR) (i.e., power) by maximizing the number of selected variables. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://CRAN.R-project.org/package=tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
 
 <!-- Include Latex macros -->
 $$
@@ -64,16 +67,20 @@ $$
 $$
 
 # Installation
-Before installing the ‘trex’ package, you need to install the required ‘trex’ package. You can install the ‘tlars’ package from [GitHub](https://github.com/jasinmachkour/tlars) with 
+Before installing the 'trex' package, you need to install the required 'trex' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
 
-``` r
+```{r, eval=FALSE}
+# Install stable version from CRAN
+install.packages("tlars")
+
+# Install development version from GitHub
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the ‘trex’ package with:
+Then, you can install the 'trex' package with:
 
-``` r
+```{r, eval=FALSE}
 devtools::install_github("jasinmachkour/trex")
 ```
 
@@ -91,13 +98,13 @@ help(package = "trex")
 # etc.
 ```
 
-To cite the package ‘trex’ in publications use:
+To cite the package 'trex' in publications use:
 ```{r, eval=FALSE}
 citation("trex")
 ```
 
 # Quick Start
-This section illustrates the basic usage of the ‘trex’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
+This section illustrates the basic usage of the 'trex' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
@@ -263,19 +270,7 @@ For a more detailed description of Figures 1 and 2 and more details on the T-Rex
 # References {-}
 <!-- <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0px;"></div> -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r, include = FALSE}
+# Reset user's options()
+options(old_options)
+```

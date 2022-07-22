@@ -357,3 +357,22 @@ test_that("the user is informed that the entire solution path is computed if ear
     fixed = TRUE
   )
 })
+
+# 11
+test_that("running lm_dummy() also works for low-dimensional data (i.e., fewer variables than samples)", {
+  # Setup and data generation
+  n <- 300
+  p <- 100
+  X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+  beta <- c(rep(5, times = 3), rep(0, times = p - 3))
+  y <- X %*% beta + stats::rnorm(n)
+
+  # Tests
+  expect_error(
+    lm_dummy(
+      X = X,
+      y = y
+    ),
+    NA
+  )
+})

@@ -349,6 +349,9 @@ test_that("error control for input parallel_max_cores works", {
 
 # 11
 test_that("reasonable number of workers is registered for parallel processing", {
+  # Skip this test on CRAN
+  skip_on_cran()
+
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -382,6 +385,9 @@ test_that("reasonable number of workers is registered for parallel processing", 
 
 # 12
 test_that("error control for input parallel_process works", {
+  # Skip this test on CRAN
+  skip_on_cran()
+
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -433,5 +439,24 @@ test_that("error control for input lars_state_list works", {
     ),
     "Length of 'lars_state_list' must be equal to number of random experiments 'K'.",
     fixed = TRUE
+  )
+})
+
+# 14
+test_that("running random_experiments() also works for low-dimensional data (i.e., fewer variables than samples)", {
+  # Setup and data generation
+  n <- 300
+  p <- 100
+  X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+  beta <- c(rep(5, times = 3), rep(0, times = p - 3))
+  y <- X %*% beta + stats::rnorm(n)
+
+  # Tests
+  expect_error(
+    random_experiments(
+      X = X,
+      y = y
+    ),
+    NA
   )
 })

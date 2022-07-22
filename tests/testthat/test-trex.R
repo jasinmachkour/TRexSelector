@@ -287,6 +287,9 @@ test_that("error control for input parallel_max_cores works", {
 
 # 10
 test_that("reasonable number of workers is registered for parallel processing", {
+  # Skip this test on CRAN
+  skip_on_cran()
+
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -315,5 +318,25 @@ test_that("reasonable number of workers is registered for parallel processing", 
       " (# physical cores) ...\n"
     ),
     fixed = TRUE
+  )
+})
+
+# 11
+test_that("running trex() also works for low-dimensional data (i.e., fewer variables than samples)", {
+  # Setup and data generation
+  n <- 300
+  p <- 100
+  X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
+  beta <- c(rep(5, times = 3), rep(0, times = p - 3))
+  y <- X %*% beta + stats::rnorm(n)
+
+  # Tests
+  expect_error(
+    trex(
+      X = X,
+      y = y,
+      tFDR = 0.05
+    ),
+    NA
   )
 })

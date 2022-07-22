@@ -6,7 +6,7 @@
 #' @param num_dummies Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #'
-#' @return Enlarged predictor matrix for the T-Rex+GVS selector
+#' @return Enlarged predictor matrix for the T-Rex+GVS selector.
 #'
 #' @importFrom stats cov as.dist hclust cutree aggregate
 #' @importFrom MASS mvrnorm

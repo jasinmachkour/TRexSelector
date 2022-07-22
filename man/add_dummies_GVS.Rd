@@ -14,7 +14,7 @@ add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 \item{corr_max}{Maximum allowed correlation between any two predictors from different clusters.}
 }
 \value{
-Enlarged predictor matrix for the T-Rex+GVS selector
+Enlarged predictor matrix for the T-Rex+GVS selector.
 }
 \description{
 Generate num_dummies dummy predictors as required for the T-Rex+GVS selector and append them to the predictor matrix X.

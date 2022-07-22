@@ -20,8 +20,8 @@ select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 \item{V}{Voting level grid.}
 }
 \value{
-Support Vector.
+Estimated support vector.
 }
 \description{
-Computes the set of selected variables and returns the support vector for the T-Rex selector.
+Computes the set of selected variables and returns the estimated support vector for the T-Rex selector.
 }

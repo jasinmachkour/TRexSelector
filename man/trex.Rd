@@ -57,7 +57,7 @@ where n is the number of data points/observations.}
 \item{verbose}{Logical. If TRUE progress in computations is shown.}
 }
 \value{
-A list containing the support vector, and the values of T and L as determined by the extended calibration algorithm.
+A list containing the estimated support vector and additional information, including the number of used dummies and the number of included dummies before stopping.
 }
 \description{
 Run the T-Rex selector The T-Rex selector performs fast variable selection in high-dimensional settings while

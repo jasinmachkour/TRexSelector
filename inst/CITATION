@@ -1,17 +1,17 @@
 citHeader("To cite 'trex' in publications, please use:")
 
 citEntry(entry = "Manual",
-         title        = "{trex: The T-Rex selector for fast high-dimensional variable selection with FDR control}",
+         title        = "{trex: T-Rex Selector: High-Dimensional Variable Selection & FDR Control}",
          author       = personList(as.person("Jasin Machkour"),
                                    as.person("Simon Tien"),
                                    as.person("Daniel P. Palomar"),
                                    as.person("Michael Muma")),
-         note         = "R package version 0.0.0.9000",
+         note         = "R package version 0.0.1",
          year         = "2022",
          url          = "https://github.com/jasinmachkour/trex",
          textVersion  =
            paste("J. Machkour, S. Tien, D. P. Palomar, and M. Muma (2022).",
-                 "trex: The T-Rex selector for fast high-dimensional variable selection with FDR control.", "R package version 0.0.0.9000.", "https://github.com/jasinmachkour/trex")
+                 "trex: T-Rex Selector: High-Dimensional Variable Selection & FDR Control.", "R package version 0.0.1.", "https://github.com/jasinmachkour/trex")
 )
 
 citEntry(entry = "Article",

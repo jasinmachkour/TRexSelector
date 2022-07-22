@@ -1,10 +1,10 @@
 Package: trex
-Title: The T-Rex selector for fast high-dimensional variable selection with FDR control
-Version: 0.0.0.9000
-Date: 2022-06-14
+Title: T-Rex Selector: High-Dimensional Variable Selection & FDR Control
+Version: 0.0.1
+Date: 2022-07-22
 Description: Performs fast variable selection in high-dimensional settings while controlling the 
     false discovery rate (FDR) at a user-defined target level. The package is based on the paper 
-    Machkour, Muma, and Palomar (2021).
+    Machkour, Muma, and Palomar (2021) <arXiv:2110.06048>.
 Authors@R: 
     c(
     person("Jasin", "Machkour", , "jasin.machkour@tu-darmstadt.de", role = c("aut", "cre")),
@@ -20,7 +20,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Suggests: 
     knitr,
     rmarkdown,
@@ -29,16 +29,13 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-    Matrix,
     MASS,
     stats,
-    mvnfast,
     tlars,
     parallel,
     doParallel,
     foreach,
     doRNG,
-    snpStats,
     methods,
     glmnet
 Depends: 

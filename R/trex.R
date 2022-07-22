@@ -22,7 +22,7 @@
 #' @param eps Numerical zero.
 #' @param verbose Logical. If TRUE progress in computations is shown.
 #'
-#' @return A list containing the support vector, and the values of T and L as determined by the extended calibration algorithm.
+#' @return A list containing the estimated support vector and additional information, including the number of used dummies and the number of included dummies before stopping.
 #'
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel
@@ -183,24 +183,26 @@ trex <- function(X,
     LL <- LL + 1
 
     # K Random experiments
-    rand_exp <- random_experiments(
-      X = X,
-      y = y,
-      K = K,
-      T_stop = T_stop,
-      num_dummies = num_dummies,
-      method = method,
-      type = type,
-      corr_max = corr_max,
-      lambda_2_lars = lambda_2_lars,
-      early_stop = TRUE,
-      verbose = verbose,
-      intercept = FALSE,
-      standardize = TRUE,
-      parallel_process = parallel_process,
-      parallel_max_cores = parallel_max_cores,
-      seed = seed,
-      eps = eps
+    suppressWarnings(
+      rand_exp <- random_experiments(
+        X = X,
+        y = y,
+        K = K,
+        T_stop = T_stop,
+        num_dummies = num_dummies,
+        method = method,
+        type = type,
+        corr_max = corr_max,
+        lambda_2_lars = lambda_2_lars,
+        early_stop = TRUE,
+        verbose = verbose,
+        intercept = FALSE,
+        standardize = TRUE,
+        parallel_process = parallel_process,
+        parallel_max_cores = parallel_max_cores,
+        seed = seed,
+        eps = eps
+      )
     )
     phi_T_mat <- rand_exp$phi_T_mat
     rep_osp.mat <- rand_exp$rep_osp.mat
@@ -236,7 +238,7 @@ trex <- function(X,
   Phi_mat <- matrix(Phi, nrow = 1)
 
   if (max_T_stop) {
-    max_T <- ceiling(n / 2)
+    max_T <- min(num_dummies, ceiling(n / 2))
   } else {
     max_T <- num_dummies
   }
@@ -250,25 +252,27 @@ trex <- function(X,
     T_stop <- T_stop + 1
 
     # K Random experiments
-    rand_exp <- random_experiments(
-      X = X,
-      y = y,
-      K = K,
-      T_stop = T_stop,
-      num_dummies = num_dummies,
-      method = method,
-      type = type,
-      corr_max = corr_max,
-      lambda_2_lars = lambda_2_lars,
-      early_stop = TRUE,
-      lars_state_list = rand_exp$lars_state_list,
-      verbose = verbose,
-      intercept = FALSE,
-      standardize = TRUE,
-      parallel_process = parallel_process,
-      parallel_max_cores = parallel_max_cores,
-      seed = seed,
-      eps = eps
+    suppressWarnings(
+      rand_exp <- random_experiments(
+        X = X,
+        y = y,
+        K = K,
+        T_stop = T_stop,
+        num_dummies = num_dummies,
+        method = method,
+        type = type,
+        corr_max = corr_max,
+        lambda_2_lars = lambda_2_lars,
+        early_stop = TRUE,
+        lars_state_list = rand_exp$lars_state_list,
+        verbose = verbose,
+        intercept = FALSE,
+        standardize = TRUE,
+        parallel_process = parallel_process,
+        parallel_max_cores = parallel_max_cores,
+        seed = seed,
+        eps = eps
+      )
     )
     phi_T_mat <- rand_exp$phi_T_mat
     rep_osp.mat <- rand_exp$rep_osp.mat
