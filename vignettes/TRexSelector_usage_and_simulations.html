@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-07-22" />
+<meta name="date" content="2022-08-11" />
 
 <title>The T-Rex Selector: Usage and Simulations</title>
 
@@ -356,7 +356,7 @@ div.tocify {
 <br />
 <sup>#</sup>Technische Universität Darmstadt<br />
 <sup>*</sup>The Hong Kong University of Science and Technology</div></h4>
-<h4 class="date">2022-07-22</h4>
+<h4 class="date">2022-08-11</h4>
 
 </div>
 
@@ -380,18 +380,18 @@ div.tocify {
 </div>
 <div id="installation" class="section level1">
 <h1>Installation</h1>
-<p>Before installing the ‘trex’ package, you need to install the required ‘trex’ package. You can install the ‘tlars’ package from <a href="https://CRAN.R-project.org/package=tlars">CRAN</a> or <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with:</p>
+<p>Before installing the ‘TRexSelector’ package, you need to install the required ‘tlars’ package. You can install the ‘tlars’ package from <a href="https://CRAN.R-project.org/package=tlars">CRAN</a> or <a href="https://github.com/jasinmachkour/tlars">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install stable version from CRAN</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tlars&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install development version from GitHub</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;jasinmachkour/tlars&quot;</span>)</span></code></pre></div>
-<p>Then, you can install the ‘trex’ package with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;jasinmachkour/trex&quot;</span>)</span></code></pre></div>
+<p>Then, you can install the ‘TRexSelector’ package with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;jasinmachkour/TRexSelector&quot;</span>)</span></code></pre></div>
 <p>You can open the help pages with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(trex)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> <span class="st">&quot;trex&quot;</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TRexSelector)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> <span class="st">&quot;TRexSelector&quot;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>?trex</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>?random_experiments</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>?lm_dummy</span>
@@ -400,16 +400,16 @@ div.tocify {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>?FDP</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>?TPP</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># etc.</span></span></code></pre></div>
-<p>To cite the package ‘trex’ in publications use:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;trex&quot;</span>)</span></code></pre></div>
+<p>To cite the package ‘TRexSelector’ in publications use:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;TRexSelector&quot;</span>)</span></code></pre></div>
 </div>
 <div id="quick-start" class="section level1">
 <h1>Quick Start</h1>
-<p>This section illustrates the basic usage of the ‘trex’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.</p>
+<p>This section illustrates the basic usage of the ‘TRexSelector’ package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.</p>
 <ol style="list-style-type: decimal">
 <li><strong>First</strong>, we generate a high-dimensional Gaussian data set with sparse support:</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(trex)</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TRexSelector)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">75</span> <span class="co"># number of observations</span></span>

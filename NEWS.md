@@ -1,10 +1,10 @@
-## Changes in trex version 0.0.1 2022-07-22)
+## Changes in TRexSelector version 0.0.1 2022-08-11)
 
 * First release:
 
   - Polish pre-release version.
 
-## Changes in trex version 0.0.0.9000 2022-06-13)
+## Changes in TRexSelector version 0.0.0.9000 2022-06-13)
 
 * Initial pre-release version contains five major functions for executing the T-Rex selector (and/or executing its major building blocks separately):
 
@@ -25,4 +25,4 @@
   - Phi_prime_fun(); and
   - select_var_fun().
 	
-* Vignette illustrates how the trex package is used.
+* Vignette illustrates how the TRexSelector package is used.

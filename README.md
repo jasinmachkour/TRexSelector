@@ -12,7 +12,7 @@ output:
 
 
 
-# trex
+# TRexSelector
 **Title**: The T-Rex selector for fast high-dimensional variable selection with FDR control
 
 **Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at https://arxiv.org/abs/2110.06048).
@@ -22,7 +22,7 @@ output:
 In the following sections, we show you how to install and use the package.
 
 ## Installation
-Before installing the 'trex' package, you need to install the required 'trex' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
+Before installing the 'TRexSelector' package, you need to install the required 'tlars' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
 
 
 ```r
@@ -34,18 +34,18 @@ install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the 'trex' package with:
+Then, you can install the 'TRexSelector' package with:
 
 
 ```r
-devtools::install_github("jasinmachkour/trex")
+devtools::install_github("jasinmachkour/TRexSelector")
 ```
 
 You can open the help pages with:
 
 ```r
-library(trex)
-help(package = "trex")
+library(TRexSelector)
+help(package = "TRexSelector")
 ?trex
 ?random_experiments
 ?lm_dummy
@@ -56,20 +56,20 @@ help(package = "trex")
 # etc.
 ```
 
-To cite the package 'trex' in publications use:
+To cite the package 'TRexSelector' in publications use:
 
 ```r
-citation("trex")
+citation("TRexSelector")
 ```
 
 # Quick Start
-This section illustrates the basic usage of the 'trex' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
+This section illustrates the basic usage of the 'TRexSelector' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
 
 ```r
-library(trex)
+library(TRexSelector)
 
 # Setup
 n <- 75 # number of observations
@@ -109,16 +109,16 @@ So, for a preset target FDR of 5%, the T-Rex selector has selected all true acti
 Note that users have to choose the target FDR according to the requirements of their specific applications.
 
 ## Documentation
-For more information and some examples, please check the [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html).
+For more information and some examples, please check the [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/trex_usage_and_simulations.html).
 
 ## Links
 T-Rex paper: https://arxiv.org/abs/2110.06048
 
-'trex' package: [GitHub-trex](https://github.com/jasinmachkour/trex).
+'TRexSelector' package: [GitHub-TRexSelector](https://github.com/jasinmachkour/TRexSelector).
 
-README file: [GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/README.html).
+README file: [GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/README.html).
 
-Vignette: [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/trex/blob/main/vignettes/trex_usage_and_simulations.html).
+Vignette: [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/trex_usage_and_simulations.html).
 
 'tlars' package: [CRAN-tlars](https://CRAN.R-project.org/package=tlars) and [GitHub-tlars](https://github.com/jasinmachkour/tlars).
 

@@ -67,7 +67,7 @@ $$
 $$
 
 # Installation
-Before installing the 'trex' package, you need to install the required 'trex' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
+Before installing the 'TRexSelector' package, you need to install the required 'tlars' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
 
 ```{r, eval=FALSE}
 # Install stable version from CRAN
@@ -78,16 +78,16 @@ install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the 'trex' package with:
+Then, you can install the 'TRexSelector' package with:
 
 ```{r, eval=FALSE}
-devtools::install_github("jasinmachkour/trex")
+devtools::install_github("jasinmachkour/TRexSelector")
 ```
 
 You can open the help pages with:
 ```{r, eval=FALSE}
-library(trex)
-help(package = "trex")
+library(TRexSelector)
+help(package = "TRexSelector")
 ?trex
 ?random_experiments
 ?lm_dummy
@@ -98,18 +98,18 @@ help(package = "trex")
 # etc.
 ```
 
-To cite the package 'trex' in publications use:
+To cite the package 'TRexSelector' in publications use:
 ```{r, eval=FALSE}
-citation("trex")
+citation("TRexSelector")
 ```
 
 # Quick Start
-This section illustrates the basic usage of the 'trex' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
+This section illustrates the basic usage of the 'TRexSelector' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
 1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
 
 ```{r}
-library(trex)
+library(TRexSelector)
 
 # Setup
 n <- 75 # number of observations

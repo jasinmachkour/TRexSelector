@@ -1,4 +1,4 @@
 library(testthat)
-library(trex)
+library(TRexSelector)
 
-test_check("trex")
+test_check("TRexSelector")
