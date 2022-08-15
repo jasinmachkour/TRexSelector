@@ -170,7 +170,7 @@ random_experiments <- function(X,
       paste0(
         "For computing ",
         K,
-        " random experiments, it is not useful to register ",
+        " random experiments, it is not useful/possible to register ",
         parallel_max_cores,
         " workers. Setting parallel_max_cores = ",
         min(K, max(

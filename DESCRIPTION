@@ -1,7 +1,7 @@
 Package: TRexSelector
 Title: T-Rex Selector: High-Dimensional Variable Selection & FDR Control
 Version: 0.0.1
-Date: 2022-08-11
+Date: 2022-08-15
 Description: Performs fast variable selection in high-dimensional settings while controlling the 
     false discovery rate (FDR) at a user-defined target level. The package is based on the paper 
     Machkour, Muma, and Palomar (2021) <arXiv:2110.06048>.

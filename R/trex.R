@@ -139,7 +139,7 @@ trex <- function(X,
       paste0(
         "For computing ",
         K,
-        " random experiments, it is not useful to register ",
+        " random experiments, it is not useful/possible to register ",
         parallel_max_cores,
         " workers. Setting parallel_max_cores = ",
         min(K, max(
@@ -168,6 +168,13 @@ trex <- function(X,
   T_stop <- 1
   FDP_hat <- rep(NA, times = V_len)
 
+  # 75% optimization point for determining number of dummies required
+  opt_point <- which(abs(V - 0.75) < eps)
+  if(length(opt_point) == 0){
+    # If 75% optimization point choose closest optimization point lower than 75%
+    opt_point <- length(V[V < 0.75])
+  }
+
   # Setup cluster
   if (parallel_process && foreach::getDoParWorkers() == 1) {
     cl <- parallel::makeCluster(parallel_max_cores)
@@ -177,7 +184,7 @@ trex <- function(X,
   }
 
   while ((LL <= max_num_dummies &&
-    FDP_hat[which(abs(V - 0.75) < eps)] > tFDR) ||
+    FDP_hat[opt_point] > tFDR) ||
     sum(!is.na(FDP_hat)) == 0) {
     num_dummies <- LL * p
     LL <- LL + 1

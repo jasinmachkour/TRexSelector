@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission that addresses the comments on the initial submission. The following changes were made:
+
+ * All unit tests use no more than two cores. In the initial submission, some unit tests used more than two cores. However, these unit tests were skipped on CRAN (testthat::skip_on_cran()). In the current submission, no unit tests are skipped on CRAN.
+ * Functions trex() and random_experiments() were polished.
+
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTEs.
 

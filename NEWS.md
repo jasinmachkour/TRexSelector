@@ -1,4 +1,4 @@
-## Changes in TRexSelector version 0.0.1 2022-08-11)
+## Changes in TRexSelector version 0.0.1 2022-08-15)
 
 * First release:
 

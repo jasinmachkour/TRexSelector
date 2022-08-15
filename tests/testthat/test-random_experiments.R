@@ -349,15 +349,12 @@ test_that("error control for input parallel_max_cores works", {
 
 # 11
 test_that("reasonable number of workers is registered for parallel processing", {
-  # Skip this test on CRAN
-  skip_on_cran()
-
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
   y <- drop(Gauss_data$y)
-  K <- 20
-  parallel_max_cores <- 21
+  K <- 2
+  parallel_max_cores <- 3
 
   # Tests
   expect_message(
@@ -371,7 +368,7 @@ test_that("reasonable number of workers is registered for parallel processing", 
     paste0(
       "For computing ",
       K,
-      " random experiments, it is not useful to register ",
+      " random experiments, it is not useful/possible to register ",
       parallel_max_cores,
       " workers. Setting parallel_max_cores = ",
       min(K, max(
@@ -385,9 +382,6 @@ test_that("reasonable number of workers is registered for parallel processing", 
 
 # 12
 test_that("error control for input parallel_process works", {
-  # Skip this test on CRAN
-  skip_on_cran()
-
   # Setup and data generation
   data("Gauss_data")
   X <- Gauss_data$X
@@ -398,7 +392,8 @@ test_that("error control for input parallel_process works", {
     random_experiments(
       X = X,
       y = y,
-      parallel_process = TRUE
+      parallel_process = TRUE,
+      parallel_max_cores = 2
     ),
     "Computing random experiments in parallel...
             Note that this is only advantageous if you have at least a few thousand predictors and/or data points in 'X'.
