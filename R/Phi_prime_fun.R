@@ -1,6 +1,6 @@
 #' Computes the Deflated Relative Occurrences
 #'
-#' Computes the matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
+#' Computes the vector of deflated relative occurrences for all variables (i.e., j = 1,..., p) and T = T_stop.
 #'
 #' @param p Number of candidate variables.
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
@@ -9,7 +9,7 @@
 #' @param Phi Vector of relative occurrences for all variables (i.e., j = 1,..., p) at T = T_stop.
 #' @param eps Numerical zero.
 #'
-#' @return Matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
+#' @return Vector of deflated relative occurrences for all variables (i.e., j = 1,..., p) and T = T_stop.
 Phi_prime_fun <- function(p,
                           T_stop,
                           num_dummies,
