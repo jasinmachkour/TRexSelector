@@ -1,6 +1,6 @@
 #' Compute set of selected variables
 #'
-#' Computes the set of selected variables and returns the estimated support vector for the T-Rex selector.
+#' Computes the set of selected variables and returns the estimated support vector for the \href{https://doi.org/10.48550/arXiv.2110.06048}{T-Rex} selector.
 #'
 #' @param p Number of candidate variables.
 #' @param tFDR Target FDR level (between 0 and 1, i.e., 0% and 100%).
