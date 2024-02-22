@@ -1,18 +1,14 @@
-#' Computes the conservative FDP estimate of the T-Rex selector
+#' Computes the conservative FDP estimate of the \href{https://doi.org/10.48550/arXiv.2110.06048}{T-Rex} selector
 #'
 #' @param V Voting level grid.
 #' @param Phi Vector of relative occurrences.
 #' @param Phi_prime Vector of deflated relative occurrences.
-#' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
-#' @param num_dummies Number of dummies.
 #' @param eps Numerical zero.
 #'
 #' @return Vector of conservative FDP estimates for each value of the voting level grid.
 fdp_hat <- function(V,
                     Phi,
                     Phi_prime,
-                    T_stop,
-                    num_dummies,
                     eps = .Machine$double.eps) {
   fdp_h <- rep(NA, times = length(V))
   for (i in seq_along(V)) {
