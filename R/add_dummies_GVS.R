@@ -1,6 +1,6 @@
-#' Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector
+#' Add dummy predictors to the original predictor matrix, as required by the \href{https://doi.org/10.23919/EUSIPCO55093.2022.9909883}{T-Rex+GVS} selector
 #'
-#' Generate num_dummies dummy predictors as required for the T-Rex+GVS selector and append them to the predictor matrix X.
+#' Generate num_dummies dummy predictors as required for the \href{https://doi.org/10.23919/EUSIPCO55093.2022.9909883}{T-Rex+GVS} selector and append them to the predictor matrix X.
 #'
 #' @param X Real valued predictor matrix.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.
@@ -55,9 +55,7 @@ add_dummies_GVS <- function(X,
   }
 
   # Add variable names
-  if (is.null(names(X))) {
-    colnames(X) <- paste0("V", seq(p))
-  }
+  colnames(X) <- paste0("V", seq(p))
 
   # Single linkage hierarchical clustering using the sample correlation as the similarity measure
   sigma_X <- stats::cov(X)
@@ -78,6 +76,13 @@ add_dummies_GVS <- function(X,
   for (j in seq(max_clusters)) {
     cluster_sizes[j] <- length(clusters$`clusters$Var`[[j]])
   }
+
+  # Binary cluster identity vectors for T-Rex+GVS+IEN
+  IEN_cl_ind <- lapply(clusters$`clusters$Var`, FUN = function(x) as.numeric(sub(".", "", x)))
+  IEN_cl_id_vectors <- t(sapply(seq_along(IEN_cl_ind), FUN = function(x) {
+    cl_id_vec <- rep(FALSE, times = ncol(X))
+    cl_id_vec[IEN_cl_ind[[x]]] <- TRUE
+    cl_id_vec}))
 
   # Generate dummy predictors and append them to the original predictor matrix X
   w_max <- num_dummies / p
@@ -108,5 +113,10 @@ add_dummies_GVS <- function(X,
     X_Dummy[, seq(w * p + 1, (w + 1) * p)] <- X_p_sub_dummy
   }
 
-  return(X_Dummy)
+  add_dummies_res <- list(X_Dummy = X_Dummy,
+                          max_clusters = max_clusters,
+                          cluster_sizes = cluster_sizes,
+                          IEN_cl_id_vectors = IEN_cl_id_vectors)
+
+  return(add_dummies_res)
 }
