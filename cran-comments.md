@@ -1,3 +1,13 @@
+## Package update
+This is an update of the TRexSelector R package:
+
+  * Version is increased to 1.0.0 (stable version).
+  * Supporting scientific papers were updated.
+  * New methods and extensions of the T-Rex selector were added (e.g., dependency-aware T-Rex, Screen-T-Rex, etc.).
+  * DESCRIPTION, NEWS, README were updated.
+  * Package was polished (vignettes, etc.).
+  
+
 ## Resubmission
 This is a resubmission that addresses the comments on the initial submission. The following changes were made:
 

@@ -27,8 +27,8 @@ Phi_prime_fun(
 \item{eps}{Numerical zero.}
 }
 \value{
-Matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
+Vector of deflated relative occurrences for all variables (i.e., j = 1,..., p) and T = T_stop.
 }
 \description{
-Computes the matrix of deflated relative occurrences for all variables (i.e., j = 1,..., p) and for T = 1, ..., T_stop.
+Computes the vector of deflated relative occurrences for all variables (i.e., j = 1,..., p) and T = T_stop.
 }

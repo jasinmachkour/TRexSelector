@@ -1,6 +1,6 @@
 #' Perform one random experiment
 #'
-#' Run one random experiment of the T-Rex selector, i.e., generates dummies, appends them to the predictor matrix, and runs
+#' Run one random experiment of the T-Rex selector (\doi{10.48550/arXiv.2110.06048}), i.e., generates dummies, appends them to the predictor matrix, and runs
 #' the forward selection algorithm until it is terminated after T_stop dummies have been selected.
 #'
 #' @param X Real valued predictor matrix.
@@ -9,7 +9,14 @@
 #' the forward selection process exactly where it was previously terminated).
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix.
-#' @param method 'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector
+#' @param method 'trex' for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}),
+#' 'trex+GVS' for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}),
+#' 'trex+DA+AR1' for the T-Rex+DA+AR1 selector,
+#' 'trex+DA+equi' for the T-Rex+DA+equi selector,
+#' 'trex+DA+BT' for the T-Rex+DA+BT selector (\doi{10.48550/arXiv.2401.15796}),
+#' 'trex+DA+NN' for the T-Rex+DA+NN selector (\doi{10.48550/arXiv.2401.15139}).
+#' @param GVS_type 'IEN' for the Informed Elastic Net (\doi{10.1109/CAMSAP58249.2023.10403489}),
+#' 'EN' for the ordinary Elastic Net (\doi{10.1111/j.1467-9868.2005.00503.x}).
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
 #' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
 #' @param lambda_2_lars lambda_2-value for LARS-based Elastic Net.
@@ -46,6 +53,7 @@ lm_dummy <- function(X,
                      T_stop = 1,
                      num_dummies = ncol(X),
                      method = "trex",
+                     GVS_type = "IEN",
                      type = "lar",
                      corr_max = 0.5,
                      lambda_2_lars = NULL,
@@ -57,9 +65,11 @@ lm_dummy <- function(X,
   eps <- .Machine$double.eps
 
   # Error control
-  method <- match.arg(method, c("trex", "trex+GVS"))
+  method <- match.arg(method, c("trex", "trex+GVS", "trex+DA+AR1", "trex+DA+equi", "trex+DA+BT", "trex+DA+NN"))
 
   type <- match.arg(type, c("lar", "lasso"))
+
+  GVS_type <- match.arg(GVS_type, c("IEN", "EN"))
 
   if (!is.matrix(X)) {
     stop("'X' must be a matrix.")
@@ -95,7 +105,7 @@ lm_dummy <- function(X,
     }
   }
 
-  if (method == "trex") {
+  if (method == "trex" || method == "trex+DA+AR1" || method == "trex+DA+equi" || method == "trex+DA+BT" || method == "trex+DA+NN") {
     if (length(num_dummies) != 1 ||
       num_dummies %% 1 != 0 ||
       num_dummies < 1) {
@@ -143,17 +153,18 @@ lm_dummy <- function(X,
   if (T_stop == 1 ||
     missing(model_tlars) ||
     is.null(model_tlars)) {
-    if (method == "trex") {
+    if (method == "trex" || method == "trex+DA+AR1" || method == "trex+DA+equi" || method == "trex+DA+BT" || method == "trex+DA+NN") {
       X_Dummy <- add_dummies(
         X = X,
         num_dummies = num_dummies
       )
     } else {
-      X_Dummy <- add_dummies_GVS(
+      GVS_dummies <- add_dummies_GVS(
         X = X,
         num_dummies = num_dummies,
         corr_max = corr_max
       )
+      X_Dummy <- GVS_dummies$X_Dummy
 
       # Ridge regression to determine lambda_2 for elastic net
       if (is.null(lambda_2_lars)) {
@@ -174,13 +185,30 @@ lm_dummy <- function(X,
         lambda_2_lars <- lambda_2_glmnet * n * (1 - alpha) / 2
       }
 
-      # Data modification for Elastic Net
-      p_dummy <- ncol(X_Dummy)
-      X_Dummy <-
-        (1 / sqrt(1 + lambda_2_lars)) * rbind(X_Dummy, diag(rep(sqrt(
-          lambda_2_lars
-        ), times = p_dummy)))
-      y <- append(y, rep(0, times = p_dummy))
+      # Data modification for Elastic Net (EN)
+      if (GVS_type == "EN") {
+        p_dummy <- ncol(X_Dummy)
+        X_Dummy <-
+          (1 / sqrt(1 + lambda_2_lars)) * rbind(X_Dummy, diag(rep(sqrt(
+            lambda_2_lars
+          ), times = p_dummy)))
+        y <- append(y, rep(0, times = p_dummy))
+      }
+
+      # Data modification for Informed Elastic Net (IEN)
+      if (GVS_type == "IEN") {
+        p <- ncol(X)
+        p_dummy <- ncol(X_Dummy)
+        max_clusters <- GVS_dummies$max_clusters
+        cluster_sizes <- GVS_dummies$cluster_sizes
+        IEN_cl_id_vectors <- GVS_dummies$IEN_cl_id_vectors
+        X_Dummy <-
+          sqrt(lambda_2_lars) * rbind((1 / sqrt(lambda_2_lars)) * X_Dummy,
+                                      (1 / sqrt(cluster_sizes)) *
+                                        matrix(rep(IEN_cl_id_vectors, times = p_dummy / p),
+                                               ncol = ncol(IEN_cl_id_vectors) * p_dummy / p))
+        y <- append(y, rep(0, times = max_clusters))
+      }
 
       # Scale data again
       X_Dummy <- scale(X_Dummy)

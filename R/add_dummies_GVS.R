@@ -1,6 +1,6 @@
-#' Add dummy predictors to the original predictor matrix, as required by the \href{https://doi.org/10.23919/EUSIPCO55093.2022.9909883}{T-Rex+GVS} selector
+#' Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883})
 #'
-#' Generate num_dummies dummy predictors as required for the \href{https://doi.org/10.23919/EUSIPCO55093.2022.9909883}{T-Rex+GVS} selector and append them to the predictor matrix X.
+#' Generate num_dummies dummy predictors as required for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}) and append them to the predictor matrix X.
 #'
 #' @param X Real valued predictor matrix.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix. Has to be a multiple of the number of original variables.

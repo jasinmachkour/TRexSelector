@@ -2,9 +2,9 @@
 % Please edit documentation in R/fdp_hat.R
 \name{fdp_hat}
 \alias{fdp_hat}
-\title{Computes the conservative FDP estimate of the T-Rex selector}
+\title{Computes the conservative FDP estimate of the T-Rex selector (\doi{10.48550/arXiv.2110.06048})}
 \usage{
-fdp_hat(V, Phi, Phi_prime, T_stop, num_dummies, eps = .Machine$double.eps)
+fdp_hat(V, Phi, Phi_prime, eps = .Machine$double.eps)
 }
 \arguments{
 \item{V}{Voting level grid.}
@@ -13,15 +13,11 @@ fdp_hat(V, Phi, Phi_prime, T_stop, num_dummies, eps = .Machine$double.eps)
 
 \item{Phi_prime}{Vector of deflated relative occurrences.}
 
-\item{T_stop}{Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.}
-
-\item{num_dummies}{Number of dummies.}
-
 \item{eps}{Numerical zero.}
 }
 \value{
 Vector of conservative FDP estimates for each value of the voting level grid.
 }
 \description{
-Computes the conservative FDP estimate of the T-Rex selector
+Computes the conservative FDP estimate of the T-Rex selector (\doi{10.48550/arXiv.2110.06048})
 }

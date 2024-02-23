@@ -1,49 +1,78 @@
----
-output:
-  html_document:
-    variant: markdown_github
-    keep_md: yes
-  md_document:
-    variant: markdown_github
-  pdf_document: default
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
-
 # TRexSelector
-**Title**: The T-Rex selector for fast high-dimensional variable selection with FDR control
 
-**Description**: It performs fast variable selection in large-scale high-dimensional settings while controlling the false discovery rate (FDR) at a user-defined target level. The package is based on the T-Rex selector paper (available at https://arxiv.org/abs/2110.06048).
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/TRexSelector)](https://CRAN.R-project.org/package=TRexSelector)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/TRexSelector)](https://CRAN.R-project.org/package=TRexSelector)
+![CRAN Downloads
+Total](https://cranlogs.r-pkg.org/badges/grand-total/TRexSelector?color=brightgreen)
 
-**Note**: The T-Rex selector performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://CRAN.R-project.org/package=tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level while maximizing the number of selected variables and, thereby, achieving a high true positive rate (TPR) (i.e., power). The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+**Title**: The T-Rex selector for fast high-dimensional variable
+selection with FDR control
 
-In the following sections, we show you how to install and use the package.
+**Description**: It performs fast variable selection in large-scale
+high-dimensional settings while controlling the false discovery rate
+(FDR) at a user-defined target level.
+
+**Paper**: The package is based on the paper
+
+J. Machkour, M. Muma, and D. P. Palomar, “The terminating-random
+experiments selector: Fast high-dimensional variable selection with
+false discovery rate control,” arXiv preprint arXiv:2110.06048, 2022.
+(<https://doi.org/10.48550/arXiv.2110.06048>)
+
+**Note**: The T-Rex selector performs terminated-random experiments
+(T-Rex) using the T-LARS algorithm ([R
+package](https://CRAN.R-project.org/package=tlars)) and fuses the
+selected active sets of all random experiments to obtain a final set of
+selected variables. The T-Rex selector provably controls the false
+discovery rate (FDR), i.e., the expected fraction of selected false
+positives among all selected variables, at the user-defined target level
+while maximizing the number of selected variables and, thereby,
+achieving a high true positive rate (TPR) (i.e., power). The T-Rex
+selector can be applied in various fields, such as genomics, financial
+engineering, or any other field that requires a fast and FDR-controlling
+variable/feature selection method for large-scale high-dimensional
+settings.
+
+In the following sections, we show you how to install and use the
+package.
 
 ## Installation
-Before installing the 'TRexSelector' package, you need to install the required 'tlars' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
 
+Before installing the ‘TRexSelector’ package, you need to install the
+required ‘tlars’ package. You can install the ‘tlars’ package from
+[CRAN](https://CRAN.R-project.org/package=tlars) (stable version) or
+[GitHub](https://github.com/jasinmachkour/tlars) (developer version)
+with:
 
-```r
-# Install stable version from CRAN
+``` r
+# Option 1: Install stable version from CRAN
 install.packages("tlars")
 
-# Install development version from GitHub
+# Option 2: install developer version from GitHub
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the 'TRexSelector' package with:
+Then, you can install the ‘TRexSelector’ package from
+[CRAN](https://CRAN.R-project.org/package=TRexSelector) (stable version)
+or [GitHub](https://github.com/jasinmachkour/TRexSelector) (developer
+version) with:
 
+``` r
+# Option 1: Install stable version from CRAN
+install.packages("TRexSelector")
 
-```r
+# Option 2: install developer version from GitHub
+install.packages("devtools")
 devtools::install_github("jasinmachkour/TRexSelector")
 ```
 
 You can open the help pages with:
 
-```r
+``` r
 library(TRexSelector)
 help(package = "TRexSelector")
 ?trex
@@ -56,19 +85,22 @@ help(package = "TRexSelector")
 # etc.
 ```
 
-To cite the package 'TRexSelector' in publications use:
+To cite the package ‘TRexSelector’ in publications use:
 
-```r
+``` r
 citation("TRexSelector")
 ```
 
 # Quick Start
-This section illustrates the basic usage of the 'TRexSelector' package to perform FDR-controlled variable selection in large-scale high-dimensional settings based on the T-Rex selector.
 
-1. **First**, we generate a high-dimensional Gaussian data set with sparse support:
+This section illustrates the basic usage of the ‘TRexSelector’ package
+to perform FDR-controlled variable selection in large-scale
+high-dimensional settings based on the T-Rex selector.
 
+1.  **First**, we generate a high-dimensional Gaussian data set with
+    sparse support:
 
-```r
+``` r
 library(TRexSelector)
 
 # Setup
@@ -85,10 +117,10 @@ X <- matrix(stats::rnorm(n * p), nrow = n, ncol = p)
 y <- X %*% beta + stats::rnorm(n)
 ```
 
-2. **Second**, we perform FDR-controlled variable selection using the T-Rex selector for a target FDR of 5%:
+1.  **Second**, we perform FDR-controlled variable selection using the
+    T-Rex selector for a target FDR of 5%:
 
-
-```r
+``` r
 # Seed
 set.seed(1234)
 
@@ -104,22 +136,32 @@ paste0("Selected variables: ", paste(as.character(selected_var), collapse = ", "
 #> [1] "Selected variables: 1, 2, 3"
 ```
 
-So, for a preset target FDR of 5%, the T-Rex selector has selected all true active variables and there are no false positives in this example.
+So, for a preset target FDR of 5%, the T-Rex selector has selected all
+true active variables and there are no false positives in this example.
 
-Note that users have to choose the target FDR according to the requirements of their specific applications.
+Note that users have to choose the target FDR according to the
+requirements of their specific applications.
 
 ## Documentation
-For more information and some examples, please check the [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/trex_usage_and_simulations.html).
+
+For more information and some examples, please check the
+[GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/TRexSelector_usage_and_simulations.html).
 
 ## Links
-T-Rex paper: https://arxiv.org/abs/2110.06048
 
-'TRexSelector' package: [GitHub-TRexSelector](https://github.com/jasinmachkour/TRexSelector).
+T-Rex paper: <https://doi.org/10.48550/arXiv.2110.06048>
 
-README file: [GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/README.html).
+TRexSelector package (stable version):
+[CRAN-TRexSelector](https://CRAN.R-project.org/package=TRexSelector).
 
-Vignette: [GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/trex_usage_and_simulations.html).
+TRexSelector package (developer version):
+[GitHub-TRexSelector](https://github.com/jasinmachkour/TRexSelector).
 
-'tlars' package: [CRAN-tlars](https://CRAN.R-project.org/package=tlars) and [GitHub-tlars](https://github.com/jasinmachkour/tlars).
+README file:
+[GitHub-readme](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/README.html).
 
+Vignette:
+[GitHub-vignette](https://htmlpreview.github.io/?https://github.com/jasinmachkour/TRexSelector/blob/main/vignettes/TRexSelector_usage_and_simulations.html).
 
+tlars package: [CRAN-tlars](https://CRAN.R-project.org/package=tlars)
+and [GitHub-tlars](https://github.com/jasinmachkour/tlars).

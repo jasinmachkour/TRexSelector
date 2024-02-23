@@ -1,10 +1,18 @@
-## Changes in TRexSelector version 0.0.1 2022-08-15)
+## Changes in TRexSelector version 1.0.0 2024-02-23
+
+* Package update (stable version):
+
+  - Update supporting scientific papers.
+  - Add new methods and extensions of the T-Rex selector (e.g., dependency-aware T-Rex, Screen-T-Rex, etc.).
+  - Polish previous version.
+
+## Changes in TRexSelector version 0.0.1 2022-08-15
 
 * First release:
 
   - Polish pre-release version.
 
-## Changes in TRexSelector version 0.0.0.9000 2022-06-13)
+## Changes in TRexSelector version 0.0.0.9000 2022-06-13
 
 * Initial pre-release version contains five major functions for executing the T-Rex selector (and/or executing its major building blocks separately):
 

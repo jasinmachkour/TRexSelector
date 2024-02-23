@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_dummies_GVS.R
 \name{add_dummies_GVS}
 \alias{add_dummies_GVS}
-\title{Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector}
+\title{Add dummy predictors to the original predictor matrix, as required by the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883})}
 \usage{
 add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 }
@@ -17,7 +17,7 @@ add_dummies_GVS(X, num_dummies, corr_max = 0.5)
 Enlarged predictor matrix for the T-Rex+GVS selector.
 }
 \description{
-Generate num_dummies dummy predictors as required for the T-Rex+GVS selector and append them to the predictor matrix X.
+Generate num_dummies dummy predictors as required for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}) and append them to the predictor matrix X.
 }
 \examples{
 set.seed(123)

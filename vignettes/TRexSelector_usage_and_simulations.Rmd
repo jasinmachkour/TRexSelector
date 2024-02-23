@@ -14,16 +14,19 @@ output:
     toc_depth: 1
     toc_float: yes
     css: vignette_styles.css
+    mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML.js"
   prettydoc::html_pretty:
     theme: tactile
     highlight: vignette
     toc: yes
     toc_depth: 2
 toc-title: "Table of Contents"    
-csl: the-annals-of-statistics.csl # https://www.zotero.org/styles
+csl: ieee.csl
 bibliography: refs.bib
 nocite: |
-  @machkour2021terminating, @efron2004least, @tibshirani1996regression, @zou2005regularization
+  @machkour2022terminating, @machkour2024dependency, @machkour2024TRexIndexTracking, @machkour2022TRexGVS,
+  @machkour2023InformedEN, @machkour2023ScreenTRex, @machkour2024sparse, @scheidt2023FDRControlLaptop,
+  @koka2024false, @efron2004least, @tibshirani1996regression, @zou2005regularization
 vignette: |
   %\VignetteKeyword{T-Rex selector, false discovery rate (FDR) control, T-LARS, high-dimensional variable selection, martingale theory, genome-wide association studies (GWAS)}
   %\VignetteEncoding{UTF-8}
@@ -51,7 +54,7 @@ options(width = 80)
 
 -----------
 # Motivation
-The T-Rex selector performs fast variable/feature selection in large-scale high-dimensional settings. It provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level. In addition to controlling the FDR, it also achieves a high true positive rate (TPR) (i.e., power) by maximizing the number of selected variables. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://CRAN.R-project.org/package=tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings.
+The T-Rex selector performs fast variable/feature selection in large-scale high-dimensional settings. It provably controls the false discovery rate (FDR), i.e., the expected fraction of selected false positives among all selected variables, at the user-defined target level. In addition to controlling the FDR, it also achieves a high true positive rate (TPR) (i.e., power) by maximizing the number of selected variables. It performs terminated-random experiments (T-Rex) using the T-LARS algorithm ([R package](https://CRAN.R-project.org/package=tlars)) and fuses the selected active sets of all random experiments to obtain a final set of selected variables. The T-Rex selector can be applied in various fields, such as genomics, financial engineering, or any other field that requires a fast and FDR-controlling variable/feature selection method for large-scale high-dimensional settings (see, e.g., [@machkour2022terminating; @machkour2024dependency; @machkour2024TRexIndexTracking; @machkour2022TRexGVS; @machkour2023InformedEN; @machkour2023ScreenTRex; @machkour2024sparse; @scheidt2023FDRControlLaptop; @koka2024false]).
 
 <!-- Include Latex macros -->
 $$
@@ -67,20 +70,25 @@ $$
 $$
 
 # Installation
-Before installing the 'TRexSelector' package, you need to install the required 'tlars' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) or [GitHub](https://github.com/jasinmachkour/tlars) with: 
+Before installing the 'TRexSelector' package, you need to install the required 'tlars' package. You can install the 'tlars' package from [CRAN](https://CRAN.R-project.org/package=tlars) (stable version) or [GitHub](https://github.com/jasinmachkour/tlars) (developer version) with: 
 
 ```{r, eval=FALSE}
-# Install stable version from CRAN
+# Option 1: Install stable version from CRAN
 install.packages("tlars")
 
-# Install development version from GitHub
+# Option 2: install developer version from GitHub
 install.packages("devtools")
 devtools::install_github("jasinmachkour/tlars")
 ```
 
-Then, you can install the 'TRexSelector' package with:
+Then, you can install the 'TRexSelector' package from [CRAN](https://CRAN.R-project.org/package=TRexSelector) (stable version) or [GitHub](https://github.com/jasinmachkour/TRexSelector) (developer version) with: 
 
 ```{r, eval=FALSE}
+# Option 1: Install stable version from CRAN
+install.packages("TRexSelector")
+
+# Option 2: install developer version from GitHub
+install.packages("devtools")
 devtools::install_github("jasinmachkour/TRexSelector")
 ```
 
@@ -250,7 +258,7 @@ TPR_vs_tFDR <-
 FDR_vs_tFDR + TPR_vs_tFDR
 ```
 
-We observe that the T-Rex selector always controls the FDR (green line is always below the red and dashed reference line, i.e., maximum allowed value for the FDR). For more details and discussions, we refer the interested reader to the T-Rex paper [@machkour2021terminating].
+We observe that the T-Rex selector always controls the FDR (green line is always below the red and dashed reference line, i.e., maximum allowed value for the FDR). For more details and discussions, we refer the interested reader to the T-Rex paper [@machkour2022terminating].
 
 # The T-Rex Framework
 The general steps that define the \textit{T-Rex} framework are illustrated in Figure 1. The key idea is to design randomized controlled experiments where fake variables, so-called dummies, act as a negative control group in the variable selection process.
@@ -259,13 +267,13 @@ The general steps that define the \textit{T-Rex} framework are illustrated in Fi
 knitr::include_graphics("./figures/T-Rex_framework.png")
 ```
 
-Within the \textit{T-Rex} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green), non-active (null) variables (red), and dummies (yellow) are illustrated as blocks within the predictor matrix. Note that this is only for visualization purposes and in practice the active and null variables are interspersed. In the random experiments, the dummy variables (yellow) compete with the given input variables in $\X$ (green and red) to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least], the Lasso [@tibshirani1996regression], or the elastic net [@zou2005regularization]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ dummies is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing the forward selection algorithm, beyond some point, only leads to including more null variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. As detailed in [@machkour2021terminating], the calibration process ensures that the FDR is controlled at the user-defined level $\alpha$ while maximizing the TPR by determining the optimal voting level $v^{*}$ and number of included dummies $T^{*}$ after which the forward selection process is terminated.
+Within the \textit{T-Rex} framework, a total of $K$ random experiments with independently generated dummy matrices are conducted. Figure 2 shows the structure of the enlarged predictor matrix. Without loss of generality, true active variables (green), non-active (null) variables (red), and dummies (yellow) are illustrated as blocks within the predictor matrix. Note that this is only for visualization purposes and in practice the active and null variables are interspersed. In the random experiments, the dummy variables (yellow) compete with the given input variables in $\X$ (green and red) to be included by a forward variable selection method, such as the LARS algorithm [@efron2004least], the Lasso [@tibshirani1996regression], or the elastic net [@zou2005regularization]. In each random experiment, the solution path is terminated early, as soon as a pre-defined number of $T$ dummies is included in the model. This results in the $K$ candidate sets $\C_{1, L}(T), \ldots, \C_{K, L}(T)$. The early stopping leads to a drastic reduction in computation time for sparse problems, where continuing the forward selection algorithm, beyond some point, only leads to including more null variables. Finally, a voting scheme is applied to the candidate sets which yields the final active set $\widehat{\A}_{L}(v^{*}, T^{*})$. As detailed in [@machkour2022terminating], the calibration process ensures that the FDR is controlled at the user-defined level $\alpha$ while maximizing the TPR by determining the optimal voting level $v^{*}$ and number of included dummies $T^{*}$ after which the forward selection process is terminated.
 
 ```{r EnlargedPredictorMatrix, echo=FALSE, fig.cap="Figure 2: The enlarged predictor matrix (predictor matrix with dummies).", out.width = '65%'}
 knitr::include_graphics("./figures/predictor_matrix_with_dummies.png")
 ```
 
-For a more detailed description of Figures 1 and 2 and more details on the T-Rex selector in general, we refer the interested reader to the original paper [@machkour2021terminating].
+For a more detailed description of Figures 1 and 2 and more details on the T-Rex selector in general, we refer the interested reader to the original paper [@machkour2022terminating].
 
 # References {-}
 <!-- <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0px;"></div> -->

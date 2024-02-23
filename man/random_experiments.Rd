@@ -11,6 +11,7 @@ random_experiments(
   T_stop = 1,
   num_dummies = ncol(X),
   method = "trex",
+  GVS_type = "EN",
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
@@ -19,6 +20,7 @@ random_experiments(
   verbose = TRUE,
   intercept = FALSE,
   standardize = TRUE,
+  dummy_coef = FALSE,
   parallel_process = FALSE,
   parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
   seed = NULL,
@@ -36,11 +38,19 @@ random_experiments(
 
 \item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector}
+\item{method}{'trex' for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}),
+'trex+GVS' for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}),
+'trex+DA+AR1' for the T-Rex+DA+AR1 selector,
+'trex+DA+equi' for the T-Rex+DA+equi selector,
+'trex+DA+BT' for the T-Rex+DA+BT selector (\doi{10.48550/arXiv.2401.15796}),
+'trex+DA+NN' for the T-Rex+DA+NN selector (\doi{10.48550/arXiv.2401.15139}).}
+
+\item{GVS_type}{'IEN' for the Informed Elastic Net (\doi{10.1109/CAMSAP58249.2023.10403489}),
+'EN' for the ordinary Elastic Net (\doi{10.1111/j.1467-9868.2005.00503.x}).}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
-\item{corr_max}{Maximum allowed correlation between any two predictors from different clusters.}
+\item{corr_max}{Maximum allowed correlation between any two predictors from different clusters (for method = 'trex+GVS').}
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
@@ -58,10 +68,11 @@ If parallel_process = FALSE: List of objects of the class tlars_cpp associated w
 
 \item{standardize}{Logical. If TRUE the predictors are standardized and the response is centered.}
 
+\item{dummy_coef}{Logical. If TRUE a matrix containing the terminal dummy coefficient vectors of all K random experiments as rows is returned.}
+
 \item{parallel_process}{Logical. If TRUE random experiments are executed in parallel.}
 
-\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing
-(default: minimum{Number of random experiments K, number of physical cores}).}
+\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing.}
 
 \item{seed}{Seed for random number generator (ignored if parallel_process = FALSE).}
 
@@ -71,8 +82,8 @@ If parallel_process = FALSE: List of objects of the class tlars_cpp associated w
 List containing the results of the K random experiments.
 }
 \description{
-Run K random experiments and compute the matrix of relative occurrences for all variables
-and all numbers of included variables before stopping.
+Run K early terminated T-Rex (\doi{10.48550/arXiv.2110.06048}) random experiments and
+compute the matrix of relative occurrences for all variables and all numbers of included variables before stopping.
 }
 \examples{
 set.seed(123)

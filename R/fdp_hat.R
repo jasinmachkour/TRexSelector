@@ -1,4 +1,4 @@
-#' Computes the conservative FDP estimate of the \href{https://doi.org/10.48550/arXiv.2110.06048}{T-Rex} selector
+#' Computes the conservative FDP estimate of the T-Rex selector (\doi{10.48550/arXiv.2110.06048})
 #'
 #' @param V Voting level grid.
 #' @param Phi Vector of relative occurrences.

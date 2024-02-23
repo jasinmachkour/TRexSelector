@@ -124,7 +124,7 @@ test_that("dimension of output (i.e., predictor matrix containing dummies) is p 
   X_Dummy <- add_dummies_GVS(
     X = X,
     num_dummies = num_dummies
-  )
+  )$X_Dummy
 
   # Tests
   expect_true(ncol(X_Dummy) == p + num_dummies)

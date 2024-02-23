@@ -2,7 +2,7 @@
 % Please edit documentation in R/trex.R
 \name{trex}
 \alias{trex}
-\title{Run the T-Rex selector}
+\title{Run the T-Rex selector (\doi{10.48550/arXiv.2110.06048})}
 \usage{
 trex(
   X,
@@ -12,9 +12,14 @@ trex(
   max_num_dummies = 10,
   max_T_stop = TRUE,
   method = "trex",
+  GVS_type = "IEN",
+  cor_coef = NA,
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
+  rho_thr_DA = 0.02,
+  hc_dist = "single",
+  hc_grid_length = min(20, ncol(X)),
   parallel_process = FALSE,
   parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
   seed = NULL,
@@ -37,18 +42,34 @@ trex(
 \item{max_T_stop}{If TRUE the maximum number of dummies that can be included before stopping is set to ceiling(n / 2),
 where n is the number of data points/observations.}
 
-\item{method}{'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector.}
+\item{method}{'trex' for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}),
+'trex+GVS' for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}),
+'trex+DA+AR1' for the T-Rex+DA+AR1 selector,
+'trex+DA+equi' for the T-Rex+DA+equi selector,
+'trex+DA+BT' for the T-Rex+DA+BT selector (\doi{10.48550/arXiv.2401.15796}),
+'trex+DA+NN' for the T-Rex+DA+NN selector (\doi{10.48550/arXiv.2401.15139}).}
+
+\item{GVS_type}{'IEN' for the Informed Elastic Net (\doi{10.1109/CAMSAP58249.2023.10403489}),
+'EN' for the ordinary Elastic Net (\doi{10.1111/j.1467-9868.2005.00503.x}).}
+
+\item{cor_coef}{AR(1) autocorrelation coefficient for the T-Rex+DA+AR1 selector or equicorrelation coefficient for the T-Rex+DA+equi selector.}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
-\item{corr_max}{Maximum allowed correlation between any two predictors from different clusters.}
+\item{corr_max}{Maximum allowed correlation between any two predictors from different clusters (for method = 'trex+GVS').}
 
 \item{lambda_2_lars}{lambda_2-value for LARS-based Elastic Net.}
 
+\item{rho_thr_DA}{Correlation threshold for the T-Rex+DA+AR1 selector and the T-Rex+DA+equi selector (i.e., method = 'trex+DA+AR1' or 'trex+DA+equi').}
+
+\item{hc_dist}{Distance measure of the hierarchical clustering/dendrogram (only for trex+DA+BT):
+'single' for single-linkage, "complete" for complete linkage, "average" for average linkage (see \link{hclust} for more options).}
+
+\item{hc_grid_length}{Length of the height-cutoff-grid for the dendrogram (integer between 1 and the number of original variables p).}
+
 \item{parallel_process}{Logical. If TRUE random experiments are executed in parallel.}
 
-\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing
-(default: minimum{Number of random experiments K, number of physical cores}).}
+\item{parallel_max_cores}{Maximum number of cores to be used for parallel processing.}
 
 \item{seed}{Seed for random number generator (ignored if parallel_process = FALSE).}
 
@@ -60,7 +81,7 @@ where n is the number of data points/observations.}
 A list containing the estimated support vector and additional information, including the number of used dummies and the number of included dummies before stopping.
 }
 \description{
-Run the T-Rex selector The T-Rex selector performs fast variable selection in high-dimensional settings while
+The T-Rex selector (\doi{10.48550/arXiv.2110.06048}) performs fast variable selection in high-dimensional settings while
 controlling the false discovery rate (FDR) at a user-defined target level.
 }
 \examples{

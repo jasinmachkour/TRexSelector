@@ -1,16 +1,23 @@
 #' Run K random experiments
 #'
-#' Run K random experiments and compute the matrix of relative occurrences for all variables
-#' and all numbers of included variables before stopping.
+#' Run K early terminated T-Rex (\doi{10.48550/arXiv.2110.06048}) random experiments and
+#' compute the matrix of relative occurrences for all variables and all numbers of included variables before stopping.
 #'
 #' @param X Real valued predictor matrix.
 #' @param y Response vector.
 #' @param K Number of random experiments.
 #' @param T_stop Number of included dummies after which the random experiments (i.e., forward selection processes) are stopped.
 #' @param num_dummies Number of dummies that are appended to the predictor matrix.
-#' @param method 'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector
+#' @param method 'trex' for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}),
+#' 'trex+GVS' for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}),
+#' 'trex+DA+AR1' for the T-Rex+DA+AR1 selector,
+#' 'trex+DA+equi' for the T-Rex+DA+equi selector,
+#' 'trex+DA+BT' for the T-Rex+DA+BT selector (\doi{10.48550/arXiv.2401.15796}),
+#' 'trex+DA+NN' for the T-Rex+DA+NN selector (\doi{10.48550/arXiv.2401.15139}).
+#' @param GVS_type 'IEN' for the Informed Elastic Net (\doi{10.1109/CAMSAP58249.2023.10403489}),
+#' 'EN' for the ordinary Elastic Net (\doi{10.1111/j.1467-9868.2005.00503.x}).
 #' @param type 'lar' for 'LARS' and 'lasso' for Lasso.
-#' @param corr_max Maximum allowed correlation between any two predictors from different clusters.
+#' @param corr_max Maximum allowed correlation between any two predictors from different clusters (for method = 'trex+GVS').
 #' @param lambda_2_lars lambda_2-value for LARS-based Elastic Net.
 #' @param early_stop Logical. If TRUE, then the forward selection process is stopped after T_stop dummies have been included. Otherwise
 #' the entire solution path is computed.
@@ -21,9 +28,9 @@
 #' @param verbose Logical. If TRUE progress in computations is shown.
 #' @param intercept Logical. If TRUE an intercept is included.
 #' @param standardize Logical. If TRUE the predictors are standardized and the response is centered.
+#' @param dummy_coef Logical. If TRUE a matrix containing the terminal dummy coefficient vectors of all K random experiments as rows is returned.
 #' @param parallel_process Logical. If TRUE random experiments are executed in parallel.
-#' @param parallel_max_cores Maximum number of cores to be used for parallel processing
-#' (default: minimum{Number of random experiments K, number of physical cores}).
+#' @param parallel_max_cores Maximum number of cores to be used for parallel processing.
 #' @param seed Seed for random number generator (ignored if parallel_process = FALSE).
 #' @param eps Numerical zero.
 #'
@@ -51,6 +58,7 @@ random_experiments <- function(X,
                                T_stop = 1,
                                num_dummies = ncol(X),
                                method = "trex",
+                               GVS_type = "EN",
                                type = "lar",
                                corr_max = 0.5,
                                lambda_2_lars = NULL,
@@ -59,14 +67,17 @@ random_experiments <- function(X,
                                verbose = TRUE,
                                intercept = FALSE,
                                standardize = TRUE,
+                               dummy_coef = FALSE,
                                parallel_process = FALSE,
                                parallel_max_cores = min(K, max(1, parallel::detectCores(logical = FALSE))),
                                seed = NULL,
                                eps = .Machine$double.eps) {
   # Error control
-  method <- match.arg(method, c("trex", "trex+GVS"))
+  method <- match.arg(method, c("trex", "trex+GVS", "trex+DA+AR1", "trex+DA+equi", "trex+DA+BT", "trex+DA+NN"))
 
   type <- match.arg(type, c("lar", "lasso"))
+
+  GVS_type <- match.arg(GVS_type, c("IEN", "EN"))
 
   if (!is.matrix(X)) {
     stop("'X' must be a matrix.")
@@ -102,7 +113,7 @@ random_experiments <- function(X,
     stop("The number of random experiments 'K' must be an integer larger or equal to 2.")
   }
 
-  if (method == "trex") {
+  if (method == "trex" || method == "trex+DA+AR1" || method == "trex+DA+equi" || method == "trex+DA+BT" || method == "trex+DA+NN") {
     if (length(num_dummies) != 1 ||
       num_dummies %% 1 != 0 ||
       num_dummies < 1) {
@@ -232,7 +243,7 @@ random_experiments <- function(X,
     h = seq(K),
     .combine = comb_fun,
     .multicombine = TRUE,
-    .init = list(list(), list(), list()),
+    .init = list(list(), list(), list(), list()),
     .options.RNG = seed
   ) %par_exe% {
     # Recreate tlarsCpp object if necessary
@@ -252,6 +263,7 @@ random_experiments <- function(X,
       T_stop = T_stop,
       num_dummies = num_dummies,
       method = method,
+      GVS_type = GVS_type,
       type = type,
       corr_max = corr_max,
       lambda_2_lars = lambda_2_lars,
@@ -305,12 +317,21 @@ random_experiments <- function(X,
         (1 / K) * (abs(lars_path[1:p, ind_sol_path]) > eps)
     }
 
+    # Last coefficient vectors of all random experiments after termination
     rand_exp_last_betas_mat <- lars_path[1:p, ncol(lars_path)]
+
+    # Matrix containing the dummy coefficient vectors of all K random experiments as rows is returned.
+    if (dummy_coef) {
+      dummy_rand_exp_last_betas_mat <- lars_path[seq(p + 1, p + num_dummies), ncol(lars_path)]
+    } else {
+      dummy_rand_exp_last_betas_mat <- NULL
+    }
 
     list(
       phi_T_mat,
       rand_exp_last_betas_mat,
-      lars_state
+      lars_state,
+      dummy_rand_exp_last_betas_mat
     )
   }
 
@@ -323,16 +344,24 @@ random_experiments <- function(X,
   rand_exp_last_betas_mat <- unname(Reduce(rbind, res[[2]]))
   Phi <- apply(abs(rand_exp_last_betas_mat) > eps, 2, sum) / K
 
+  if (dummy_coef) {
+    dummy_rand_exp_last_betas_mat <- unname(Reduce(rbind, res[[4]]))
+  } else {
+    dummy_rand_exp_last_betas_mat <- NULL
+  }
+
   # List of results
   rand_exp_res <- list(
     phi_T_mat = phi_T_mat,
     rand_exp_last_betas_mat = rand_exp_last_betas_mat,
+    dummy_rand_exp_last_betas_mat = dummy_rand_exp_last_betas_mat,
     Phi = Phi,
     lars_state_list = lars_state_list,
     K = K,
     T_stop = T_stop,
     num_dummies = num_dummies,
     method = method,
+    GVS_type = GVS_type,
     type = type,
     corr_max = corr_max,
     lambda_2_lars = lambda_2_lars,

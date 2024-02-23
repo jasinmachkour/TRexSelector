@@ -11,6 +11,7 @@ lm_dummy(
   T_stop = 1,
   num_dummies = ncol(X),
   method = "trex",
+  GVS_type = "IEN",
   type = "lar",
   corr_max = 0.5,
   lambda_2_lars = NULL,
@@ -32,7 +33,15 @@ the forward selection process exactly where it was previously terminated).}
 
 \item{num_dummies}{Number of dummies that are appended to the predictor matrix.}
 
-\item{method}{'trex' for the T-Rex selector and 'trex+GVS' for the T-Rex+GVS selector}
+\item{method}{'trex' for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}),
+'trex+GVS' for the T-Rex+GVS selector (\doi{10.23919/EUSIPCO55093.2022.9909883}),
+'trex+DA+AR1' for the T-Rex+DA+AR1 selector,
+'trex+DA+equi' for the T-Rex+DA+equi selector,
+'trex+DA+BT' for the T-Rex+DA+BT selector (\doi{10.48550/arXiv.2401.15796}),
+'trex+DA+NN' for the T-Rex+DA+NN selector (\doi{10.48550/arXiv.2401.15139}).}
+
+\item{GVS_type}{'IEN' for the Informed Elastic Net (\doi{10.1109/CAMSAP58249.2023.10403489}),
+'EN' for the ordinary Elastic Net (\doi{10.1111/j.1467-9868.2005.00503.x}).}
 
 \item{type}{'lar' for 'LARS' and 'lasso' for Lasso.}
 
@@ -53,7 +62,7 @@ the entire solution path is computed.}
 Object of the class tlars_cpp.
 }
 \description{
-Run one random experiment of the T-Rex selector, i.e., generates dummies, appends them to the predictor matrix, and runs
+Run one random experiment of the T-Rex selector (\doi{10.48550/arXiv.2110.06048}), i.e., generates dummies, appends them to the predictor matrix, and runs
 the forward selection algorithm until it is terminated after T_stop dummies have been selected.
 }
 \examples{

@@ -23,5 +23,5 @@ select_var_fun(p, tFDR, T_stop, FDP_hat_mat, Phi_mat, V)
 Estimated support vector.
 }
 \description{
-Computes the set of selected variables and returns the estimated support vector for the T-Rex selector.
+Computes the set of selected variables and returns the estimated support vector for the T-Rex selector (\doi{10.48550/arXiv.2110.06048}).
 }
