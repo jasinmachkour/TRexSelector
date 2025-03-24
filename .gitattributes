@@ -1,5 +1,3 @@
-*.R linguist-language=R
-*.cpp linguist-language=C++
-*.h linguist-language=C++
-*.hpp linguist-language=C++
-*.c linguist-language=C++
+*.html linguist-vendored
+*.htm linguist-vendored
+
